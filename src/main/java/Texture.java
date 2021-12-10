@@ -23,7 +23,7 @@ public class Texture {
         return height;
     }
 
-    public void cleanUp() {
+    public void cleanup() {
         GL11.glDeleteTextures(ID);
     }
 }

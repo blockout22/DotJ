@@ -1,5 +1,4 @@
 import org.joml.Vector3f;
-import org.lwjgl.assimp.*;
 import org.lwjgl.opengl.GL11;
 
 import java.io.File;
@@ -18,10 +17,11 @@ public class JApp extends App {
     private Mesh mesh, floor;
     private MeshInstance floorInstance;
 
-    private ArrayList<MeshInstance> instances = new ArrayList<MeshInstance>();
+    private ArrayList<MeshInstance> instances = new ArrayList<>();
 
     //create a texture that will have the very first ID and any mesh without a texture assigned will use this one
     private Texture defaultTexture;
+    private Texture floorTexture;
 
 
     private float SPEED = 0.01f;
@@ -51,9 +51,12 @@ public class JApp extends App {
         mesh = ModelLoader.load(file);//new Mesh(); //OBJLoader.load("test.obj");
 
         defaultTexture = TextureLoader.loadTexture("white.png");
+        floorTexture = TextureLoader.loadTexture("Image.png");
 
         floorInstance = new MeshInstance(floor);
         floorInstance.setScale(.2f);
+        floorInstance.setTextureID(floorTexture.getID());
+
         Random r = new Random();
         for(int i = 0; i < 1000; i++) {
 
@@ -131,8 +134,9 @@ public class JApp extends App {
 
     @Override
     public void close() {
-        defaultTexture.cleanUp();
-        mesh.cleanUp();
+        floorTexture.cleanup();
+        defaultTexture.cleanup();
+        mesh.cleanup();
         shader.cleanup();
         window.close();
     }

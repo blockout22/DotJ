@@ -22,11 +22,10 @@ public class MeshInstance {
 
     }
 
-    public void update(){};
+    public void update(){}
 
     /**
      * updates the Meshobject even if its outside the render distance of camera;
-     * @param update
      */
     public void updateOutsideBounds(boolean update)
     {
@@ -47,6 +46,7 @@ public class MeshInstance {
         return textureID;
     }
 
+    public void setTextureID(int id){this.textureID = id;}
 
     public Vector3f getPosition() {
         return position;
