@@ -73,4 +73,26 @@ public class GLFWWindow {
         glfwTerminate();
         glfwSetErrorCallback(null).free();
     }
+
+    public void setTitle(String title) {
+        GLFW.glfwSetWindowTitle(getWindowID(), title);
+    }
+
+    public long getWindowID() {
+        return windowID;
+    }
+
+    public int getWidth() {
+        IntBuffer width = BufferUtils.createIntBuffer(1);
+        IntBuffer height = BufferUtils.createIntBuffer(1);
+        glfwGetWindowSize(getWindowID(), width, height);
+        return width.get();
+    }
+
+    public int getHeight() {
+        IntBuffer width = BufferUtils.createIntBuffer(1);
+        IntBuffer height = BufferUtils.createIntBuffer(1);
+        glfwGetWindowSize(getWindowID(), width, height);
+        return height.get();
+    }
 }
