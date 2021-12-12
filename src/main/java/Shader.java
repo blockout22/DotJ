@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
+import com.sun.jdi.Value;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -26,7 +27,7 @@ public abstract class Shader {
         fragment = loadShader(fragmentShader, GL20.GL_FRAGMENT_SHADER);
 
         createProgram();
-        validateAllUniforms();
+        //validateAllUniforms();
     }
 
     public void validateAllUniforms() {
@@ -66,12 +67,24 @@ public abstract class Shader {
         GL20.glUniformMatrix4fv(location, false, matrixBuffer);
     }
 
-    public void loadvector3f(int location, Vector3f vector3f) {
+    public void loadVector3f(int location, Vector3f vector3f) {
         GL20.glUniform3f(location, vector3f.x, vector3f.y, vector3f.z);
+    }
+
+    protected void loadBoolean(int location, boolean value){
+        float toLoad = 0;
+        if(value){
+            toLoad = 1;
+        }
+        GL20.glUniform1f(location, toLoad);
     }
 
     public void loadFloat(int location, float value) {
         GL20.glUniform1f(location, value);
+    }
+
+    public void loadInt(int location, int value){
+        GL20.glUniform1i(location, value);
     }
 
     public int getUniformLocation(String uniform) {

@@ -23,8 +23,9 @@ public class JApp extends App {
     private Texture defaultTexture;
     private Texture floorTexture;
 
-
     private float SPEED = 0.01f;
+
+    Light light;
 
 
     public JApp(){
@@ -63,6 +64,8 @@ public class JApp extends App {
             MeshInstance instance = new MeshInstance(mesh, new Vector3f(r.nextFloat() * 100, r.nextFloat() * 100, r.nextFloat() * 100), new Vector3f(r.nextFloat() * 360f, r.nextFloat() * 360f, r.nextFloat() * 360f), 1f);
             instances.add(instance);
         }
+
+        light = new Light(new Vector3f(0, 10, 10), new Vector3f(1f, 1f, 1f));
     }
 
     @Override
@@ -85,6 +88,8 @@ public class JApp extends App {
 
             shader.bind();
             {
+                shader.loadSkyColour(.5f, .5f, .5f);
+                shader.loadLight(light);
                 shader.loadViewMatrix(camera);
                 mesh.enable();
                 {
