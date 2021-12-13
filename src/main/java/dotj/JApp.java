@@ -2,6 +2,7 @@ package dotj;
 
 import dotj.gameobjects.Floor;
 import dotj.gameobjects.GameObject;
+import dotj.gameobjects.Monkey;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
@@ -69,6 +70,9 @@ public class JApp extends App {
 
         Floor floor = new Floor(camera, shader);
         rootObjects.add(floor);
+
+        Monkey monkey = new Monkey(camera, shader);
+        rootObjects.add(monkey);
     }
 
     @Override

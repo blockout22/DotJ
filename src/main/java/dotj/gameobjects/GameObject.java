@@ -15,15 +15,15 @@ public abstract class GameObject {
 
     }
 
-    public abstract void cleanup();
     public abstract void render();
+    public abstract void cleanup();
 
     public GameObject getParent() {
         return parent;
     }
 
     public void update(){
-        for(dotj.gameobjects.components.Component component : components){
+        for(Component component : components){
             component.execute();
         }
 
