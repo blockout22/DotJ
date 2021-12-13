@@ -1,8 +1,12 @@
+package dotj;
+
+import dotj.gameobjects.components.Component;
 import org.joml.Vector3f;
 
-public class MeshInstance {
+public abstract class MeshInstance implements Component {
 
     private Mesh mesh;
+    private WorldShader shader;
     protected Vector3f position;
     private Vector3f rotation;
     private float scale;
@@ -22,7 +26,17 @@ public class MeshInstance {
 
     }
 
-    public void update(){}
+    public WorldShader getShader() {
+        return shader;
+    }
+
+    public void setShader(WorldShader shader) {
+        this.shader = shader;
+    }
+
+    public void update(){
+
+    }
 
     /**
      * updates the Meshobject even if its outside the render distance of camera;

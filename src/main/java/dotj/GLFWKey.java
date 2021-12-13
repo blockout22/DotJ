@@ -1,3 +1,5 @@
+package dotj;
+
 import org.lwjgl.glfw.GLFW;
 
 public enum GLFWKey {

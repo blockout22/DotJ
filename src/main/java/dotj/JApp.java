@@ -1,9 +1,10 @@
+package dotj;
+
+import dotj.gameobjects.Floor;
+import dotj.gameobjects.GameObject;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
-
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class JApp extends App {
 
@@ -14,18 +15,19 @@ public class JApp extends App {
 
     private PerspectiveCamera camera;
     private WorldShader shader;
-    private Mesh mesh, floor;
-    private MeshInstance floorInstance;
 
     private ArrayList<MeshInstance> instances = new ArrayList<>();
 
     //create a texture that will have the very first ID and any mesh without a texture assigned will use this one
     private Texture defaultTexture;
-    private Texture floorTexture;
 
     private float SPEED = 0.01f;
 
-    Light light;
+    private Light light;
+
+    private PhysicsWorld physicsWorld;
+
+    private ArrayList<GameObject> rootObjects = new ArrayList<>();
 
 
     public JApp(){
@@ -36,6 +38,9 @@ public class JApp extends App {
 
     @Override
     public void init() {
+
+        physicsWorld = new PhysicsWorld();
+
         window = new GLFWWindow(800, 600, "GLFW Window");
 
         camera = new PerspectiveCamera(window, 70, 0.1f, 100000f);
@@ -45,27 +50,25 @@ public class JApp extends App {
         shader.bind();
         shader.loadMatrix(shader.getProjectionMatrix(), camera.getProjectionMatrix());
 
-        floor = OBJLoader.load("floor.obj");
-
+        /** a way to load difference types of models using Assimp
         File file = new File("E:/LWJGL/DotJ/src/main/resources/test.obj");
-
         mesh = ModelLoader.load(file);//new Mesh(); //OBJLoader.load("test.obj");
+         */
 
         defaultTexture = TextureLoader.loadTexture("white.png");
-        floorTexture = TextureLoader.loadTexture("Image.png");
 
-        floorInstance = new MeshInstance(floor);
-        floorInstance.setScale(.2f);
-        floorInstance.setTextureID(floorTexture.getID());
 
-        Random r = new Random();
-        for(int i = 0; i < 1000; i++) {
+//        Random r = new Random();
+//        for(int i = 0; i < 1000; i++) {
+//
+//            MeshInstance instance = new MeshInstance(mesh, new Vector3f(r.nextFloat() * 100, r.nextFloat() * 100, r.nextFloat() * 100), new Vector3f(r.nextFloat() * 360f, r.nextFloat() * 360f, r.nextFloat() * 360f), 1f);
+//            instances.add(instance);
+//        }
 
-            MeshInstance instance = new MeshInstance(mesh, new Vector3f(r.nextFloat() * 100, r.nextFloat() * 100, r.nextFloat() * 100), new Vector3f(r.nextFloat() * 360f, r.nextFloat() * 360f, r.nextFloat() * 360f), 1f);
-            instances.add(instance);
-        }
+        light = new Light(new Vector3f(0, 0, 0), new Vector3f(1f, 1f, 1f));
 
-        light = new Light(new Vector3f(0, 10, 10), new Vector3f(1f, 1f, 1f));
+        Floor floor = new Floor(camera, shader);
+        rootObjects.add(floor);
     }
 
     @Override
@@ -91,20 +94,10 @@ public class JApp extends App {
                 shader.loadSkyColour(.5f, .5f, .5f);
                 shader.loadLight(light);
                 shader.loadViewMatrix(camera);
-                mesh.enable();
-                {
-                    for(MeshInstance instance : instances) {
-                        mesh.render(shader, shader.getModelMatrix(), instance, camera);
-                    }
 
+                for(GameObject root : rootObjects){
+                    root.update();
                 }
-                mesh.disable();
-
-                floor.enable();
-                {
-                    floor.render(shader, shader.getModelMatrix(), floorInstance, camera);
-                }
-                floor.disable();
             }
             shader.unbind();
 
@@ -139,9 +132,7 @@ public class JApp extends App {
 
     @Override
     public void close() {
-        floorTexture.cleanup();
         defaultTexture.cleanup();
-        mesh.cleanup();
         shader.cleanup();
         window.close();
     }

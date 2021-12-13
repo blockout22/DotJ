@@ -1,3 +1,5 @@
+package dotj;
+
 import org.lwjgl.assimp.*;
 
 import java.io.File;

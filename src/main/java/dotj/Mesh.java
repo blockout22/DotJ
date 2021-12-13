@@ -1,6 +1,11 @@
+package dotj;
+
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+import dotj.Matrix4;
+import dotj.MeshInstance;
+import dotj.PerspectiveCamera;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;

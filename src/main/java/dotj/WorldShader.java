@@ -1,3 +1,8 @@
+package dotj;
+
+import dotj.Light;
+import dotj.Matrix4;
+import dotj.PerspectiveCamera;
 import org.joml.Vector3f;
 
 public class WorldShader extends Shader {

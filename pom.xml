@@ -39,6 +39,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.github.stephengold</groupId>
+            <artifactId>Libbulletjme</artifactId>
+            <version>12.6.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl</artifactId>
         </dependency>

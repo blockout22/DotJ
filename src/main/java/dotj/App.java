@@ -1,3 +1,5 @@
+package dotj;
+
 public abstract class App {
 
 

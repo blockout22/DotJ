@@ -1,10 +1,13 @@
+package dotj;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
-import com.sun.jdi.Value;
+import dotj.Matrix4;
+import dotj.PerspectiveCamera;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;

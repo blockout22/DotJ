@@ -1,3 +1,5 @@
+package dotj;
+
 public class Time {
 
     private static double lastFrame;

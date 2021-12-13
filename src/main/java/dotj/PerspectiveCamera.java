@@ -1,3 +1,9 @@
+package dotj;
+
+import dotj.GLFWKey;
+import dotj.GLFWWindow;
+import dotj.Input;
+import dotj.Matrix4;
 import org.joml.Vector2f;
 
 import java.nio.DoubleBuffer;

@@ -1,5 +1,8 @@
+package dotj;
+
 import java.util.ArrayList;
 
+import dotj.GLFWKey;
 import org.lwjgl.glfw.GLFW;
 
 
