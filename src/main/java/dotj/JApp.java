@@ -6,6 +6,7 @@ import dotj.gameobjects.Floor;
 import dotj.gameobjects.GameObject;
 import dotj.gameobjects.Monkey;
 import example.GLFWDemo;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.nanovg.NVGColor;
 import org.lwjgl.system.MemoryUtil;
@@ -48,6 +49,23 @@ public class JApp extends App {
 
     @Override
     public void init() {
+
+        Vector2f value = new Vector2f(1920 / 2, 800);
+        Vector2f inA = new Vector2f(0, 0);
+        Vector2f inB = new Vector2f(1920, 1080);
+        Vector2f outA = new Vector2f(0, 0);
+        Vector2f outB = new Vector2f(800, 600);
+        Vector2f returnFloat = Utilities.remapVector2f(value, inA, inB, outA, outB);
+        System.out.println(returnFloat.x + " : " + returnFloat.y);
+
+        float rValue = 1920 / 2;
+        float rinA = 0;
+        float rinB = 1920;
+        float routA = 0;
+        float routB = 800;
+        float res = Utilities.remapFloat(rValue, rinA, rinB, routA, routB);
+        System.out.println(res);
+
 
         physicsWorld = new PhysicsWorld();
 
