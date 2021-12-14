@@ -1,5 +1,6 @@
 package dotj;
 
+import dotj.UI.Nano.vg.NanoVGRenderer;
 import dotj.UI.UIRenderer;
 import dotj.gameobjects.Floor;
 import dotj.gameobjects.GameObject;
@@ -37,8 +38,7 @@ public class JApp extends App {
 
     private ArrayList<GameObject> rootObjects = new ArrayList<>();
 
-    private long vg;
-    NVGColor nvgColor = NVGColor.create();
+    private NanoVGRenderer vgRenderer;
 
     public JApp(){
         init();
@@ -85,10 +85,8 @@ public class JApp extends App {
         Monkey monkey = new Monkey(camera, shader);
         rootObjects.add(monkey);
 
-        this.vg = nvgCreate(NVG_STENCIL_STROKES);
-        if(vg == MemoryUtil.NULL){
-            System.out.println("Could not init nanovg");
-        }
+        this.vgRenderer = new NanoVGRenderer(window);
+
 
     }
 
@@ -122,22 +120,8 @@ public class JApp extends App {
             }
             shader.unbind();
 
-            glDisable(GL_DEPTH_TEST);
-            nvgBeginFrame(vg, window.getWidth(), window.getHeight(), 1);
-            nvgRect(vg, 0, window.getHeight() - 100, window.getWidth(), 50);
-            nvgColor.r(.1f);
-            nvgColor.g(.2f);
-            nvgColor.b(1f);
-            nvgColor.a(.5f);
-            nvgFillColor(vg, nvgColor);
-            nvgFill(vg);
-            nvgEndFrame(vg);
+            vgRenderer.update();
 
-            glEnable(GL_DEPTH_TEST);
-            glEnable(GL_STENCIL_TEST);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            glEnable(GL_CULL_FACE);
-            glCullFace(GL_BACK);
 
             //camera movement
             if(Input.isKeyDown(window.getWindowID(), GLFWKey.KEY_W))
@@ -168,6 +152,7 @@ public class JApp extends App {
 
     @Override
     public void close() {
+        vgRenderer.cleanup();
         defaultTexture.cleanup();
         shader.cleanup();
         window.close();
