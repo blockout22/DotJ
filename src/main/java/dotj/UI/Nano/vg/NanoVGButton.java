@@ -1,8 +1,8 @@
 package dotj.UI.Nano.vg;
 
-import dotj.GLFWKey;
+import dotj.input.GLFWKey;
 import dotj.GLFWWindow;
-import dotj.Input;
+import dotj.input.Input;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.nanovg.NVGColor;

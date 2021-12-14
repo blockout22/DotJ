@@ -1,20 +1,16 @@
 package dotj;
 
 import dotj.UI.Nano.vg.NanoVGRenderer;
-import dotj.UI.UIRenderer;
 import dotj.gameobjects.Floor;
 import dotj.gameobjects.GameObject;
 import dotj.gameobjects.Monkey;
-import example.GLFWDemo;
+import dotj.input.GLFWKey;
+import dotj.input.Input;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.lwjgl.nanovg.NVGColor;
-import org.lwjgl.system.MemoryUtil;
 
 import java.util.ArrayList;
 
-import static org.lwjgl.nanovg.NanoVG.*;
-import static org.lwjgl.nanovg.NanoVGGL3.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public class JApp extends App {

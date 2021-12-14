@@ -1,8 +1,7 @@
-package dotj;
+package dotj.input;
 
 import java.util.ArrayList;
 
-import dotj.GLFWKey;
 import org.lwjgl.glfw.GLFW;
 
 
@@ -34,8 +33,17 @@ public class Input {
         return isDown;
     }
 
+    public static void KeyEvent(long window, GLFWKey key, PressedEvent evtPressed, ReleasedEvent evtReleased){
+       if(isKeyPressed(window, key)){
+           evtPressed.exec();
+       }
+       if(isKeyReleased(window, key)){
+           evtReleased.exec();
+       }
+    }
 
-    public static boolean isKeyPressed(long window, GLFWKey keyCode) {
+
+    private static boolean isKeyPressed(long window, GLFWKey keyCode) {
         if (isKeyDown(window, keyCode)) {
             for (int i = 0; i < downKeys.size(); i++) {
                 if (downKeys.get(i).equals(keyCode)) {
@@ -55,7 +63,7 @@ public class Input {
      * @param keyCode
      * @return
      */
-    public static boolean isKeyReleased(long window, GLFWKey keyCode) {
+    private static boolean isKeyReleased(long window, GLFWKey keyCode) {
         isKeyPressed(window, keyCode);
         if (!isKeyDown(window, keyCode)) {
             for (int i = 0; i < downKeys.size(); i++) {

@@ -1,4 +1,4 @@
-package dotj;
+package dotj.input;
 
 import org.lwjgl.glfw.GLFW;
 

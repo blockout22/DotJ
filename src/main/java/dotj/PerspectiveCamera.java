@@ -1,9 +1,9 @@
 package dotj;
 
-import dotj.GLFWKey;
-import dotj.GLFWWindow;
-import dotj.Input;
-import dotj.Matrix4;
+import dotj.input.GLFWKey;
+import dotj.input.Input;
+import dotj.input.PressedEvent;
+import dotj.input.ReleasedEvent;
 import org.joml.Vector2f;
 
 import java.nio.DoubleBuffer;
@@ -53,16 +53,40 @@ public class PerspectiveCamera {
         /**
          * grab mouse and allow 3d mouse movement
          */
-        if (Input.isKeyPressed(window.getWindowID(), GLFWKey.KEY_G)) {
-            System.out.println("KEY G");
-            if(!mouseGrabbed)
-            {
-                grabCursor();
-            }else{
-                releaseCursor();
+//        if (Input.isKeyPressed(window.getWindowID(), GLFWKey.KEY_G)) {
+//            System.out.println("KEY G");
+//            if(!mouseGrabbed)
+//            {
+//                grabCursor();
+//            }else{
+//                releaseCursor();
+//            }
+//        }
+//        Input.isKeyReleased(window.getWindowID(), GLFWKey.KEY_G);
+        boolean pressed = false;
+        boolean released = false;
+        Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_G, new PressedEvent() {
+            @Override
+            public void exec() {
+                if(!mouseGrabbed)
+                {
+                    grabCursor();
+                }else{
+                    releaseCursor();
+                }
             }
+        }, new ReleasedEvent() {
+            @Override
+            public void exec() {
+
+            }
+        });
+
+        if(pressed){
+            System.out.println("Hello");
         }
-        Input.isKeyReleased(window.getWindowID(), GLFWKey.KEY_G);
+
+
         curPos = getCursorPos();
         if (mouseGrabbed) {
             double dx = curPos.x - previousPos.x;
