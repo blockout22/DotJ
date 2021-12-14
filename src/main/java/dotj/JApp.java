@@ -117,6 +117,7 @@ public class JApp extends App {
                 last_time = Time.getTime();
                 window.setTitle("[FPS: " + fps + "]");
                 //System.out.println(fps);
+                vgRenderer.setFPS(fps);
                 fps = 0;
             }
             fps++;
