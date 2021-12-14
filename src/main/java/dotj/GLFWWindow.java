@@ -2,6 +2,7 @@ package dotj;
 
 import org.lwjgl.*;
 import org.lwjgl.glfw.*;
+import org.lwjgl.nuklear.NkColorf;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
@@ -9,6 +10,7 @@ import java.nio.*;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
@@ -26,6 +28,11 @@ public class GLFWWindow {
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+
 
         windowID = glfwCreateWindow(width, height, title, NULL, NULL);
         if(windowID == NULL){
@@ -60,6 +67,13 @@ public class GLFWWindow {
     }
 
     public boolean shouldClose(){
+        try (MemoryStack stack = stackPush()) {
+            IntBuffer width  = stack.mallocInt(1);
+            IntBuffer height = stack.mallocInt(1);
+
+            glfwGetWindowSize(windowID, width, height);
+            glViewport(0, 0, width.get(0), height.get(0));
+        }
         return glfwWindowShouldClose(windowID);
     }
 

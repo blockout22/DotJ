@@ -1,11 +1,19 @@
 package dotj;
 
+import dotj.UI.UIRenderer;
 import dotj.gameobjects.Floor;
 import dotj.gameobjects.GameObject;
 import dotj.gameobjects.Monkey;
+import example.GLFWDemo;
 import org.joml.Vector3f;
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.nanovg.NVGColor;
+import org.lwjgl.system.MemoryUtil;
+
 import java.util.ArrayList;
+
+import static org.lwjgl.nanovg.NanoVG.*;
+import static org.lwjgl.nanovg.NanoVGGL3.*;
+import static org.lwjgl.opengl.GL11.*;
 
 public class JApp extends App {
 
@@ -16,7 +24,6 @@ public class JApp extends App {
 
     private PerspectiveCamera camera;
     private WorldShader shader;
-
     private ArrayList<MeshInstance> instances = new ArrayList<>();
 
     //create a texture that will have the very first ID and any mesh without a texture assigned will use this one
@@ -30,6 +37,8 @@ public class JApp extends App {
 
     private ArrayList<GameObject> rootObjects = new ArrayList<>();
 
+    private long vg;
+    NVGColor nvgColor = NVGColor.create();
 
     public JApp(){
         init();
@@ -43,6 +52,8 @@ public class JApp extends App {
         physicsWorld = new PhysicsWorld();
 
         window = new GLFWWindow(800, 600, "GLFW Window");
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_STENCIL_TEST);
 
         camera = new PerspectiveCamera(window, 70, 0.1f, 100000f);
         camera.setPosition(new Vector3f(0, 10f, 10f));
@@ -73,6 +84,12 @@ public class JApp extends App {
 
         Monkey monkey = new Monkey(camera, shader);
         rootObjects.add(monkey);
+
+        this.vg = nvgCreate(NVG_STENCIL_STROKES);
+        if(vg == MemoryUtil.NULL){
+            System.out.println("Could not init nanovg");
+        }
+
     }
 
     @Override
@@ -83,19 +100,19 @@ public class JApp extends App {
             if (Time.getTime() - last_time >= 1000) {
                 last_time = Time.getTime();
                 window.setTitle("[FPS: " + fps + "]");
-                System.out.println(fps);
+                //System.out.println(fps);
                 fps = 0;
             }
             fps++;
 
-            GL11.glClearColor(.2f, 0.8f, .2f, 1f);
-            GL11.glEnable(GL11.GL_DEPTH_TEST);
-            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+            glClearColor(.2f, 0.8f, .2f, 1f);
+            glEnable(GL_DEPTH_TEST);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 
             shader.bind();
             {
-                shader.loadSkyColour(.5f, .5f, .5f);
+                shader.loadSkyColour(1f, 1f, 1f);
                 shader.loadLight(light);
                 shader.loadViewMatrix(camera);
 
@@ -105,7 +122,22 @@ public class JApp extends App {
             }
             shader.unbind();
 
+            glDisable(GL_DEPTH_TEST);
+            nvgBeginFrame(vg, window.getWidth(), window.getHeight(), 1);
+            nvgRect(vg, 0, window.getHeight() - 100, window.getWidth(), 50);
+            nvgColor.r(.1f);
+            nvgColor.g(.2f);
+            nvgColor.b(1f);
+            nvgColor.a(.5f);
+            nvgFillColor(vg, nvgColor);
+            nvgFill(vg);
+            nvgEndFrame(vg);
 
+            glEnable(GL_DEPTH_TEST);
+            glEnable(GL_STENCIL_TEST);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glEnable(GL_CULL_FACE);
+            glCullFace(GL_BACK);
 
             //camera movement
             if(Input.isKeyDown(window.getWindowID(), GLFWKey.KEY_W))

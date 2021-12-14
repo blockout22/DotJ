@@ -50,14 +50,17 @@ public class PerspectiveCamera {
 //		float y = 0;
 
 
-        if (Input.isMousePressed(window.getWindowID(), GLFWKey.MOUSE_BUTTON_LEFT)) {
-            if(!mouseGrabbed)
-            {
-                grabCursor();
-            }else{
-                releaseCursor();
-            }
-        }
+        /**
+         * grab mouse and allow 3d mouse movement
+         */
+//        if (Input.isMousePressed(window.getWindowID(), GLFWKey.MOUSE_BUTTON_LEFT)) {
+//            if(!mouseGrabbed)
+//            {
+//                grabCursor();
+//            }else{
+//                releaseCursor();
+//            }
+//        }
         curPos = getCursorPos();
         if (mouseGrabbed) {
             double dx = curPos.x - previousPos.x;
