@@ -2,8 +2,8 @@ package dotj;
 
 import dotj.input.GLFWKey;
 import dotj.input.Input;
-import dotj.input.PressedEvent;
-import dotj.input.ReleasedEvent;
+import dotj.interfaces.PressedEvent;
+import dotj.interfaces.ReleasedEvent;
 import org.joml.Vector2f;
 
 import java.nio.DoubleBuffer;

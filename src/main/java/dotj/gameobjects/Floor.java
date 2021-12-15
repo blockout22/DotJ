@@ -10,9 +10,12 @@ public class Floor extends GameObject{
     private Mesh floor;
     private Texture floorTexture;
 
-    public Floor(PerspectiveCamera camera, WorldShader shader){
+    public Floor(PerspectiveCamera camera, WorldShader shader) {
         this.camera = camera;
         this.shader = shader;
+    }
+
+    public void init(){
         floor = OBJLoader.load("floor.obj");
 
         floorInstance = new MeshInstance(floor) {

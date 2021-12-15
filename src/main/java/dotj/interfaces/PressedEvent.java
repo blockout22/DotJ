@@ -1,4 +1,4 @@
-package dotj.input;
+package dotj.interfaces;
 
 public interface PressedEvent {
 

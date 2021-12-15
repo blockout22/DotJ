@@ -6,6 +6,7 @@ import dotj.gameobjects.GameObject;
 import dotj.gameobjects.Monkey;
 import dotj.input.GLFWKey;
 import dotj.input.Input;
+import dotj.interfaces.OnFinishedListener;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -22,7 +23,7 @@ public class JApp extends App {
 
     private PerspectiveCamera camera;
     private WorldShader shader;
-    private ArrayList<MeshInstance> instances = new ArrayList<>();
+    //private ArrayList<MeshInstance> instances = new ArrayList<>();
 
     //create a texture that will have the very first ID and any mesh without a texture assigned will use this one
     private Texture defaultTexture;
@@ -31,9 +32,9 @@ public class JApp extends App {
 
     private Light light;
 
+    private Level level;
     private PhysicsWorld physicsWorld;
 
-    private ArrayList<GameObject> rootObjects = new ArrayList<>();
 
     private NanoVGRenderer vgRenderer;
 
@@ -93,15 +94,22 @@ public class JApp extends App {
 
         light = new Light(new Vector3f(0, 0, 0), new Vector3f(1f, 1f, 1f));
 
-        Floor floor = new Floor(camera, shader);
-        rootObjects.add(floor);
+        level = new Level();
 
+        Floor floor = new Floor(camera, shader);
+        level.addGameObject(floor);
         Monkey monkey = new Monkey(camera, shader);
-        rootObjects.add(monkey);
+        level.addGameObject(monkey);
 
         this.vgRenderer = new NanoVGRenderer(window);
 
 
+        level.load(new OnFinishedListener() {
+            @Override
+            public void finished() {
+                System.out.println("Finished Loading Level");
+            }
+        });
     }
 
     @Override
@@ -129,9 +137,7 @@ public class JApp extends App {
                 shader.loadLight(light);
                 shader.loadViewMatrix(camera);
 
-                for(GameObject root : rootObjects){
-                    root.update();
-                }
+                level.update();
             }
             shader.unbind();
 
@@ -167,6 +173,7 @@ public class JApp extends App {
 
     @Override
     public void close() {
+        level.unload();
         vgRenderer.cleanup();
         defaultTexture.cleanup();
         shader.cleanup();

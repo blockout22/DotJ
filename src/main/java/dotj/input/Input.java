@@ -2,6 +2,8 @@ package dotj.input;
 
 import java.util.ArrayList;
 
+import dotj.interfaces.PressedEvent;
+import dotj.interfaces.ReleasedEvent;
 import org.lwjgl.glfw.GLFW;
 
 

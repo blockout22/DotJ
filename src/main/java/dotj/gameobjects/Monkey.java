@@ -13,9 +13,12 @@ public class Monkey extends GameObject{
     private WorldShader shader;
     private Mesh mesh;
 
-    public Monkey(PerspectiveCamera camera, WorldShader shader){
+    public Monkey(PerspectiveCamera camera, WorldShader shader) {
         this.camera = camera;
         this.shader = shader;
+    }
+
+    public void init(){
 
         //load monkey model
         File file = new File("E:/LWJGL/DotJ/src/main/resources/test.obj");
