@@ -2,6 +2,8 @@ package dotj.gameobjects;
 
 import dotj.*;
 
+import java.io.File;
+
 public class Floor extends GameObject{
 
     private PerspectiveCamera camera;
@@ -16,7 +18,8 @@ public class Floor extends GameObject{
     }
 
     public void init(){
-        floor = OBJLoader.load("floor.obj");
+
+        floor = ModelLoader.load("floor.obj");
 
         floorInstance = new MeshInstance(floor) {
             @Override

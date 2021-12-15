@@ -1,7 +1,5 @@
 package dotj.UI;
 
-import example.Demo;
-import example.util.IOUtil;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.nuklear.*;
 import org.lwjgl.opengl.GL20C;
@@ -95,7 +93,7 @@ public class UIRenderer {
 
     private long glfwWindow;
 
-    private final Demo calc = new Demo();
+//    private final Demo calc = new Demo();
 
     public UIRenderer(long glfwWindow) {
         try {
@@ -364,7 +362,7 @@ public class UIRenderer {
 
         handleInput();
 
-        calc.layout(ctx, 50, 50);
+//        calc.layout(ctx, 50, 50);
 
         render(NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
 
@@ -502,7 +500,7 @@ public class UIRenderer {
                 }
             }
         } else {
-            try (InputStream source = IOUtil.class.getClassLoader().getResourceAsStream(resource); ReadableByteChannel rbc = Channels.newChannel(source)) {
+            try (InputStream source = UIRenderer.class.getClassLoader().getResourceAsStream(resource); ReadableByteChannel rbc = Channels.newChannel(source)) {
                 buffer = createByteBuffer(bufferSize);
 
                 while (true) {

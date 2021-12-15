@@ -4,6 +4,7 @@ import dotj.UI.Nano.vg.NanoVGRenderer;
 import dotj.gameobjects.Floor;
 import dotj.gameobjects.GameObject;
 import dotj.gameobjects.Monkey;
+import dotj.gameobjects.Sphere;
 import dotj.input.GLFWKey;
 import dotj.input.Input;
 import dotj.interfaces.OnFinishedListener;
@@ -100,6 +101,8 @@ public class JApp extends App {
         level.addGameObject(floor);
         Monkey monkey = new Monkey(camera, shader);
         level.addGameObject(monkey);
+        Sphere sphere = new Sphere(camera, shader);
+        level.addGameObject(sphere);
 
         this.vgRenderer = new NanoVGRenderer(window);
 

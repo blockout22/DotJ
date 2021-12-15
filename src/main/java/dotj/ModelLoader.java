@@ -6,6 +6,10 @@ import java.io.File;
 
 public class ModelLoader {
 
+    public static Mesh load(String fileName){
+        return load(new File(Utilities.getModelDir() + fileName));
+    }
+
     public static Mesh load(File file){
         AIScene scene = Assimp.aiImportFile(file.toString(),
                 Assimp.aiProcess_Triangulate |

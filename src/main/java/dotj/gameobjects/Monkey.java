@@ -20,9 +20,9 @@ public class Monkey extends GameObject{
 
     public void init(){
 
+
         //load monkey model
-        File file = new File("E:/LWJGL/DotJ/src/main/resources/test.obj");
-        mesh = ModelLoader.load(file);//new Mesh(); //OBJLoader.load("test.obj");
+        mesh = ModelLoader.load("test.obj");//new Mesh(); //OBJLoader.load("test.obj");
 
         Random r = new Random();
         for(int i = 0; i < 1000; i++){

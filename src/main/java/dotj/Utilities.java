@@ -1,9 +1,9 @@
 package dotj;
 
-import example.util.IOUtil;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -31,6 +31,17 @@ public class Utilities {
         return new Vector2f(xRes, yRes);
     }
 
+    public static String getAssetDir(){
+        String curDir = System.getProperty("user.dir");
+        String assetDir = curDir + File.separator + "Assets" + File.separator;
+
+        return assetDir;
+    }
+
+    public static String getModelDir(){
+        return getAssetDir() + "Models" + File.separator;
+    }
+
     public static ByteBuffer loadResource(String resource, int bufferSize) throws IOException {
         ByteBuffer buffer;
 
@@ -43,7 +54,7 @@ public class Utilities {
                 }
             }
         } else {
-            try (InputStream source = IOUtil.class.getClassLoader().getResourceAsStream(resource); ReadableByteChannel rbc = Channels.newChannel(source)) {
+            try (InputStream source = Utilities.class.getClassLoader().getResourceAsStream(resource); ReadableByteChannel rbc = Channels.newChannel(source)) {
                 buffer = createByteBuffer(bufferSize);
 
                 while (true) {
