@@ -25,12 +25,24 @@ public class Mesh {
     private int indicesSize;
     private boolean isOBJ = false;
 
+    private BoundingBox boundingBox;
+
     public Mesh() {
         vao = GL30.glGenVertexArrays();
         vbo = GL15.glGenBuffers();
         vboTexture = GL15.glGenBuffers();
         vbon = GL15.glGenBuffers();
         vboi = GL15.glGenBuffers();
+        this.boundingBox = new BoundingBox();
+    }
+
+    public void setAABB(Vector3f min, Vector3f max){
+        boundingBox.setMin(min);
+        boundingBox.setMax(max);
+    }
+
+    public BoundingBox getBoundingBox(){
+        return boundingBox;
     }
 
     public void add(float[] vertices, float[] texCoords, float[] normals, int[] indices) {

@@ -2,18 +2,24 @@ package dotj.gameobjects;
 
 import dotj.*;
 import dotj.gameobjects.components.Component;
+import dotj.gameobjects.components.PhysicsBox;
+import dotj.physics.PhysicsWorld;
 import org.joml.Vector3f;
 
 public class Sphere extends GameObject{
 
     private PerspectiveCamera camera;
     private WorldShader shader;
+    private PhysicsWorld physicsWorld;
+
+    private PhysicsBox box;
 
     private Mesh mesh;
 
-    public Sphere(PerspectiveCamera camera, WorldShader shader){
+    public Sphere(PerspectiveCamera camera, WorldShader shader, PhysicsWorld physicsWorld){
         this.camera = camera;
         this.shader = shader;
+        this.physicsWorld = physicsWorld;
     }
 
     @Override
@@ -69,15 +75,25 @@ public class Sphere extends GameObject{
         addComponent(instance5);
         addComponent(instance6);
         addComponent(instance7);
+
+        BoundingBox bb = mesh.getBoundingBox();
+//        box = new PhysicsBox(physicsWorld, (bb.max.x-bb.min.x) / 2, (bb.max.y-bb.min.y) / 2, (bb.max.z-bb.min.z) / 2, 1);
+        box = new PhysicsBox(physicsWorld, 10, 10, 10, 1);
+        addComponent(box);
     }
 
     @Override
     public void render() {
         mesh.enable();
         {
+            MeshInstance c1 = (MeshInstance)getComponents().get(0);
+            c1.setPosition(box.getPosition());
+
             for(Component component : getComponents()){
-                MeshInstance instance = (MeshInstance) component;
-                mesh.render(instance.getShader(), instance.getShader().getModelMatrix(), instance, camera);
+                if(component instanceof MeshInstance) {
+                    MeshInstance instance = (MeshInstance) component;
+                    mesh.render(instance.getShader(), instance.getShader().getModelMatrix(), instance, camera);
+                }
             }
         }
         mesh.disable();

@@ -1,5 +1,6 @@
 package dotj;
 
+import org.joml.Vector3f;
 import org.lwjgl.assimp.*;
 
 import java.io.File;
@@ -23,6 +24,7 @@ public class ModelLoader {
         }
 
         AIMesh aiMesh = AIMesh.create(scene.mMeshes().get(0));
+        AIAABB aabb = aiMesh.mAABB();
 
         float[] vertices = new float[aiMesh.mNumVertices() * 3];
         int[] indices = new int[aiMesh.mNumFaces() * 3];
@@ -56,6 +58,7 @@ public class ModelLoader {
 
         Mesh mesh = new Mesh();
         mesh.add(vertices, texCoods, normals, indices);
+        mesh.setAABB(new Vector3f(aabb.mMin().x(), aabb.mMin().y(), aabb.mMin().z()), new Vector3f(aabb.mMax().x(), aabb.mMax().y(), aabb.mMax().z()));
         return mesh;
     }
 }

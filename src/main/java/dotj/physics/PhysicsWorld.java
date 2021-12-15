@@ -1,18 +1,17 @@
-package dotj;
+package dotj.physics;
 
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.collision.shapes.PlaneCollisionShape;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.bullet.objects.PhysicsBody;
 import com.jme3.bullet.objects.PhysicsRigidBody;
-import com.jme3.bullet.util.DebugShapeFactory;
 import com.jme3.math.Plane;
 import com.jme3.math.Vector3f;
 import com.jme3.system.NativeLibraryLoader;
 
 import java.io.File;
-import java.nio.FloatBuffer;
 
 public class PhysicsWorld {
 
@@ -47,6 +46,10 @@ public class PhysicsWorld {
         //get the location from a Rigid body and store it in a vector3f
         ball.getPhysicsLocation(location);
 
+    }
+
+    public void add(PhysicsCollisionObject object){
+        space.addCollisionObject(object);
     }
 
     public void step(){

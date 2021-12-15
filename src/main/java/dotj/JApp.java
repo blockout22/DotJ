@@ -2,16 +2,16 @@ package dotj;
 
 import dotj.UI.Nano.vg.NanoVGRenderer;
 import dotj.gameobjects.Floor;
-import dotj.gameobjects.GameObject;
 import dotj.gameobjects.Monkey;
 import dotj.gameobjects.Sphere;
 import dotj.input.GLFWKey;
 import dotj.input.Input;
 import dotj.interfaces.OnFinishedListener;
+import dotj.interfaces.PressedEvent;
+import dotj.interfaces.ReleasedEvent;
+import dotj.physics.PhysicsWorld;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-
-import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -97,11 +97,11 @@ public class JApp extends App {
 
         level = new Level();
 
-        Floor floor = new Floor(camera, shader);
+        Floor floor = new Floor(camera, shader, physicsWorld);
         level.addGameObject(floor);
         Monkey monkey = new Monkey(camera, shader);
         level.addGameObject(monkey);
-        Sphere sphere = new Sphere(camera, shader);
+        Sphere sphere = new Sphere(camera, shader, physicsWorld);
         level.addGameObject(sphere);
 
         this.vgRenderer = new NanoVGRenderer(window);
@@ -167,6 +167,12 @@ public class JApp extends App {
                 camera.getPosition().x += Math.sin((camera.getYaw() + 90) * Math.PI / 180) * SPEED * Time.getDelta();
                 camera.getPosition().z += -Math.cos((camera.getYaw() + 90) * Math.PI / 180) * SPEED * Time.getDelta();
             }
+
+            Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_M, () -> {
+                physicsWorld.step();
+            }, () -> {
+
+            });
 
             camera.update();
 
