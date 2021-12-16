@@ -1,18 +1,15 @@
 package dotj;
 
-import org.joml.Vector3f;
-
 public class Material {
 
-    private Vector3f ambientColor = new Vector3f(1, 1, 1);
-    private Vector3f diffuseColor = new Vector3f(1, 1, 1);;
-    private Vector3f specularColor = new Vector3f(1, 1, 1);;
+//    private Vector3f diffuseColor = new Vector3f(1, 1, 1);
+    private int diffuse = 0;
+    private int specular = 1;
     private float shininess = 32f;
 
-    public Material(Vector3f ambientColor, Vector3f diffuseColor, Vector3f specularColor, float shininess) {
-        this.ambientColor = ambientColor;
-        this.diffuseColor = diffuseColor;
-        this.specularColor = specularColor;
+    public Material(int diffuseColor, int specularColor, float shininess) {
+        this.diffuse = diffuseColor;
+        this.specular = specularColor;
         this.shininess = shininess;
     }
 
@@ -20,28 +17,20 @@ public class Material {
 
     }
 
-    public Vector3f getAmbientColor() {
-        return ambientColor;
+    public int getDiffuse() {
+        return diffuse;
     }
 
-    public void setAmbientColor(Vector3f ambientColor) {
-        this.ambientColor = ambientColor;
+    public void setDiffuse(int diffuse) {
+        this.diffuse = diffuse;
     }
 
-    public Vector3f getDiffuseColor() {
-        return diffuseColor;
+    public int getSpecular() {
+        return specular;
     }
 
-    public void setDiffuseColor(Vector3f diffuseColor) {
-        this.diffuseColor = diffuseColor;
-    }
-
-    public Vector3f getSpecularColor() {
-        return specularColor;
-    }
-
-    public void setSpecularColor(Vector3f specularColor) {
-        this.specularColor = specularColor;
+    public void setSpecular(int specular) {
+        this.specular = specular;
     }
 
     public float getShininess() {

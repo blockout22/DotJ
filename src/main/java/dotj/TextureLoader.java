@@ -6,15 +6,23 @@ import org.lwjgl.opengl.GL30;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 public class TextureLoader {
     public static Texture loadTexture(String textureFile) {
         try {
-
-            InputStream in = TextureLoader.class.getResourceAsStream("/" + textureFile);
-            BufferedImage image = ImageIO.read(in);
+            InputStream in = null;
+            BufferedImage image;
+            File file = new File(Utilities.getAssetDir() + textureFile);
+            if(!file.exists()) {
+                in = TextureLoader.class.getResourceAsStream("/" + textureFile);
+                image = ImageIO.read(in);
+            }else{
+                image = ImageIO.read(file);
+            }
 
             int[] pixels = new int[image.getWidth() * image.getHeight()];
             image.getRGB(0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth());
@@ -32,7 +40,10 @@ public class TextureLoader {
             }
 
             buffer.flip();
-            in.close();
+
+            if(in != null) {
+                in.close();
+            }
 
             int textureID = GL11.glGenTextures();
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);

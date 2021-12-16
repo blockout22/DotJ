@@ -15,6 +15,7 @@ public abstract class MeshInstance implements Component {
 
     private float scale;
     private int textureID = 1;
+    private int specularTextureID = 0;
 
     private boolean shouldUpdateOutsideBounds = false;
 
@@ -68,7 +69,7 @@ public abstract class MeshInstance implements Component {
         shouldUpdateOutsideBounds = update;
     }
 
-    public boolean getUpdateOutsideBounts()
+    public boolean getUpdateOutsideBounds()
     {
         return shouldUpdateOutsideBounds;
     }
@@ -82,7 +83,19 @@ public abstract class MeshInstance implements Component {
         return textureID;
     }
 
-    public void setTextureID(int id){this.textureID = id;}
+    public void setTextureID(int id){
+        this.textureID = id;
+//        this.material.setDiffuse(id);
+//        System.out.println(material.getDiffuse());
+    }
+
+    public int getSpecularTextureID() {
+        return specularTextureID;
+    }
+
+    public void setSpecularTextureID(int specularTextureID) {
+        this.specularTextureID = specularTextureID;
+    }
 
     public Vector3f getPosition() {
         return position;

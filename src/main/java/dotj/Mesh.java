@@ -3,9 +3,6 @@ package dotj;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import dotj.Matrix4;
-import dotj.MeshInstance;
-import dotj.PerspectiveCamera;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -95,13 +92,23 @@ public class Mesh {
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
         GL20.glEnableVertexAttribArray(2);
-        GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboi);
+
 
     }
 
     public void render(Shader shader, int modelMatrix, MeshInstance object, PerspectiveCamera camera) {
+//        GL11.glBindTexture(GL11.GL_TEXTURE_2D, object.getMaterial().getDiffuse());
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, object.getTextureID());
+
+        if(object.getSpecularTextureID() != 0){
+            GL13.glActiveTexture(GL13.GL_TEXTURE1);
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, object.getSpecularTextureID());
+        }
+
+
+        System.out.println(object.getMaterial().getDiffuse());
         if (camera.isInBounds(object.getPosition().x, object.getPosition().y, object.getPosition().z)) {
             Matrix4 transformationMatrix = createTransformationMatrix(object.getPosition(), object.getRotation(), object.getScale());
             shader.loadMatrix(modelMatrix, transformationMatrix);

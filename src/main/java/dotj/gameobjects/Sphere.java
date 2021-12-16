@@ -15,9 +15,9 @@ public class Sphere extends GameObject{
 
     private PhysicsBox box;
 
-    private Mesh mesh;
+    public Mesh mesh;
 
-    private Texture sphereTexture;
+    private Texture sphereTexture, specularTexture;
 
     private Light secondLight;
 
@@ -29,7 +29,7 @@ public class Sphere extends GameObject{
 
     @Override
     public void init() {
-        mesh = ModelLoader.load("sphere.fbx");
+        mesh = ModelLoader.load("cube.obj");
 //        mesh = ModelLoader.load("cube.obj");
 
         Random r = new Random();
@@ -83,7 +83,7 @@ public class Sphere extends GameObject{
         addComponent(instance6);
         addComponent(instance7);
 
-        sphereTexture = TextureLoader.loadTexture("Image.png");
+        sphereTexture = TextureLoader.loadTexture("container2.png");
         instance.setTextureID(sphereTexture.getID());
         instance2.setTextureID(sphereTexture.getID());
         lightInstance.setTextureID(sphereTexture.getID());
@@ -91,6 +91,15 @@ public class Sphere extends GameObject{
         instance5.setTextureID(sphereTexture.getID());
         instance6.setTextureID(sphereTexture.getID());
         instance7.setTextureID(sphereTexture.getID());
+
+        specularTexture = TextureLoader.loadTexture("container2_specular.png");
+        instance.setSpecularTextureID(specularTexture.getID());
+        instance2.setSpecularTextureID(specularTexture.getID());
+        lightInstance.setSpecularTextureID(specularTexture.getID());
+        instance4.setSpecularTextureID(specularTexture.getID());
+        instance5.setSpecularTextureID(specularTexture.getID());
+        instance6.setSpecularTextureID(specularTexture.getID());
+        instance7.setSpecularTextureID(specularTexture.getID());
 
         instance.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
         instance2.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
@@ -128,6 +137,7 @@ public class Sphere extends GameObject{
 
     @Override
     public void cleanup() {
+        specularTexture.cleanup();
         sphereTexture.cleanup();
         mesh.cleanup();
     }

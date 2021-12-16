@@ -4,7 +4,7 @@ in vec3 position;
 in vec2 textureCoordinates;
 in vec3 normal;
 
-out vec2 pass_textureCoordinates;
+out vec2 texCoordinates;
 out vec3 outNormal;
 out vec3 FragPos;
 
@@ -21,7 +21,7 @@ void main(void){
 //	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
 
 	//pased to the Frag Shader
-	pass_textureCoordinates = textureCoordinates;
+	texCoordinates = textureCoordinates;
 	FragPos = vec3(modelMatrix * vec4(position, 1.0));
 //	outNormal = normal;
 	outNormal = mat3(transpose(inverse(modelMatrix))) * normal;

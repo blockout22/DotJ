@@ -1,11 +1,6 @@
 package dotj;
 
-import dotj.Light;
-import dotj.Matrix4;
-import dotj.PerspectiveCamera;
 import org.joml.Vector3f;
-
-import java.util.Vector;
 
 public class WorldShader extends Shader {
 
@@ -16,7 +11,7 @@ public class WorldShader extends Shader {
 //    private int lightColor;
 //    private int lightPos;
 
-    private int mat_ambient, mat_diffuse, mat_specular, mat_shininess;
+    private int mat_diffuse, mat_specular, mat_shininess;
     private int light_pos, light_ambient, light_diffuse, light_specular;
 
 
@@ -37,7 +32,6 @@ public class WorldShader extends Shader {
 //        lightPos = getUniformLocation("lightPos");
         viewPos = getUniformLocation("viewPos");
 
-        mat_ambient = getUniformLocation("material.ambient");
         mat_diffuse = getUniformLocation("material.diffuse");
         mat_specular = getUniformLocation("material.specular");
         mat_shininess = getUniformLocation("material.shininess");
@@ -50,13 +44,13 @@ public class WorldShader extends Shader {
     }
 
     public void setMaterial(Material material){
-        setMaterial(material.getAmbientColor(), material.getDiffuseColor(), material.getSpecularColor(), material.getShininess());
+        setMaterial(material.getDiffuse(), material.getSpecular(), material.getShininess());
     }
 
-    public void setMaterial(Vector3f ambient, Vector3f diffuse, Vector3f specular, float shininess){
-        loadVector3f(mat_ambient, ambient);
-        loadVector3f(mat_diffuse, diffuse);
-        loadVector3f(mat_specular, specular);
+    public void setMaterial(int diffuse, int specular, float shininess){
+//        loadVector3f(mat_diffuse, diffuse);
+        loadInt(mat_diffuse, diffuse);
+        loadInt(mat_specular, specular);
         loadFloat(mat_shininess, shininess);
     }
 
