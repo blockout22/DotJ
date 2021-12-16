@@ -1,6 +1,7 @@
 package dotj;
 
 import org.joml.Vector3f;
+import org.lwjgl.PointerBuffer;
 import org.lwjgl.assimp.*;
 
 import java.io.File;
@@ -25,11 +26,12 @@ public class ModelLoader {
 
         AIMesh aiMesh = AIMesh.create(scene.mMeshes().get(0));
         AIAABB aabb = aiMesh.mAABB();
+        AIVector3D.Buffer buff = aiMesh.mTextureCoords(0);
 
         float[] vertices = new float[aiMesh.mNumVertices() * 3];
         int[] indices = new int[aiMesh.mNumFaces() * 3];
         float[] normals = new float[aiMesh.mNormals().capacity() * 3];
-        float[] texCoods = new float[4];
+        float[] texCoods = new float[buff.capacity() * 2];
 
         int verticesIndex = 0;
         for(int i = 0; i < aiMesh.mNumVertices(); i++){
@@ -54,6 +56,12 @@ public class ModelLoader {
             normals[normalsIndex++] = normal.x();
             normals[normalsIndex++] = normal.y();
             normals[normalsIndex++] = normal.z();
+        }
+
+        int texIndex = 0;
+        for(int i = 0; i < buff.capacity(); i++){
+            texCoods[texIndex++] = buff.get(i).x();
+            texCoods[texIndex++] = buff.get(i).y();
         }
 
         Mesh mesh = new Mesh();

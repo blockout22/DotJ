@@ -46,6 +46,7 @@ public class Mesh {
     }
 
     public void add(float[] vertices, float[] texCoords, float[] normals, int[] indices) {
+        this.texCoords = texCoords;
         if (isOBJ) {
             System.out.println("Something tried overriding .OBJ coords");
             return;
@@ -76,6 +77,13 @@ public class Mesh {
 
         // setBox(vertices);
 
+    }
+
+    private float[] texCoords;
+    public void print(){
+        for(int i = 0; i < texCoords.length; i += 2){
+            System.out.println(texCoords[i] + " : " + texCoords[i + 1]);
+        }
     }
 
     protected void setOBJ() {

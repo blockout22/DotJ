@@ -14,6 +14,7 @@ public class OBJLoader {
 
             BufferedReader br = new BufferedReader(new InputStreamReader(OBJLoader.class.getResourceAsStream("/" + objFile)));
 
+
             ArrayList<Vector3f> vertices = new ArrayList<Vector3f>();
             ArrayList<Vector2f> texCoords = new ArrayList<Vector2f>();
             ArrayList<Vector3f> normals = new ArrayList<Vector3f>();

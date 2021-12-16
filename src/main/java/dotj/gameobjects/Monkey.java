@@ -32,6 +32,7 @@ public class Monkey extends GameObject{
 
                 }
             };
+            instance.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
             instance.setShader(shader);
             addComponent(instance);
         }
@@ -43,6 +44,7 @@ public class Monkey extends GameObject{
         {
             for(Component component : getComponents()){
                 MeshInstance instance = (MeshInstance) component;
+                shader.setColor(instance.getColor());
                 mesh.render(instance.getShader(), instance.getShader().getModelMatrix(), instance, camera);
             }
         }

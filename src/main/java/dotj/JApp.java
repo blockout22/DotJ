@@ -12,6 +12,7 @@ import dotj.interfaces.ReleasedEvent;
 import dotj.physics.PhysicsWorld;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.lwjgl.glfw.GLFW;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -93,7 +94,7 @@ public class JApp extends App {
 //            instances.add(instance);
 //        }
 
-        light = new Light(new Vector3f(0, 0, 0), new Vector3f(1f, 1f, 1f));
+        light = new Light(new Vector3f(0, 0, 1), new Vector3f(1f, 1f, 1f));
 
         level = new Level();
 
@@ -115,6 +116,8 @@ public class JApp extends App {
         });
     }
 
+    private Vector3f lightColor = new Vector3f();
+
     @Override
     public void update() {
         while(!window.shouldClose()){
@@ -129,15 +132,24 @@ public class JApp extends App {
             }
             fps++;
 
-            glClearColor(.2f, 0.8f, .2f, 1f);
+            glClearColor(.48828125f, 0.8046875f, .91796875f, 1f);
             glEnable(GL_DEPTH_TEST);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 
             shader.bind();
             {
-                shader.loadSkyColour(1f, 1f, 1f);
-                shader.loadLight(light);
+
+                shader.setViewPos(camera);
+//                shader.setLightPos(1, 2, 10);
+//                shader.setLightColor(1f, 1f, 1f);
+
+                Vector3f ambient = new Vector3f(0.2f, 0.2f, 0.2f);
+                Vector3f diffuse = new Vector3f(0.5f, 0.5f, 0.5f);
+
+
+                shader.setLight(new Vector3f(1, 2, 10), ambient, diffuse, new Vector3f(1f, 1f, 1f));
+                shader.setMaterial(new Vector3f(1.0f, 0.5f, 0.31f), new Vector3f(1.0f, 0.5f, 0.31f), new Vector3f(0.5f, 0.5f, 0.5f), 32.0f);
                 shader.loadViewMatrix(camera);
 
                 level.update();
@@ -168,11 +180,11 @@ public class JApp extends App {
                 camera.getPosition().z += -Math.cos((camera.getYaw() + 90) * Math.PI / 180) * SPEED * Time.getDelta();
             }
 
-            Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_M, () -> {
-                physicsWorld.step();
-            }, () -> {
-
-            });
+//            Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_M, () -> {
+//                physicsWorld.step();
+//            }, () -> {
+//
+//            });
 
             camera.update();
 

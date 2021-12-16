@@ -37,7 +37,7 @@ public class Floor extends GameObject{
         floorInstance.setShader(shader);
 
         floorTexture = TextureLoader.loadTexture("Image.png");
-        floorInstance.setScale(1f);
+        floorInstance.setScale(.2f);
         floorInstance.setTextureID(floorTexture.getID());
         addComponent(floorInstance);
 
@@ -49,6 +49,7 @@ public class Floor extends GameObject{
     @Override
     public void render() {
         floor.enable();
+        shader.setColor(floorInstance.getColor());
         floor.render(floorInstance.getShader(), floorInstance.getShader().getModelMatrix(), floorInstance, camera);
         floor.disable();
     }
