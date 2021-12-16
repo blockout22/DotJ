@@ -9,7 +9,10 @@ public abstract class MeshInstance implements Component {
     private WorldShader shader;
     protected Vector3f position;
     private Vector3f rotation;
+
     private Vector3f color;
+    private Material material;
+
     private float scale;
     private int textureID = 1;
 
@@ -21,6 +24,7 @@ public abstract class MeshInstance implements Component {
         this.rotation = rotation;
         this.scale = scale;
         color = new Vector3f(1, 1, 1);
+        material = new Material();
     }
 
     public MeshInstance(Mesh mesh){
@@ -36,9 +40,17 @@ public abstract class MeshInstance implements Component {
         this.shader = shader;
     }
 
-    public void update(){
-
+    public Material getMaterial() {
+        return material;
     }
+
+    public void setMaterial(Material material) {
+        this.material = material;
+    }
+
+//    public void update(){
+//
+//    }
 
     public Vector3f getColor() {
         return color;

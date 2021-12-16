@@ -28,7 +28,7 @@ public class WorldShader extends Shader {
         bindAttribLocation(2, "normal");
         linkAndValidate();
 
-        modelMatrix = getUniformLocation("transformationMatrix");
+        modelMatrix = getUniformLocation("modelMatrix");
         projectionMatrix = getUniformLocation("projectionMatrix");
         viewMatrix = getUniformLocation("viewMatrix");
 
@@ -49,6 +49,10 @@ public class WorldShader extends Shader {
 
     }
 
+    public void setMaterial(Material material){
+        setMaterial(material.getAmbientColor(), material.getDiffuseColor(), material.getSpecularColor(), material.getShininess());
+    }
+
     public void setMaterial(Vector3f ambient, Vector3f diffuse, Vector3f specular, float shininess){
         loadVector3f(mat_ambient, ambient);
         loadVector3f(mat_diffuse, diffuse);
@@ -61,6 +65,10 @@ public class WorldShader extends Shader {
         loadVector3f(light_ambient, ambient);
         loadVector3f(light_diffuse, diffuse);
         loadVector3f(light_specular, specular);
+    }
+
+    public void setLight(Light light){
+        setLight(light.getPosition(), light.getAmbient(), light.getDiffuse(), light.getSpecular());
     }
 
     public void setColor(Vector3f col){

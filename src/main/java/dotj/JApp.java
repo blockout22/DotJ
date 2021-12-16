@@ -94,7 +94,9 @@ public class JApp extends App {
 //            instances.add(instance);
 //        }
 
-        light = new Light(new Vector3f(0, 0, 1), new Vector3f(1f, 1f, 1f));
+        Vector3f ambient = new Vector3f(0.2f, 0.2f, 0.2f);
+        Vector3f diffuse = new Vector3f(0.5f, 0.5f, 0.5f);
+        light = new Light(new Vector3f(1, 2, 10), ambient, diffuse, new Vector3f(1f, 1f, 1f));
 
         level = new Level();
 
@@ -141,14 +143,8 @@ public class JApp extends App {
             {
 
                 shader.setViewPos(camera);
-//                shader.setLightPos(1, 2, 10);
-//                shader.setLightColor(1f, 1f, 1f);
 
-                Vector3f ambient = new Vector3f(0.2f, 0.2f, 0.2f);
-                Vector3f diffuse = new Vector3f(0.5f, 0.5f, 0.5f);
-
-
-                shader.setLight(new Vector3f(1, 2, 10), ambient, diffuse, new Vector3f(1f, 1f, 1f));
+                shader.setLight(light);
                 shader.setMaterial(new Vector3f(1.0f, 0.5f, 0.31f), new Vector3f(1.0f, 0.5f, 0.31f), new Vector3f(0.5f, 0.5f, 0.5f), 32.0f);
                 shader.loadViewMatrix(camera);
 

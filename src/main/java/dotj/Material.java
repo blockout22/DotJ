@@ -4,18 +4,20 @@ import org.joml.Vector3f;
 
 public class Material {
 
-    private Vector3f ambientColor;
-    private Vector3f diffuseColor;
-    private Vector3f specularColor;
-    private boolean isTextured;
-    private float reflectance;
+    private Vector3f ambientColor = new Vector3f(1, 1, 1);
+    private Vector3f diffuseColor = new Vector3f(1, 1, 1);;
+    private Vector3f specularColor = new Vector3f(1, 1, 1);;
+    private float shininess = 32f;
 
-    public Material(Vector3f ambientColor, Vector3f diffuseColor, Vector3f specularColor, boolean isTextured, float reflectance) {
+    public Material(Vector3f ambientColor, Vector3f diffuseColor, Vector3f specularColor, float shininess) {
         this.ambientColor = ambientColor;
         this.diffuseColor = diffuseColor;
         this.specularColor = specularColor;
-        this.isTextured = isTextured;
-        this.reflectance = reflectance;
+        this.shininess = shininess;
+    }
+
+    public Material(){
+
     }
 
     public Vector3f getAmbientColor() {
@@ -42,19 +44,11 @@ public class Material {
         this.specularColor = specularColor;
     }
 
-    public boolean isTextured() {
-        return isTextured;
+    public float getShininess() {
+        return shininess;
     }
 
-    public void setTextured(boolean textured) {
-        isTextured = textured;
-    }
-
-    public float getReflectance() {
-        return reflectance;
-    }
-
-    public void setReflectance(float reflectance) {
-        this.reflectance = reflectance;
+    public void setShininess(float shininess) {
+        this.shininess = shininess;
     }
 }

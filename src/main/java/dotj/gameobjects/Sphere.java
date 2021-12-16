@@ -19,6 +19,8 @@ public class Sphere extends GameObject{
 
     private Texture sphereTexture;
 
+    private Light secondLight;
+
     public Sphere(PerspectiveCamera camera, WorldShader shader, PhysicsWorld physicsWorld){
         this.camera = camera;
         this.shader = shader;
@@ -41,7 +43,7 @@ public class Sphere extends GameObject{
             }
         };
 
-        MeshInstance instance3 = new MeshInstance(mesh, new Vector3f(-4, 5, -5), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), 1f) {
+        MeshInstance lightInstance = new MeshInstance(mesh, new Vector3f(4, 15, 45), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), .2f) {
             public void execute() {
             }
         };
@@ -56,26 +58,26 @@ public class Sphere extends GameObject{
             }
         };
 
-        MeshInstance instance6 = new MeshInstance(mesh, new Vector3f(5, 5, -1), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), 1f) {
+        MeshInstance instance6 = new MeshInstance(mesh, new Vector3f(5, 5, -1), new Vector3f(0, 0, 0), 1f) {
             public void execute() {
             }
         };
 
-        MeshInstance instance7 = new MeshInstance(mesh, new Vector3f(5, 5, -15), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), 1f) {
+        MeshInstance instance7 = new MeshInstance(mesh, new Vector3f(5, 5, -15), new Vector3f(0, 0, 0), 1f) {
             public void execute() {
             }
         };
 
         instance.setShader(shader);
         instance2.setShader(shader);
-        instance3.setShader(shader);
+        lightInstance.setShader(shader);
         instance4.setShader(shader);
         instance5.setShader(shader);
         instance6.setShader(shader);
         instance7.setShader(shader);
         addComponent(instance);
         addComponent(instance2);
-        addComponent(instance3);
+        addComponent(lightInstance);
         addComponent(instance4);
         addComponent(instance5);
         addComponent(instance6);
@@ -84,7 +86,7 @@ public class Sphere extends GameObject{
         sphereTexture = TextureLoader.loadTexture("Image.png");
         instance.setTextureID(sphereTexture.getID());
         instance2.setTextureID(sphereTexture.getID());
-        instance3.setTextureID(sphereTexture.getID());
+        lightInstance.setTextureID(sphereTexture.getID());
         instance4.setTextureID(sphereTexture.getID());
         instance5.setTextureID(sphereTexture.getID());
         instance6.setTextureID(sphereTexture.getID());
@@ -92,11 +94,13 @@ public class Sphere extends GameObject{
 
         instance.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
         instance2.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
-        instance3.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
-        instance4.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
+        lightInstance.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
+//        instance4.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
         instance5.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
-        instance6.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
-        instance7.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
+//        instance6.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
+//        instance7.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
+
+        secondLight = new Light(lightInstance.getPosition(), new Vector3f(.1f, .1f, .1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f));
 
 
 //        BoundingBox bb = mesh.getBoundingBox();
@@ -113,6 +117,8 @@ public class Sphere extends GameObject{
                 if(component instanceof MeshInstance) {
                     MeshInstance instance = (MeshInstance) component;
                     shader.setColor(instance.getColor());
+                    shader.setMaterial(instance.getMaterial());
+                    shader.setLight(secondLight);
                     mesh.render(instance.getShader(), instance.getShader().getModelMatrix(), instance, camera);
                 }
             }

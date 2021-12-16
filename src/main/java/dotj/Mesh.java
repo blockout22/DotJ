@@ -105,7 +105,7 @@ public class Mesh {
         if (camera.isInBounds(object.getPosition().x, object.getPosition().y, object.getPosition().z)) {
             Matrix4 transformationMatrix = createTransformationMatrix(object.getPosition(), object.getRotation(), object.getScale());
             shader.loadMatrix(modelMatrix, transformationMatrix);
-            object.update();
+//            object.update();
             GL11.glDrawElements(GL11.GL_TRIANGLES, indicesSize, GL11.GL_UNSIGNED_INT, 0);
         }
 
