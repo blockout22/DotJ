@@ -107,8 +107,6 @@ public class Mesh {
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, object.getSpecularTextureID());
         }
 
-
-        System.out.println(object.getMaterial().getDiffuse());
         if (camera.isInBounds(object.getPosition().x, object.getPosition().y, object.getPosition().z)) {
             Matrix4 transformationMatrix = createTransformationMatrix(object.getPosition(), object.getRotation(), object.getScale());
             shader.loadMatrix(modelMatrix, transformationMatrix);

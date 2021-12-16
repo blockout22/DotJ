@@ -22,7 +22,7 @@ struct Material {
 uniform Material material;
 
 struct Light{
-	vec3 position;
+	vec3 direction;
 
 	vec3 ambient;
 	vec3 diffuse;
@@ -37,11 +37,12 @@ void main(void){
 
 
 	//ambient/diffuse
-	float ambientStrength = 0.1;
+	float ambientStrength = 0.0;
 	vec3 ambient = light.ambient * vec3(texture(material.diffuse, texCoordinates));
 
 	vec3 norm = normalize(outNormal);
-	vec3 lightDir = normalize(light.position - FragPos);
+//	vec3 lightDir = normalize(light.direction - FragPos);
+	vec3 lightDir = normalize(-light.direction);
 
 	float diff = max(dot(norm, lightDir), 0.0);
 	vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, texCoordinates));

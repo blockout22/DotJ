@@ -1,27 +1,28 @@
 package dotj;
 
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 
-public class Light {
+public class DirectionalLight {
 
-    private Vector3f position;
+    private Vector3f direction;
     private Vector3f ambient;
     private Vector3f diffuse;
     private Vector3f specular;
 
-    public Light(Vector3f position, Vector3f ambient, Vector3f diffuse, Vector3f specular) {
-        this.position = position;
+    public DirectionalLight(Vector3f position, Vector3f ambient, Vector3f diffuse, Vector3f specular) {
+        this.direction = position;
         this.ambient = ambient;
         this.diffuse = diffuse;
         this.specular = specular;
     }
 
-    public Vector3f getPosition() {
-        return position;
+    public Vector3f getDirection() {
+        return direction;
     }
 
-    public void setPosition(Vector3f position) {
-        this.position = position;
+    public void setDirection(Vector3f direction) {
+        this.direction = direction;
     }
 
     public Vector3f getAmbient() {

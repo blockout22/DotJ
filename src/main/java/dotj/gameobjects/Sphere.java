@@ -19,8 +19,6 @@ public class Sphere extends GameObject{
 
     private Texture sphereTexture, specularTexture;
 
-    private Light secondLight;
-
     public Sphere(PerspectiveCamera camera, WorldShader shader, PhysicsWorld physicsWorld){
         this.camera = camera;
         this.shader = shader;
@@ -109,9 +107,6 @@ public class Sphere extends GameObject{
 //        instance6.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
 //        instance7.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
 
-        secondLight = new Light(lightInstance.getPosition(), new Vector3f(.1f, .1f, .1f), new Vector3f(1f, 1f, 1f), new Vector3f(1f, 1f, 1f));
-
-
 //        BoundingBox bb = mesh.getBoundingBox();
 //        box = new PhysicsBox(physicsWorld, (bb.max.x-bb.min.x) / 2, (bb.max.y-bb.min.y) / 2, (bb.max.z-bb.min.z) / 2, 1);
 //        box = new PhysicsBox(physicsWorld, 10, 10, 10, 1);
@@ -127,7 +122,6 @@ public class Sphere extends GameObject{
                     MeshInstance instance = (MeshInstance) component;
                     shader.setColor(instance.getColor());
                     shader.setMaterial(instance.getMaterial());
-                    shader.setLight(secondLight);
                     mesh.render(instance.getShader(), instance.getShader().getModelMatrix(), instance, camera);
                 }
             }

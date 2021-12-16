@@ -1,6 +1,7 @@
 package dotj;
 
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 public class WorldShader extends Shader {
 
@@ -12,7 +13,7 @@ public class WorldShader extends Shader {
 //    private int lightPos;
 
     private int mat_diffuse, mat_specular, mat_shininess;
-    private int light_pos, light_ambient, light_diffuse, light_specular;
+    private int light_dir, light_ambient, light_diffuse, light_specular;
 
 
     public WorldShader(String vertexShader, String fragmentShader) {
@@ -36,7 +37,7 @@ public class WorldShader extends Shader {
         mat_specular = getUniformLocation("material.specular");
         mat_shininess = getUniformLocation("material.shininess");
 
-        light_pos = getUniformLocation("light.position");
+        light_dir = getUniformLocation("light.direction");
         light_ambient = getUniformLocation("light.ambient");
         light_diffuse = getUniformLocation("light.diffuse");
         light_specular = getUniformLocation("light.specular");
@@ -55,14 +56,14 @@ public class WorldShader extends Shader {
     }
 
     public void setLight(Vector3f position, Vector3f ambient, Vector3f diffuse, Vector3f specular){
-        loadVector3f(light_pos, position);
+        loadVector3f(light_dir, position);
         loadVector3f(light_ambient, ambient);
         loadVector3f(light_diffuse, diffuse);
         loadVector3f(light_specular, specular);
     }
 
-    public void setLight(Light light){
-        setLight(light.getPosition(), light.getAmbient(), light.getDiffuse(), light.getSpecular());
+    public void setLight(DirectionalLight light){
+        setLight(light.getDirection(), light.getAmbient(), light.getDiffuse(), light.getSpecular());
     }
 
     public void setColor(Vector3f col){

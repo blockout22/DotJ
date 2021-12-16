@@ -37,7 +37,7 @@ public class Floor extends GameObject{
         floorInstance.setShader(shader);
 
         floorTexture = TextureLoader.loadTexture("Image.png");
-        floorInstance.setScale(.2f);
+        floorInstance.setScale(1f);
         floorInstance.setTextureID(floorTexture.getID());
         addComponent(floorInstance);
 

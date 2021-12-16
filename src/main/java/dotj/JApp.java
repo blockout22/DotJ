@@ -7,16 +7,17 @@ import dotj.gameobjects.Sphere;
 import dotj.input.GLFWKey;
 import dotj.input.Input;
 import dotj.interfaces.OnFinishedListener;
-import dotj.interfaces.PressedEvent;
-import dotj.interfaces.ReleasedEvent;
 import dotj.physics.PhysicsWorld;
+import org.joml.Random;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.lwjgl.glfw.GLFW;
+import org.joml.Vector4f;
 
 import static org.lwjgl.opengl.GL11.*;
 
 public class JApp extends App {
+
+    private Random r = new Random();
 
     private GLFWWindow window;
 
@@ -32,7 +33,7 @@ public class JApp extends App {
 
     private float SPEED = 0.01f;
 
-    private Light light;
+    private DirectionalLight light;
 
     private Level level;
     private PhysicsWorld physicsWorld;
@@ -94,9 +95,11 @@ public class JApp extends App {
 //            instances.add(instance);
 //        }
 
+        Vector3f direction = new Vector3f(-0.2f, -1.0f, -0.3f);
         Vector3f ambient = new Vector3f(0.2f, 0.2f, 0.2f);
         Vector3f diffuse = new Vector3f(0.5f, 0.5f, 0.5f);
-        light = new Light(new Vector3f(1, 4, 10), ambient, diffuse, new Vector3f(1f, 1f, 1f));
+        Vector3f specular = new Vector3f(1f, 1f, 1f);
+        light = new DirectionalLight(direction, ambient, diffuse, specular);
 
         level = new Level();
 
@@ -118,8 +121,6 @@ public class JApp extends App {
         });
     }
 
-    private Vector3f lightColor = new Vector3f();
-
     @Override
     public void update() {
         while(!window.shouldClose()){
@@ -130,6 +131,7 @@ public class JApp extends App {
                 window.setTitle("[FPS: " + fps + "]");
                 //System.out.println(fps);
                 vgRenderer.setFPS(fps);
+                light.setDirection(new Vector3f(r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1));
                 fps = 0;
             }
             fps++;
@@ -143,6 +145,7 @@ public class JApp extends App {
             {
 
                 shader.setViewPos(camera);
+
 
                 shader.setLight(light);
 
