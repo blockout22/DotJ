@@ -88,6 +88,7 @@ public class WorldShader extends Shader {
 
     public void setPointLight(PointLight pointLight, int index){
         String name = "pointLights[" + index + "]";
+        loadBoolean(getUniformLocation(name + ".isActive"), true);
         loadVector3f(getUniformLocation(name + ".position"), pointLight.getPosition());
         loadVector3f(getUniformLocation(name + ".ambient"), pointLight.getAmbient());
         loadVector3f(getUniformLocation(name + ".diffuse"), pointLight.getDiffuse());

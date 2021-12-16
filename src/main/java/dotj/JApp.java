@@ -172,7 +172,7 @@ public class JApp extends App {
                 shader.setPointLight(pointLight, 0);
                 shader.setPointLight(pointLight2, 1);
                 shader.setPointLight(pointLight3, 2);
-                shader.setPointLight(pointLight4, 3);
+//                shader.setPointLight(pointLight4, 3);
                 shader.setLight(light);
 
 //                shader.setMaterial(new Vector3f(1.0f, 0.5f, 0.31f), new Vector3f(0.5f, 0.5f, 0.5f), 32.0f);

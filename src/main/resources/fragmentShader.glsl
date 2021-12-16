@@ -35,6 +35,7 @@ struct DirLight{
 uniform DirLight dirLight;
 
 struct PointLight{
+	bool isActive;
 	vec3 position;
 
 	vec3 ambient;
@@ -124,7 +125,9 @@ void main(void){
 	vec3 result = CalcDirLight(dirLight, norm, viewDir) * color;//(ambient + diffuse + specular) * color; //textureColour.xyz;
 
 	for(int i = 0; i < NR_POINT_LIGHTS; i++){
+		if(pointLights[i].isActive){
 			result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
+		}
 	}
 
 	out_Color = vec4(result, 1.0);
