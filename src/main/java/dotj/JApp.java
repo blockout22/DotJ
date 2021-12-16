@@ -7,6 +7,8 @@ import dotj.gameobjects.Sphere;
 import dotj.input.GLFWKey;
 import dotj.input.Input;
 import dotj.interfaces.OnFinishedListener;
+import dotj.light.DirectionalLight;
+import dotj.light.PointLight;
 import dotj.physics.PhysicsWorld;
 import org.joml.Random;
 import org.joml.Vector2f;
@@ -34,6 +36,7 @@ public class JApp extends App {
     private float SPEED = 0.01f;
 
     private DirectionalLight light;
+    private PointLight pointLight, pointLight2, pointLight3, pointLight4;
 
     private Level level;
     private PhysicsWorld physicsWorld;
@@ -95,11 +98,31 @@ public class JApp extends App {
 //            instances.add(instance);
 //        }
 
-        Vector3f direction = new Vector3f(-0.2f, -1.0f, -0.3f);
+        Vector3f direction = new Vector3f(-1, 0, -1f);
         Vector3f ambient = new Vector3f(0.2f, 0.2f, 0.2f);
         Vector3f diffuse = new Vector3f(0.5f, 0.5f, 0.5f);
         Vector3f specular = new Vector3f(1f, 1f, 1f);
         light = new DirectionalLight(direction, ambient, diffuse, specular);
+
+        pointLight = new PointLight();
+        pointLight2 = new PointLight();
+        pointLight3 = new PointLight();
+        pointLight4 = new PointLight();
+
+        pointLight2.setPosition(new Vector3f(0, 0, -50));
+        pointLight3.setPosition(new Vector3f(0, 0, 50));
+        pointLight4.setPosition(new Vector3f(50, 0, 50));
+
+        pointLight2.setAmbient(new Vector3f(1f, 0, 0));
+        pointLight3.setDiffuse(new Vector3f(0f, 0, 1));
+
+        pointLight.setPosition(new Vector3f(0, 0, -20));
+        pointLight.setAmbient(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
+        pointLight.setDiffuse(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
+        pointLight.setSpecular(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
+        pointLight.setConstant(r.nextFloat());
+        pointLight.setLinear(r.nextFloat());
+        pointLight.setQuadratic(r.nextFloat());
 
         level = new Level();
 
@@ -131,7 +154,7 @@ public class JApp extends App {
                 window.setTitle("[FPS: " + fps + "]");
                 //System.out.println(fps);
                 vgRenderer.setFPS(fps);
-                light.setDirection(new Vector3f(r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1));
+//                light.setDirection(new Vector3f(r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1));
                 fps = 0;
             }
             fps++;
@@ -146,7 +169,10 @@ public class JApp extends App {
 
                 shader.setViewPos(camera);
 
-
+                shader.setPointLight(pointLight, 0);
+                shader.setPointLight(pointLight2, 1);
+                shader.setPointLight(pointLight3, 2);
+                shader.setPointLight(pointLight4, 3);
                 shader.setLight(light);
 
 //                shader.setMaterial(new Vector3f(1.0f, 0.5f, 0.31f), new Vector3f(0.5f, 0.5f, 0.5f), 32.0f);

@@ -1,5 +1,7 @@
 package dotj;
 
+import dotj.light.DirectionalLight;
+import dotj.light.PointLight;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -13,7 +15,9 @@ public class WorldShader extends Shader {
 //    private int lightPos;
 
     private int mat_diffuse, mat_specular, mat_shininess;
+
     private int light_dir, light_ambient, light_diffuse, light_specular;
+    private int light_constant, light_linear, light_quadratic;
 
 
     public WorldShader(String vertexShader, String fragmentShader) {
@@ -37,11 +41,27 @@ public class WorldShader extends Shader {
         mat_specular = getUniformLocation("material.specular");
         mat_shininess = getUniformLocation("material.shininess");
 
-        light_dir = getUniformLocation("light.direction");
-        light_ambient = getUniformLocation("light.ambient");
-        light_diffuse = getUniformLocation("light.diffuse");
-        light_specular = getUniformLocation("light.specular");
+        light_dir = getUniformLocation("dirLight.direction");
+        light_ambient = getUniformLocation("dirLight.ambient");
+        light_diffuse = getUniformLocation("dirLight.diffuse");
+        light_specular = getUniformLocation("dirLight.specular");
 
+        light_constant = getUniformLocation("dirLight.constant");
+        light_linear = getUniformLocation("dirLight.linear");
+        light_quadratic = getUniformLocation("dirLight.quadratic");
+
+    }
+
+    public void setLightConstant(float constant){
+        loadFloat(light_constant, constant);
+    }
+
+    public void setLightLinear(float linear){
+        loadFloat(light_linear, linear);
+    }
+
+    public void setLightQuadratic(float quadratic){
+        loadFloat(light_quadratic, quadratic);
     }
 
     public void setMaterial(Material material){
@@ -64,6 +84,18 @@ public class WorldShader extends Shader {
 
     public void setLight(DirectionalLight light){
         setLight(light.getDirection(), light.getAmbient(), light.getDiffuse(), light.getSpecular());
+    }
+
+    public void setPointLight(PointLight pointLight, int index){
+        String name = "pointLights[" + index + "]";
+        loadVector3f(getUniformLocation(name + ".position"), pointLight.getPosition());
+        loadVector3f(getUniformLocation(name + ".ambient"), pointLight.getAmbient());
+        loadVector3f(getUniformLocation(name + ".diffuse"), pointLight.getDiffuse());
+        loadVector3f(getUniformLocation(name + ".specular"), pointLight.getSpecular());
+
+        loadFloat(getUniformLocation(name + ".constant"), pointLight.getConstant());
+        loadFloat(getUniformLocation(name + ".linear"), pointLight.getLinear());
+        loadFloat(getUniformLocation(name + ".quadratic"), pointLight.getQuadratic());
     }
 
     public void setColor(Vector3f col){

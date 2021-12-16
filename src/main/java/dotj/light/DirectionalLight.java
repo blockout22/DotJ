@@ -1,4 +1,4 @@
-package dotj;
+package dotj.light;
 
 import org.joml.Vector3f;
 import org.joml.Vector4f;
