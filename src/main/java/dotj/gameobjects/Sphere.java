@@ -4,6 +4,7 @@ import dotj.*;
 import dotj.gameobjects.components.Component;
 import dotj.gameobjects.components.PhysicsBox;
 import dotj.physics.PhysicsWorld;
+import dotj.shaders.WorldShader;
 import org.joml.Random;
 import org.joml.Vector3f;
 
@@ -27,7 +28,7 @@ public class Sphere extends GameObject{
 
     @Override
     public void init() {
-        mesh = ModelLoader.load("cube.obj");
+        mesh = ModelLoader.load("cube.fbx");
 //        mesh = ModelLoader.load("cube.obj");
 
         Random r = new Random();

@@ -1,8 +1,6 @@
 package dotj;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
@@ -116,9 +114,19 @@ public abstract class Shader {
         StringBuilder sb = new StringBuilder();
 
         try {
-            InputStream in = Shader.class.getResourceAsStream("/" + fileName);
+            InputStream in = null;
+            BufferedReader  br = null;
+            File file = new File(Utilities.getAssetDir() + fileName);
+            if(!file.exists()){
+                file = new File(Utilities.getShaderDir() + fileName);
+            }
+            if(!file.exists()) {
+                in = Shader.class.getResourceAsStream("/" + fileName);
+                br = new BufferedReader(new InputStreamReader(in));
+            }else{
+                br = new BufferedReader(new FileReader(file));
+            }
 
-            BufferedReader  br = new BufferedReader(new InputStreamReader(in));
 
             String line;
             String previousString = "";

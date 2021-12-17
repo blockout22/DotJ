@@ -10,10 +10,11 @@ import dotj.interfaces.OnFinishedListener;
 import dotj.light.DirectionalLight;
 import dotj.light.PointLight;
 import dotj.physics.PhysicsWorld;
+import dotj.shaders.DepthShader;
+import dotj.shaders.WorldShader;
 import org.joml.Random;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -27,7 +28,7 @@ public class JApp extends App {
     private int fps = 0;
 
     private PerspectiveCamera camera;
-    private WorldShader shader;
+    private WorldShader worldShader;
     //private ArrayList<MeshInstance> instances = new ArrayList<>();
 
     //create a texture that will have the very first ID and any mesh without a texture assigned will use this one
@@ -78,10 +79,10 @@ public class JApp extends App {
 
         camera = new PerspectiveCamera(window, 70, 0.1f, 100000f);
         camera.setPosition(new Vector3f(0, 10f, 10f));
-        shader = new WorldShader("vertexShader.glsl", "fragmentShader.glsl");
+        worldShader = new WorldShader();
 
-        shader.bind();
-        shader.loadMatrix(shader.getProjectionMatrix(), camera.getProjectionMatrix());
+        worldShader.bind();
+        worldShader.loadMatrix(worldShader.getProjectionMatrix(), camera.getProjectionMatrix());
 
         /** a way to load difference types of models using Assimp
         File file = new File("E:/LWJGL/DotJ/src/main/resources/test.obj");
@@ -117,20 +118,20 @@ public class JApp extends App {
         pointLight3.setDiffuse(new Vector3f(0f, 0, 1));
 
         pointLight.setPosition(new Vector3f(0, 0, -20));
-        pointLight.setAmbient(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
-        pointLight.setDiffuse(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
-        pointLight.setSpecular(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
+        pointLight.setAmbient(new Vector3f(5, 0, 0));
+        pointLight.setDiffuse(new Vector3f(0, 50, 0));
+        pointLight.setSpecular(new Vector3f(0, 0, 100));
         pointLight.setConstant(r.nextFloat());
         pointLight.setLinear(r.nextFloat());
         pointLight.setQuadratic(r.nextFloat());
 
         level = new Level();
 
-        Floor floor = new Floor(camera, shader, physicsWorld);
+        Floor floor = new Floor(camera, worldShader, physicsWorld);
         level.addGameObject(floor);
-        Monkey monkey = new Monkey(camera, shader);
+        Monkey monkey = new Monkey(camera, worldShader);
         level.addGameObject(monkey);
-        Sphere sphere = new Sphere(camera, shader, physicsWorld);
+        Sphere sphere = new Sphere(camera, worldShader, physicsWorld);
         level.addGameObject(sphere);
 
         this.vgRenderer = new NanoVGRenderer(window);
@@ -164,24 +165,24 @@ public class JApp extends App {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 
-            shader.bind();
+            worldShader.bind();
             {
 
-                shader.setViewPos(camera);
+                worldShader.setViewPos(camera);
 
-                shader.setPointLight(pointLight, 0);
-                shader.setPointLight(pointLight2, 1);
-                shader.setPointLight(pointLight3, 2);
+                worldShader.setPointLight(pointLight, 0);
+                worldShader.setPointLight(pointLight2, 1);
+                worldShader.setPointLight(pointLight3, 2);
 //                shader.setPointLight(pointLight4, 3);
-                shader.setLight(light);
+                worldShader.setLight(light);
 
 //                shader.setMaterial(new Vector3f(1.0f, 0.5f, 0.31f), new Vector3f(0.5f, 0.5f, 0.5f), 32.0f);
-                shader.setMaterial(0, 1, 32.0f);
-                shader.loadViewMatrix(camera);
+                worldShader.setMaterial(0, 1, 32.0f);
+                worldShader.loadViewMatrix(camera);
 
                 level.update();
             }
-            shader.unbind();
+            worldShader.unbind();
 
             vgRenderer.update();
 
@@ -224,7 +225,7 @@ public class JApp extends App {
         level.unload();
         vgRenderer.cleanup();
         defaultTexture.cleanup();
-        shader.cleanup();
+        worldShader.cleanup();
         window.close();
     }
 }

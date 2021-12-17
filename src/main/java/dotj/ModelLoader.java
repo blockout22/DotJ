@@ -39,6 +39,11 @@ public class ModelLoader {
             vertices[verticesIndex++] = position.x();
             vertices[verticesIndex++] = position.y();
             vertices[verticesIndex++] = position.z();
+
+            float x = aiMesh.mTextureCoords(0).get(i).x();
+            float y = aiMesh.mTextureCoords(0).get(i).y();
+
+//            System.out.println(file + " -" + "X: " + x + " Y: " + y);
         }
 
         int indicesIndex = 0;

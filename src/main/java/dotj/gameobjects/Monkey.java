@@ -2,9 +2,9 @@ package dotj.gameobjects;
 
 import dotj.*;
 import dotj.gameobjects.components.Component;
+import dotj.shaders.WorldShader;
 import org.joml.Vector3f;
 
-import java.io.File;
 import java.util.Random;
 
 public class Monkey extends GameObject{

@@ -4,9 +4,7 @@ import com.jme3.bullet.objects.PhysicsBody;
 import dotj.*;
 import dotj.gameobjects.components.PhysicsBox;
 import dotj.physics.PhysicsWorld;
-import org.joml.Vector3f;
-
-import java.io.File;
+import dotj.shaders.WorldShader;
 
 public class Floor extends GameObject{
 

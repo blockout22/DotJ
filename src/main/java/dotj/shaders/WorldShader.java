@@ -1,5 +1,9 @@
-package dotj;
+package dotj.shaders;
 
+import dotj.Material;
+import dotj.Matrix4;
+import dotj.PerspectiveCamera;
+import dotj.Shader;
 import dotj.light.DirectionalLight;
 import dotj.light.PointLight;
 import org.joml.Vector3f;
@@ -20,8 +24,9 @@ public class WorldShader extends Shader {
     private int light_constant, light_linear, light_quadratic;
 
 
-    public WorldShader(String vertexShader, String fragmentShader) {
-        super(vertexShader, fragmentShader);
+    public WorldShader() {
+//        super("vertexShader.glsl", "fragmentShader.glsl");
+        super("vertexShader.glsl", "fragmentShader.glsl");
 
         bindAttribLocation(0, "position");
         bindAttribLocation(1, "textureCoordinates");

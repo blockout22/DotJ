@@ -38,6 +38,10 @@ public class Utilities {
         return assetDir;
     }
 
+    public static String getShaderDir(){
+        return getAssetDir() + "Shaders" + File.separator;
+    }
+
     public static String getModelDir(){
         return getAssetDir() + "Models" + File.separator;
     }

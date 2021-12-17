@@ -1,6 +1,7 @@
 package dotj;
 
 import dotj.gameobjects.components.Component;
+import dotj.shaders.WorldShader;
 import org.joml.Vector3f;
 
 public abstract class MeshInstance implements Component {
