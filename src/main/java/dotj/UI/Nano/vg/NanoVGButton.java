@@ -22,6 +22,8 @@ public class NanoVGButton {
     private float width = 50;
     private float height = 50;
 
+    private OnButtonClicked onButtonClicked;
+
     public NanoVGButton(long ctx, GLFWWindow window){
         this.ctx = ctx;
         this.glfwWindow = window;
@@ -43,11 +45,18 @@ public class NanoVGButton {
             GLFW.glfwGetCursorPos(glfwWindow.getWindowID(), xpos, ypos);
 
             if((xpos.get(0) > posX && xpos.get(0) < posX + width) && (ypos.get(0) > posY && ypos.get(0) < posY + height)){
-                System.out.println("NanoVG Button clicked");
+                    if(onButtonClicked != null){
+                        onButtonClicked.clicked();
+                    }
+//                System.out.println("NanoVG Button clicked");
             }
         }
 
         Input.isMouseReleased(glfwWindow.getWindowID(), GLFWKey.MOUSE_BUTTON_LEFT);
+    }
+
+    public void setOnButtonClicked(OnButtonClicked onButtonClicked){
+        this.onButtonClicked = onButtonClicked;
     }
 
     public void cleanup()

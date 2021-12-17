@@ -1,6 +1,7 @@
 package dotj.UI.Nano.vg;
 
 import dotj.GLFWWindow;
+import dotj.Global;
 import dotj.Utilities;
 import org.joml.Vector3f;
 import org.lwjgl.nanovg.NVGColor;
@@ -42,6 +43,9 @@ public class NanoVGRenderer {
         }
 
         button = new NanoVGButton(vg, glfwWindow);
+        button.setOnButtonClicked(() -> {
+            Global.shouldClose = true;
+        });
     }
 
     public void update() {
@@ -89,6 +93,7 @@ public class NanoVGRenderer {
 
         restore();
     }
+
 
     public void setFPS(int fps){
         this.tempFPS = fps;

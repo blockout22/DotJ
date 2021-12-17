@@ -148,7 +148,7 @@ public class JApp extends App {
 
     @Override
     public void update() {
-        while(!window.shouldClose()){
+        while(!window.shouldClose() && !Global.shouldClose){
 
             Time.setDelta();
             if (Time.getTime() - last_time >= 1000) {
