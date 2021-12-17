@@ -1,10 +1,15 @@
 package dotj;
 
 import org.joml.Vector3f;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.assimp.*;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 public class ModelLoader {
 
@@ -19,6 +24,28 @@ public class ModelLoader {
                         Assimp.aiProcess_FlipUVs |
                         Assimp.aiProcess_CalcTangentSpace |
                         Assimp.aiProcess_LimitBoneWeights);
+
+        AIMatrix4x4 transform = scene.mRootNode().mTransformation();
+//        System.out.println(file);
+//        System.out.println(transform.a1() + " : " + transform.a2() + " : " + transform.a3() + " : " + transform.a4());
+//        System.out.println(transform.b1() + " : " + transform.b2() + " : " + transform.b3() + " : " + transform.b4());
+//        System.out.println(transform.c1() + " : " + transform.c2() + " : " + transform.c3() + " : " + transform.c4());
+//        System.out.println(transform.d1() + " : " + transform.d2() + " : " + transform.d3() + " : " + transform.d4());
+
+
+        AIString.Buffer buffer = scene.mMetaData().mKeys();
+
+        ByteBuffer b = BufferUtils.createByteBuffer(1028 + 6);
+        b.put("UpAxis".getBytes());
+        // 1 == UpAxisSign 0 == value inside first get (upto 9)
+//        System.out.println(buffer.get(new AIString(b)).get(1).data().get(9));
+
+        for(int i = 0; i < buffer.capacity(); i++){
+            AIString byBuff = buffer.get(i);
+//            System.out.println(buffer.get(byBuff).dataString());
+
+
+        }
 
         if(scene == null){
             throw new IllegalStateException("AIScene is null");
@@ -72,6 +99,11 @@ public class ModelLoader {
         Mesh mesh = new Mesh();
         mesh.add(vertices, texCoods, normals, indices);
         mesh.setAABB(new Vector3f(aabb.mMin().x(), aabb.mMin().y(), aabb.mMin().z()), new Vector3f(aabb.mMax().x(), aabb.mMax().y(), aabb.mMax().z()));
+
+//        scene.free();
+//        buff.free();
+//        aiMesh.free();
+//        aabb.free();
         return mesh;
     }
 }

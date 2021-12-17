@@ -22,16 +22,19 @@ public class Monkey extends GameObject{
 
 
         //load monkey model
-        mesh = ModelLoader.load("test.obj");//new Mesh(); //OBJLoader.load("test.obj");
+        mesh = ModelLoader.load("monkey.fbx");//new Mesh(); //OBJLoader.load("test.obj");
 
         Random r = new Random();
         for(int i = 0; i < 1000; i++){
-            MeshInstance instance = new MeshInstance(mesh, new Vector3f(r.nextFloat() * 100, r.nextFloat() * 100, r.nextFloat() * 100), new Vector3f(r.nextFloat() * 360f, r.nextFloat() * 360f, r.nextFloat() * 360f), 1f) {
+//            Vector3f rotation = new Vector3f(-90, 0, 90);
+            Vector3f rotation = new Vector3f(r.nextFloat() * 360f, r.nextFloat() * 360f, r.nextFloat() * 360f);
+            MeshInstance instance = new MeshInstance(mesh, new Vector3f(r.nextFloat() * 100, r.nextFloat() * 100, r.nextFloat() * 100), rotation, 1f) {
                 @Override
                 public void execute() {
 
                 }
             };
+            instance.setScale(.5f);
             instance.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
             instance.setShader(shader);
             addComponent(instance);

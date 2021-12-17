@@ -55,13 +55,13 @@ public class JApp extends App {
     @Override
     public void init() {
 
-        Vector2f value = new Vector2f(1920 / 2, 800);
-        Vector2f inA = new Vector2f(0, 0);
-        Vector2f inB = new Vector2f(1920, 1080);
-        Vector2f outA = new Vector2f(0, 0);
-        Vector2f outB = new Vector2f(800, 600);
-        Vector2f returnFloat = Utilities.remapVector2f(value, inA, inB, outA, outB);
-        System.out.println(returnFloat.x + " : " + returnFloat.y);
+//        Vector2f value = new Vector2f(1920 / 2, 800);
+//        Vector2f inA = new Vector2f(0, 0);
+//        Vector2f inB = new Vector2f(1920, 1080);
+//        Vector2f outA = new Vector2f(0, 0);
+//        Vector2f outB = new Vector2f(800, 600);
+//        Vector2f returnFloat = Utilities.remapVector2f(value, inA, inB, outA, outB);
+//        System.out.println(returnFloat.x + " : " + returnFloat.y);
 
         float rValue = 1920 / 2;
         float rinA = 0;
@@ -69,7 +69,7 @@ public class JApp extends App {
         float routA = 0;
         float routB = 800;
         float res = Utilities.remapFloat(rValue, rinA, rinB, routA, routB);
-        System.out.println(res);
+//        System.out.println(res);
 
 
         physicsWorld = new PhysicsWorld();
@@ -112,7 +112,7 @@ public class JApp extends App {
         pointLight4 = new PointLight();
 
         pointLight2.setPosition(new Vector3f(0, 0, -50));
-        pointLight3.setPosition(new Vector3f(0, 0, 50));
+        pointLight3.setPosition(new Vector3f(0, 0, 20));
         pointLight4.setPosition(new Vector3f(50, 0, 50));
 
         pointLight2.setAmbient(new Vector3f(1f, 0, 0));
@@ -156,6 +156,7 @@ public class JApp extends App {
                 window.setTitle("[FPS: " + fps + "]");
                 //System.out.println(fps);
                 vgRenderer.setFPS(fps);
+                vgRenderer.setPos(camera.getPosition());
 //                light.setDirection(new Vector3f(r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1));
                 fps = 0;
             }

@@ -2,6 +2,7 @@ package dotj.UI.Nano.vg;
 
 import dotj.GLFWWindow;
 import dotj.Utilities;
+import org.joml.Vector3f;
 import org.lwjgl.nanovg.NVGColor;
 import org.lwjgl.system.MemoryUtil;
 
@@ -24,6 +25,7 @@ public class NanoVGRenderer {
     private ByteBuffer font;
 
     private int tempFPS = 0;
+    private Vector3f pos;
 
     public NanoVGRenderer(GLFWWindow glfwWindow){
         this.glfwWindow = glfwWindow;
@@ -67,6 +69,17 @@ public class NanoVGRenderer {
             nvgText(vg, 5, 5, "FPS: " + tempFPS);
 //            nvgFill(vg);
 
+            nvgBeginPath(vg);
+            nvgColor.r(1f);
+            nvgColor.g(1f);
+            nvgColor.b(1f);
+            nvgColor.a(1f);
+            nvgFontSize(vg, 18f);
+            nvgFontFace(vg, "sans");
+            nvgFillColor(vg, nvgColor);
+            nvgTextAlign(vg, NVG_ALIGN_RIGHT | NVG_ALIGN_TOP);
+            nvgText(vg, 795, 5, "POS: [" + (int)pos.x + ", " + (int)pos.y + ", " + (int)pos.z + "]");
+
             button.update();
         }
         nvgEndFrame(vg);
@@ -79,6 +92,10 @@ public class NanoVGRenderer {
 
     public void setFPS(int fps){
         this.tempFPS = fps;
+    }
+
+    public void setPos(Vector3f pos){
+        this.pos = pos;
     }
 
     private void handleInput() {

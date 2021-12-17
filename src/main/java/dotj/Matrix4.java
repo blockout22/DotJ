@@ -48,22 +48,10 @@ public class Matrix4  {
      * @return m
      */
     public static Matrix4 setIdentity(Matrix4 m) {
-        m.m00 = 1.0f;
-        m.m01 = 0.0f;
-        m.m02 = 0.0f;
-        m.m03 = 0.0f;
-        m.m10 = 0.0f;
-        m.m11 = 1.0f;
-        m.m12 = 0.0f;
-        m.m13 = 0.0f;
-        m.m20 = 0.0f;
-        m.m21 = 0.0f;
-        m.m22 = 1.0f;
-        m.m23 = 0.0f;
-        m.m30 = 0.0f;
-        m.m31 = 0.0f;
-        m.m32 = 0.0f;
-        m.m33 = 1.0f;
+        m.m00 = 1.0f; m.m01 = 0.0f; m.m02 = 0.0f; m.m03 = 0.0f;
+        m.m10 = 0.0f; m.m11 = 1.0f; m.m12 = 0.0f; m.m13 = 0.0f;
+        m.m20 = 0.0f; m.m21 = 0.0f; m.m22 = 1.0f; m.m23 = 0.0f;
+        m.m30 = 0.0f; m.m31 = 0.0f; m.m32 = 0.0f; m.m33 = 1.0f;
 
         return m;
     }

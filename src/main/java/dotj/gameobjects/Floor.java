@@ -5,6 +5,7 @@ import dotj.*;
 import dotj.gameobjects.components.PhysicsBox;
 import dotj.physics.PhysicsWorld;
 import dotj.shaders.WorldShader;
+import org.joml.Vector3f;
 
 public class Floor extends GameObject{
 
@@ -24,7 +25,7 @@ public class Floor extends GameObject{
 
     public void init(){
 
-        floor = ModelLoader.load("floor.obj");
+        floor = ModelLoader.load("floor.fbx");
 
         floorInstance = new MeshInstance(floor) {
             @Override
@@ -37,6 +38,7 @@ public class Floor extends GameObject{
         floorTexture = TextureLoader.loadTexture("Image.png");
         floorInstance.setScale(1f);
         floorInstance.setTextureID(floorTexture.getID());
+        floorInstance.setRotation(new Vector3f(-90, 0, 90));
         addComponent(floorInstance);
 
         BoundingBox bb = floor.getBoundingBox();
