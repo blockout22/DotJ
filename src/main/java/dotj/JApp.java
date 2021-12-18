@@ -146,6 +146,7 @@ public class JApp extends App {
         });
     }
 
+
     @Override
     public void update() {
         while(!window.shouldClose() && !Global.shouldClose){
@@ -167,9 +168,9 @@ public class JApp extends App {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
             glEnable(GL_MULTISAMPLE);
 
-
             worldShader.bind();
             {
+
 
                 worldShader.setViewPos(camera);
 

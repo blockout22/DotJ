@@ -47,7 +47,7 @@ public class Sphere extends GameObject{
             }
         };
 
-        MeshInstance instance4 = new MeshInstance(mesh, new Vector3f(4, 5, -25), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), 3f) {
+        MeshInstance instance4 = new MeshInstance(mesh, new Vector3f(4, 10, -25), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), 3f) {
             public void execute() {
             }
         };

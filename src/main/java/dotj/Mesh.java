@@ -16,6 +16,7 @@ public class Mesh {
     private int vao;
     private int vbo;
     private int vboTexture;
+    private int fbo;
     private int vbon;
     private int vboi;
 
@@ -28,6 +29,7 @@ public class Mesh {
         vao = GL30.glGenVertexArrays();
         vbo = GL15.glGenBuffers();
         vboTexture = GL15.glGenBuffers();
+        fbo = GL15.glGenBuffers();
         vbon = GL15.glGenBuffers();
         vboi = GL15.glGenBuffers();
         this.boundingBox = new BoundingBox();
@@ -143,8 +145,10 @@ public class Mesh {
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
         GL20.glDisableVertexAttribArray(0);
         GL20.glDisableVertexAttribArray(1);
+        GL20.glDisableVertexAttribArray(2);
         GL15.glDeleteBuffers(vbo);
         GL15.glDeleteBuffers(vboTexture);
+        GL15.glDeleteBuffers(fbo);
         GL15.glDeleteBuffers(vboi);
         GL30.glDeleteVertexArrays(vao);
     }
