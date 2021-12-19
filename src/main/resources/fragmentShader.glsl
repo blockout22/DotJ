@@ -107,7 +107,10 @@ void main(void){
 		}
 	}
 
-	out_Color = vec4(result, 1.0);
+	float gamma = 2.2;
+	vec3 diffuseColor = pow(texture(material.diffuse, texCoordinates).rgb, vec3(gamma));
+
+	out_Color = vec4(vec3(result * diffuseColor) , 1.0);
 
 	//depth view
 //	out_Color = vec4(vec3(gl_FragCoord.z), 1.0);

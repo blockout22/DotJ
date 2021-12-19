@@ -18,6 +18,7 @@ import org.joml.Vector3f;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.*;
+import static org.lwjgl.opengl.GL30.*;
 
 public class JApp extends App {
 
@@ -167,6 +168,7 @@ public class JApp extends App {
             glEnable(GL_DEPTH_TEST);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
             glEnable(GL_MULTISAMPLE);
+            glEnable(GL_FRAMEBUFFER_SRGB);
 
             worldShader.bind();
             {

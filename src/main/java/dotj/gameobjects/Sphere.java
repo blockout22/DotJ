@@ -62,7 +62,7 @@ public class Sphere extends GameObject{
             }
         };
 
-        MeshInstance instance7 = new MeshInstance(mesh, new Vector3f(5, 5, -15), new Vector3f(0, 0, 0), 1f) {
+        MeshInstance instance7 = new MeshInstance(mesh, new Vector3f(15, 10, -15), new Vector3f(0, 0, 0), 2f) {
             public void execute() {
             }
         };
