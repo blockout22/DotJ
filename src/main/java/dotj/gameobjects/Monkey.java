@@ -29,12 +29,7 @@ public class Monkey extends GameObject{
         for(int i = 0; i < 1000; i++){
 //            Vector3f rotation = new Vector3f(-90, 0, 90);
             Vector3f rotation = new Vector3f(r.nextFloat() * 360f, r.nextFloat() * 360f, r.nextFloat() * 360f);
-            MeshInstance instance = new MeshInstance(mesh, new Vector3f(r.nextFloat() * 100, r.nextFloat() * 100, r.nextFloat() * 100), rotation, new Vector3f(1f, 1f, 1f)) {
-                @Override
-                public void execute() {
-
-                }
-            };
+            MeshInstance instance = new MeshInstance(this,mesh, new Vector3f(r.nextFloat() * 100, r.nextFloat() * 100, r.nextFloat() * 100), rotation, new Vector3f(1f, 1f, 1f));
             instance.setScale(.5f);
             instance.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
             instance.setShader(shader);
@@ -57,6 +52,6 @@ public class Monkey extends GameObject{
 
     @Override
     public void cleanup() {
-
+        mesh.cleanup();
     }
 }

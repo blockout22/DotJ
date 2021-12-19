@@ -110,8 +110,8 @@ public class Mesh {
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, object.getSpecularTextureID());
         }
 
-        if (camera.isInBounds(object.getPosition().x, object.getPosition().y, object.getPosition().z)) {
-            Matrix4 transformationMatrix = createTransformationMatrix(object.getPosition(), object.getRotation(), object.getScale());
+        if (camera.isInBounds(object.getWorldTransform().getPosition().x, object.getWorldTransform().getPosition().y, object.getWorldTransform().getPosition().z)) {
+            Matrix4 transformationMatrix = createTransformationMatrix(object.getWorldTransform().getPosition(), object.getWorldTransform().getRotation(), object.getWorldTransform().getScale());
             shader.loadMatrix(modelMatrix, transformationMatrix);
 //            object.update();
             GL11.glDrawElements(GL11.GL_TRIANGLES, indicesSize, GL11.GL_UNSIGNED_INT, 0);
@@ -170,4 +170,15 @@ public class Mesh {
         return buffer;
     }
 
+    public int getVao() {
+        return vao;
+    }
+
+    public int getVboi() {
+        return vboi;
+    }
+
+    public int getIndicesSize() {
+        return indicesSize;
+    }
 }

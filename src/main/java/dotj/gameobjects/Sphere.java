@@ -18,6 +18,7 @@ public class Sphere extends GameObject{
     private PhysicsBox box;
 
     public Mesh mesh;
+    public MeshInstance instance;
 
     private Texture sphereTexture, specularTexture;
 
@@ -33,40 +34,19 @@ public class Sphere extends GameObject{
 //        mesh = ModelLoader.load("cube.obj");
 
         Random r = new Random();
-        MeshInstance instance = new MeshInstance(mesh, new Vector3f(0, 5, -15), new Vector3f(r.nextInt(360), r.nextInt(360), r.nextInt(360)), new Vector3f(1f, 1f, 1f)) {
-            public void execute() {
-            }
-        };
+        instance = new MeshInstance(this, mesh, new Vector3f(0, 5, -15), new Vector3f(r.nextInt(360), r.nextInt(360), r.nextInt(360)), new Vector3f(1f, 1f, 1f));
 
-        MeshInstance instance2 = new MeshInstance(mesh, new Vector3f(-5, 5, -25), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), new Vector3f(1f, 1f, 1f)) {
-            public void execute() {
-            }
-        };
+        MeshInstance instance2 = new MeshInstance(this, mesh, new Vector3f(-5, 5, -25), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), new Vector3f(1f, 1f, 1f));
 
-        MeshInstance lightInstance = new MeshInstance(mesh, new Vector3f(4, 15, 45), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), new Vector3f(.2f, .2f, .2f)) {
-            public void execute() {
-            }
-        };
+        MeshInstance lightInstance = new MeshInstance(this, mesh, new Vector3f(4, 15, 45), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), new Vector3f(.2f, .2f, .2f));
 
-        MeshInstance instance4 = new MeshInstance(mesh, new Vector3f(4, 10, -25), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), new Vector3f(3f, 3f, 3f)) {
-            public void execute() {
-            }
-        };
+        MeshInstance instance4 = new MeshInstance(this, mesh, new Vector3f(4, 10, -25), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), new Vector3f(3f, 3f, 3f));
 
-        MeshInstance instance5 = new MeshInstance(mesh, new Vector3f(15, 5, -11), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), new Vector3f(1f, 1f, 1f)) {
-            public void execute() {
-            }
-        };
+        MeshInstance instance5 = new MeshInstance(this, mesh, new Vector3f(15, 5, -11), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), new Vector3f(1f, 1f, 1f));
 
-        MeshInstance instance6 = new MeshInstance(mesh, new Vector3f(5, 5, -1), new Vector3f(0, 0, 0), new Vector3f(1f, 1f, 1f)) {
-            public void execute() {
-            }
-        };
+        MeshInstance instance6 = new MeshInstance(this, mesh, new Vector3f(5, 5, -1), new Vector3f(0, 0, 0), new Vector3f(1f, 1f, 1f));
 
-        MeshInstance instance7 = new MeshInstance(mesh, new Vector3f(15, 10, -15), new Vector3f(0, 0, 0), new Vector3f(2f, 2f, 2f)) {
-            public void execute() {
-            }
-        };
+        MeshInstance instance7 = new MeshInstance(this, mesh, new Vector3f(15, 10, -15), new Vector3f(0, 0, 0), new Vector3f(2f, 2f, 2f));
 
         instance.setShader(shader);
         instance2.setShader(shader);
@@ -82,6 +62,8 @@ public class Sphere extends GameObject{
         addComponent(instance5);
         addComponent(instance6);
         addComponent(instance7);
+
+        instance7.setScale(5f);
 
         sphereTexture = TextureLoader.loadTexture("container2.png");
         instance.setTextureID(sphereTexture.getID());
@@ -129,12 +111,13 @@ public class Sphere extends GameObject{
             }
         }
         mesh.disable();
+
     }
 
     @Override
     public void cleanup() {
-        specularTexture.cleanup();
-        sphereTexture.cleanup();
+//        specularTexture.cleanup();
+//        sphereTexture.cleanup();
         mesh.cleanup();
     }
 }

@@ -2,37 +2,51 @@ package dotj.gameobjects.components;
 
 import dotj.Material;
 import dotj.Mesh;
+import dotj.Transform;
+import dotj.gameobjects.GameObject;
 import dotj.gameobjects.components.Component;
 import dotj.shaders.WorldShader;
 import org.joml.Vector3f;
 
-public abstract class MeshInstance implements Component {
+public class MeshInstance implements Component {
 
+    private GameObject parent = null;
     private Mesh mesh;
     private WorldShader shader;
-    protected Vector3f position;
-    private Vector3f rotation;
+    private Transform transform;
+//    protected Vector3f positiontion;
+//    private Vector3f rotation;
+//    private Vector3f scale;
+
+    private Transform worldTransform;
 
     private Vector3f color;
     private Material material;
 
-    private Vector3f scale;
     private int textureID = 1;
     private int specularTextureID = 0;
 
     private boolean shouldUpdateOutsideBounds = false;
 
-    public MeshInstance(Mesh mesh, Vector3f position, Vector3f rotation, Vector3f scale) {
+    public MeshInstance(GameObject gameObject, Mesh mesh, Transform transform){
+        this.parent = gameObject;
         this.mesh = mesh;
-        this.position = position;
-        this.rotation = rotation;
-        this.scale = scale;
+        this.transform = transform;
+//        this.position = position;
+//        this.rotation = rotation;
+//        this.scale = scale;
         color = new Vector3f(1, 1, 1);
         material = new Material();
+
+        this.worldTransform = new Transform();
     }
 
-    public MeshInstance(Mesh mesh){
-        this(mesh, new Vector3f(0f,0f,0f), new Vector3f(0f, 0f, 0f), new Vector3f(1f, 1f, 1f));
+    public MeshInstance(GameObject gameObject, Mesh mesh, Vector3f position, Vector3f rotation, Vector3f scale) {
+        this(gameObject, mesh, new Transform(position, rotation, scale));
+    }
+
+    public MeshInstance(GameObject gameObject, Mesh mesh){
+        this(gameObject, mesh, new Vector3f(0f,0f,0f), new Vector3f(0f, 0f, 0f), new Vector3f(1f, 1f, 1f));
 
     }
 
@@ -55,6 +69,16 @@ public abstract class MeshInstance implements Component {
 //    public void update(){
 //
 //    }
+
+    @Override
+    public void execute() {
+        calculateWorldTransform();
+    }
+
+    private void calculateWorldTransform() {
+        worldTransform.add(parent.getTransform(), transform);
+//        System.out.println(worldTransform);
+    }
 
     public Vector3f getColor() {
         return color;
@@ -100,33 +124,23 @@ public abstract class MeshInstance implements Component {
         this.specularTextureID = specularTextureID;
     }
 
-    public Vector3f getPosition() {
-        return position;
-    }
-
-    public void setPosition(Vector3f position) {
-        this.position = position;
-    }
-
-    public Vector3f getRotation() {
-        return rotation;
-    }
-
-    public void setRotation(Vector3f rotation) {
-        this.rotation = rotation;
-    }
-
-    public Vector3f getScale() {
-        return scale;
-    }
-
-    public void setScale(Vector3f scale) {
-        this.scale = scale;
+    public Transform getTransform(){
+        return transform;
     }
 
     public void setScale(float scl){
-        scale.x = scl;
-        scale.y = scl;
-        scale.z = scl;
+        transform.scale.x = scl;
+        transform.scale.y = scl;
+        transform.scale.z = scl;
+    }
+
+    public Transform getWorldTransform(){
+        return worldTransform;
+    }
+
+    public void setWorldScale(float scl){
+        worldTransform.scale.x = scl;
+        worldTransform.scale.y = scl;
+        worldTransform.scale.z = scl;
     }
 }

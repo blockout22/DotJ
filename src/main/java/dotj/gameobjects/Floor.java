@@ -28,18 +28,13 @@ public class Floor extends GameObject{
 
         floor = ModelLoader.load("floor.fbx");
 
-        floorInstance = new MeshInstance(floor) {
-            @Override
-            public void execute() {
-
-            }
-        };
+        floorInstance = new MeshInstance(this, floor);
         floorInstance.setShader(shader);
 
         floorTexture = TextureLoader.loadTexture("Image.png");
         floorInstance.setScale(1f);
         floorInstance.setTextureID(floorTexture.getID());
-        floorInstance.setRotation(new Vector3f(-90, 0, 90));
+        floorInstance.getTransform().setRotation(new Vector3f(-90, 0, 90));
         addComponent(floorInstance);
 
         BoundingBox bb = floor.getBoundingBox();
@@ -57,7 +52,7 @@ public class Floor extends GameObject{
 
     @Override
     public void cleanup() {
-        floorTexture.cleanup();
+//        floorTexture.cleanup();
         floor.cleanup();
     }
 }

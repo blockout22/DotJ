@@ -1,6 +1,7 @@
 package dotj;
 
 import dotj.UI.Nano.vg.NanoVGRenderer;
+import dotj.gameobjects.Cube;
 import dotj.gameobjects.Floor;
 import dotj.gameobjects.Monkey;
 import dotj.gameobjects.Sphere;
@@ -44,6 +45,7 @@ public class JApp extends App {
     private Level level;
     private PhysicsWorld physicsWorld;
 
+    private Sphere sphere;
 
     private NanoVGRenderer vgRenderer;
 
@@ -133,8 +135,10 @@ public class JApp extends App {
         level.addGameObject(floor);
         Monkey monkey = new Monkey(camera, worldShader);
         level.addGameObject(monkey);
-        Sphere sphere = new Sphere(camera, worldShader, physicsWorld);
+        sphere = new Sphere(camera, worldShader, physicsWorld);
         level.addGameObject(sphere);
+        Cube cube = new Cube();
+        level.addGameObject(cube);
 
         this.vgRenderer = new NanoVGRenderer(window);
 
@@ -214,6 +218,18 @@ public class JApp extends App {
                 camera.getPosition().z += -Math.cos((camera.getYaw() + 90) * Math.PI / 180) * SPEED * Time.getDelta();
             }
 
+            Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_H, () -> {
+                System.out.println(sphere.getTransform() + " : " + sphere.instance.getTransform() + " : " + sphere.instance.getWorldTransform());
+            }, () -> {
+
+            });
+
+            Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_L, () -> {
+                sphere.getTransform().getPosition().z += 1f;
+            }, () -> {
+
+            });
+
 //            Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_M, () -> {
 //                physicsWorld.step();
 //            }, () -> {
@@ -228,6 +244,12 @@ public class JApp extends App {
 
     @Override
     public void close() {
+
+        //handle the cleanup of all textures in the texturePool
+        for(Texture t : Global.texturePool.values()){
+            t.cleanup();
+        }
+
         level.unload();
         vgRenderer.cleanup();
         defaultTexture.cleanup();

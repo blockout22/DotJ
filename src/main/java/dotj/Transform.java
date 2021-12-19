@@ -26,6 +26,24 @@ public class Transform {
         this(new Vector3f(0f, 0f, 0f));
     }
 
+    public void add(Transform t1, Transform t2){
+        float posx = t1.getPosition().x + t2.getPosition().x;
+        float posy = t1.getPosition().x + t2.getPosition().y;
+        float posz = t1.getPosition().z + t2.getPosition().z;
+
+        float rotx = t1.getRotation().x + t2.getRotation().x;
+        float roty = t1.getRotation().x + t2.getRotation().y;
+        float rotz = t1.getRotation().z + t2.getRotation().z;
+
+        float sclx = t1.getScale().x * t2.getScale().x;
+        float scly = t1.getScale().x * t2.getScale().y;
+        float sclz = t1.getScale().z * t2.getScale().z;
+
+        setPosition(posx, posy, posz);
+        setRotation(rotx, roty, rotz);
+        setScale(sclx, scly, sclz);
+    }
+
     public Vector3f getPosition() {
         return position;
     }
@@ -48,5 +66,30 @@ public class Transform {
 
     public void setScale(Vector3f scale) {
         this.scale = scale;
+    }
+
+    public void setPosition(float x, float y, float z){
+        position.x = x;
+        position.y = y;
+        position.z = z;
+    }
+
+    public void setRotation(float x, float y, float z){
+        rotation.x = x;
+        rotation.y = y;
+        rotation.z = z;
+    }
+
+    public void setScale(float x, float y, float z){
+        scale.x = x;
+        scale.y = y;
+        scale.z = z;
+    }
+
+    public String toString(){
+        String pos = "[" + getPosition().x + ", "  + getPosition().y + ", " + getPosition().z + "] ";
+        String rot = "[" + getRotation().x + ", "  + getRotation().y + ", " + getRotation().z + "] ";
+        String scl = "[" + getScale().x + ", "  + getScale().y + ", " + getScale().z + "] ";
+        return (pos + rot + scl);
     }
 }

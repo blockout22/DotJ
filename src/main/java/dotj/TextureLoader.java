@@ -14,6 +14,14 @@ import java.nio.ByteBuffer;
 
 public class TextureLoader {
     public static Texture loadTexture(String textureFile) {
+
+        Texture gbTexture = Global.texturePool.get(textureFile);
+
+        if(gbTexture != null){
+            System.out.println("Loaded Texture from pool");
+            return gbTexture;
+        }
+
         try {
             InputStream in = null;
             BufferedImage image;
@@ -23,6 +31,10 @@ public class TextureLoader {
                 image = ImageIO.read(in);
             }else{
                 image = ImageIO.read(file);
+            }
+
+            if(image == null){
+                return null;
             }
 
             int[] pixels = new int[image.getWidth() * image.getHeight()];
@@ -48,6 +60,8 @@ public class TextureLoader {
 
             Texture texture = new Texture(image.getWidth(), image.getHeight());
             texture.genTextureID(buffer);
+
+            Global.texturePool.put(textureFile, texture);
 
             return texture;
         } catch (Exception e) {
