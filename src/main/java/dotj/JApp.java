@@ -45,7 +45,10 @@ public class JApp extends App {
     private Level level;
     private PhysicsWorld physicsWorld;
 
+    private Floor floor;
+    private Monkey monkey;
     private Sphere sphere;
+    private Cube cube;
 
     private NanoVGRenderer vgRenderer;
 
@@ -131,13 +134,13 @@ public class JApp extends App {
 
         level = new Level();
 
-        Floor floor = new Floor(camera, worldShader);
+        floor = new Floor(camera, worldShader);
         level.addGameObject(floor);
-        Monkey monkey = new Monkey(camera, worldShader);
+        monkey = new Monkey(camera, worldShader);
         level.addGameObject(monkey);
         sphere = new Sphere(camera, worldShader, physicsWorld);
         level.addGameObject(sphere);
-        Cube cube = new Cube(camera, worldShader, physicsWorld);
+        cube = new Cube(camera, worldShader, physicsWorld);
         level.addGameObject(cube);
 
         this.vgRenderer = new NanoVGRenderer(window);
@@ -219,7 +222,7 @@ public class JApp extends App {
             }
 
             Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_H, () -> {
-                System.out.println("go transform- " + sphere.getTransform() + " : inst transform- " + sphere.instance.getTransform() + " : inst world transform- " + sphere.instance.getWorldTransform());
+                System.out.println("go transform- " + sphere.getTransform() + " : inst transform- " + cube.instance.getTransform() + " : inst world transform- " + sphere.instance.getWorldTransform());
             }, () -> {
 
             });
@@ -231,11 +234,16 @@ public class JApp extends App {
 
             });
 
-//            Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_M, () -> {
+            Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_M, () -> {
+
+                Transform transform = new Transform();
+                transform.setPosition(new Vector3f(1.2f, 2, -5.6f));
+                transform.setScale(new Vector3f(.5f, .5f, .5f));
+                cube.instance.setWorldTransform(transform);
 //                physicsWorld.step();
-//            }, () -> {
-//
-//            });
+            }, () -> {
+
+            });
 
             camera.update();
 

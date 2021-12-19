@@ -80,6 +80,19 @@ public class MeshInstance implements Component {
 //        System.out.println(worldTransform);
     }
 
+    public void setWorldTransform(Transform transform){
+        getTransform().position.x = transform.getPosition().x - getWorldTransform().getPosition().x;
+        getTransform().position.y = transform.getPosition().y - getWorldTransform().getPosition().y;
+        getTransform().position.z = transform.getPosition().z - getWorldTransform().getPosition().z;
+
+        getTransform().rotation.x = transform.getRotation().x - getWorldTransform().getRotation().x;
+        getTransform().rotation.y = transform.getRotation().y - getWorldTransform().getRotation().y;
+        getTransform().rotation.z = transform.getRotation().z - getWorldTransform().getRotation().z;
+
+        getTransform().setScale(transform.scale);
+
+    }
+
     public Vector3f getColor() {
         return color;
     }

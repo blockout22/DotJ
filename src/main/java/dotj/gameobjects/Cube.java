@@ -12,7 +12,7 @@ import org.joml.Vector3f;
 public class Cube extends GameObject{
 
     public Mesh mesh;
-    private MeshInstance instance;
+    public MeshInstance instance;
     private Texture texture;
 
     private PerspectiveCamera camera;
@@ -37,12 +37,15 @@ public class Cube extends GameObject{
         instance.setTextureID(texture.getID());
         addComponent(instance);
 
-//        BoundingBox bb = mesh.getBoundingBox();
-//        PhysicsBox box = new PhysicsBox(physicsWorld, (bb.max.x-bb.min.x) / 2, (bb.max.y-bb.min.y) / 2, (bb.max.z-bb.min.z) / 2, PhysicsBody.massForStatic);
-//        addComponent(box);
+        BoundingBox bb = mesh.getBoundingBox();
+        PhysicsBox box = new PhysicsBox(physicsWorld, (bb.max.x-bb.min.x) / 2, (bb.max.y-bb.min.y) / 2, (bb.max.z-bb.min.z) / 2, PhysicsBody.massForStatic);
+        addComponent(box);
 
-        getTransform().setPosition(new Vector3f(0, 10, 0));
-        instance.getTransform().setPosition(new Vector3f(0, 5, 0));
+        getTransform().setPosition(new Vector3f(1.2f, 2, -5.6f));
+//        getTransform().setPosition(new Vector3f(0, 10, 0));
+
+        instance.getTransform().setPosition(new Vector3f(0, 0, 0));
+
     }
 
     @Override

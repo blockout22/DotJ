@@ -49,6 +49,8 @@ public class Level {
     }
 
     public void unload(){
-
+        for(GameObject object : GameObjects){
+            object.cleanup();
+        }
     }
 }
