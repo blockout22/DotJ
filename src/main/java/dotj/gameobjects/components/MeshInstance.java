@@ -1,5 +1,7 @@
-package dotj;
+package dotj.gameobjects.components;
 
+import dotj.Material;
+import dotj.Mesh;
 import dotj.gameobjects.components.Component;
 import dotj.shaders.WorldShader;
 import org.joml.Vector3f;
@@ -14,13 +16,13 @@ public abstract class MeshInstance implements Component {
     private Vector3f color;
     private Material material;
 
-    private float scale;
+    private Vector3f scale;
     private int textureID = 1;
     private int specularTextureID = 0;
 
     private boolean shouldUpdateOutsideBounds = false;
 
-    public MeshInstance(Mesh mesh, Vector3f position, Vector3f rotation, float scale) {
+    public MeshInstance(Mesh mesh, Vector3f position, Vector3f rotation, Vector3f scale) {
         this.mesh = mesh;
         this.position = position;
         this.rotation = rotation;
@@ -30,7 +32,7 @@ public abstract class MeshInstance implements Component {
     }
 
     public MeshInstance(Mesh mesh){
-        this(mesh, new Vector3f(0f,0f,0f), new Vector3f(0f, 0f, 0f), 1f);
+        this(mesh, new Vector3f(0f,0f,0f), new Vector3f(0f, 0f, 0f), new Vector3f(1f, 1f, 1f));
 
     }
 
@@ -114,11 +116,17 @@ public abstract class MeshInstance implements Component {
         this.rotation = rotation;
     }
 
-    public float getScale() {
+    public Vector3f getScale() {
         return scale;
     }
 
-    public void setScale(float scale) {
+    public void setScale(Vector3f scale) {
         this.scale = scale;
+    }
+
+    public void setScale(float scl){
+        scale.x = scl;
+        scale.y = scl;
+        scale.z = scl;
     }
 }

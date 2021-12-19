@@ -2,6 +2,7 @@ package dotj.gameobjects;
 
 import com.jme3.bullet.objects.PhysicsBody;
 import dotj.*;
+import dotj.gameobjects.components.MeshInstance;
 import dotj.gameobjects.components.PhysicsBox;
 import dotj.physics.PhysicsWorld;
 import dotj.shaders.WorldShader;

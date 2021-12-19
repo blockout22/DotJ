@@ -2,6 +2,7 @@ package dotj.gameobjects;
 
 import dotj.*;
 import dotj.gameobjects.components.Component;
+import dotj.gameobjects.components.MeshInstance;
 import dotj.shaders.WorldShader;
 import org.joml.Vector3f;
 
@@ -28,7 +29,7 @@ public class Monkey extends GameObject{
         for(int i = 0; i < 1000; i++){
 //            Vector3f rotation = new Vector3f(-90, 0, 90);
             Vector3f rotation = new Vector3f(r.nextFloat() * 360f, r.nextFloat() * 360f, r.nextFloat() * 360f);
-            MeshInstance instance = new MeshInstance(mesh, new Vector3f(r.nextFloat() * 100, r.nextFloat() * 100, r.nextFloat() * 100), rotation, 1f) {
+            MeshInstance instance = new MeshInstance(mesh, new Vector3f(r.nextFloat() * 100, r.nextFloat() * 100, r.nextFloat() * 100), rotation, new Vector3f(1f, 1f, 1f)) {
                 @Override
                 public void execute() {
 

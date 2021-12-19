@@ -1,5 +1,6 @@
 package dotj.gameobjects;
 
+import dotj.Transform;
 import dotj.gameobjects.components.Component;
 
 import java.util.ArrayList;
@@ -9,10 +10,12 @@ public abstract class GameObject {
 //    private GameObject parent;
 //    private ArrayList<GameObject> children = new ArrayList<>();
 
-    public ArrayList<dotj.gameobjects.components.Component> components = new ArrayList<>();
+    public ArrayList<Component> components = new ArrayList<>();
+
+    private Transform transform;
 
     public GameObject(){
-
+        transform = new Transform();
     }
 
     /**
@@ -37,9 +40,15 @@ public abstract class GameObject {
         render();
     }
 
+    public Transform getTransform() {
+        return transform;
+    }
 
+    public void setTransform(Transform transform) {
+        this.transform = transform;
+    }
 
-//    public void setParent(GameObject parent) {
+    //    public void setParent(GameObject parent) {
 //        this.parent = parent;
 //    }
 //
@@ -55,12 +64,12 @@ public abstract class GameObject {
 //        children.remove(gameObject);
 //    }
 
-    public ArrayList<dotj.gameobjects.components.Component> getComponents()
+    public ArrayList<Component> getComponents()
     {
         return components;
     }
 
-    public void addComponent(dotj.gameobjects.components.Component component){
+    public void addComponent(Component component){
         components.add(component);
     }
 

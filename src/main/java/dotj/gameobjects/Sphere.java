@@ -2,6 +2,7 @@ package dotj.gameobjects;
 
 import dotj.*;
 import dotj.gameobjects.components.Component;
+import dotj.gameobjects.components.MeshInstance;
 import dotj.gameobjects.components.PhysicsBox;
 import dotj.physics.PhysicsWorld;
 import dotj.shaders.WorldShader;
@@ -32,37 +33,37 @@ public class Sphere extends GameObject{
 //        mesh = ModelLoader.load("cube.obj");
 
         Random r = new Random();
-        MeshInstance instance = new MeshInstance(mesh, new Vector3f(0, 5, -15), new Vector3f(r.nextInt(360), r.nextInt(360), r.nextInt(360)), 1f) {
+        MeshInstance instance = new MeshInstance(mesh, new Vector3f(0, 5, -15), new Vector3f(r.nextInt(360), r.nextInt(360), r.nextInt(360)), new Vector3f(1f, 1f, 1f)) {
             public void execute() {
             }
         };
 
-        MeshInstance instance2 = new MeshInstance(mesh, new Vector3f(-5, 5, -25), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), 1f) {
+        MeshInstance instance2 = new MeshInstance(mesh, new Vector3f(-5, 5, -25), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), new Vector3f(1f, 1f, 1f)) {
             public void execute() {
             }
         };
 
-        MeshInstance lightInstance = new MeshInstance(mesh, new Vector3f(4, 15, 45), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), .2f) {
+        MeshInstance lightInstance = new MeshInstance(mesh, new Vector3f(4, 15, 45), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), new Vector3f(.2f, .2f, .2f)) {
             public void execute() {
             }
         };
 
-        MeshInstance instance4 = new MeshInstance(mesh, new Vector3f(4, 10, -25), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), 3f) {
+        MeshInstance instance4 = new MeshInstance(mesh, new Vector3f(4, 10, -25), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), new Vector3f(3f, 3f, 3f)) {
             public void execute() {
             }
         };
 
-        MeshInstance instance5 = new MeshInstance(mesh, new Vector3f(15, 5, -11), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), 1f) {
+        MeshInstance instance5 = new MeshInstance(mesh, new Vector3f(15, 5, -11), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), new Vector3f(1f, 1f, 1f)) {
             public void execute() {
             }
         };
 
-        MeshInstance instance6 = new MeshInstance(mesh, new Vector3f(5, 5, -1), new Vector3f(0, 0, 0), 1f) {
+        MeshInstance instance6 = new MeshInstance(mesh, new Vector3f(5, 5, -1), new Vector3f(0, 0, 0), new Vector3f(1f, 1f, 1f)) {
             public void execute() {
             }
         };
 
-        MeshInstance instance7 = new MeshInstance(mesh, new Vector3f(15, 10, -15), new Vector3f(0, 0, 0), 2f) {
+        MeshInstance instance7 = new MeshInstance(mesh, new Vector3f(15, 10, -15), new Vector3f(0, 0, 0), new Vector3f(2f, 2f, 2f)) {
             public void execute() {
             }
         };

@@ -3,6 +3,7 @@ package dotj;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+import dotj.gameobjects.components.MeshInstance;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -118,14 +119,14 @@ public class Mesh {
 
     }
 
-    private Matrix4 createTransformationMatrix(Vector3f translation, Vector3f rotation, float scale) {
+    private Matrix4 createTransformationMatrix(Vector3f translation, Vector3f rotation, Vector3f scale) {
         Matrix4 matrix = new Matrix4();
         matrix.setIdentity();
         Matrix4.translate(translation, matrix, matrix);
         Matrix4.rotate((float) Math.toRadians(rotation.x), new Vector3f(1, 0, 0), matrix, matrix);
         Matrix4.rotate((float) Math.toRadians(rotation.y), new Vector3f(0, 1, 0), matrix, matrix);
         Matrix4.rotate((float) Math.toRadians(rotation.z), new Vector3f(0, 0, 1), matrix, matrix);
-        Matrix4.scale(new Vector3f(scale, scale, scale), matrix, matrix);
+        Matrix4.scale(scale, matrix, matrix);
 
         return matrix;
     }
