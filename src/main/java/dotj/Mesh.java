@@ -100,7 +100,7 @@ public class Mesh {
 
     }
 
-    public void render(Shader shader, int modelMatrix, MeshInstance object, PerspectiveCamera camera) {
+    public void render(int modelMatrix, MeshInstance object, PerspectiveCamera camera) {
 //        GL11.glBindTexture(GL11.GL_TEXTURE_2D, object.getMaterial().getDiffuse());
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, object.getTextureID());
@@ -112,7 +112,7 @@ public class Mesh {
 
         if (camera.isInBounds(object.getWorldTransform().getPosition().x, object.getWorldTransform().getPosition().y, object.getWorldTransform().getPosition().z)) {
             Matrix4 transformationMatrix = createTransformationMatrix(object.getWorldTransform().getPosition(), object.getWorldTransform().getRotation(), object.getWorldTransform().getScale());
-            shader.loadMatrix(modelMatrix, transformationMatrix);
+            Shader.loadMatrix(modelMatrix, transformationMatrix);
 //            object.update();
             GL11.glDrawElements(GL11.GL_TRIANGLES, indicesSize, GL11.GL_UNSIGNED_INT, 0);
         }

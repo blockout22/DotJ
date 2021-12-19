@@ -14,9 +14,7 @@ public abstract class GameObject {
 
     private Transform transform;
 
-    public GameObject(){
-        transform = new Transform();
-    }
+    public GameObject(){transform = new Transform();}
 
     /**
      * Will be called by the Level

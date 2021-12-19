@@ -18,7 +18,7 @@ public abstract class Shader {
     private int vertex;
     private int fragment;
 
-    private FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(4 * 4);
+    private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(4 * 4);
 
     private ArrayList<String> uniformsDetection = new ArrayList<String>();
 
@@ -63,7 +63,7 @@ public abstract class Shader {
         GL20.glUseProgram(0);
     }
 
-    public void loadMatrix(int location, Matrix4 matrix){
+    public static void loadMatrix(int location, Matrix4 matrix){
         matrix.store(matrixBuffer);
         matrixBuffer.flip();
         GL20.glUniformMatrix4fv(location, false, matrixBuffer);

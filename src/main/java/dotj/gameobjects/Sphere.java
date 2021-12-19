@@ -30,11 +30,11 @@ public class Sphere extends GameObject{
 
     @Override
     public void init() {
-        mesh = ModelLoader.load("cube.fbx");
+        mesh = ModelLoader.load("sphere.fbx");
 //        mesh = ModelLoader.load("cube.obj");
 
         Random r = new Random();
-        instance = new MeshInstance(this, mesh, new Vector3f(0, 5, -15), new Vector3f(r.nextInt(360), r.nextInt(360), r.nextInt(360)), new Vector3f(1f, 1f, 1f));
+        instance = new MeshInstance(this, mesh, new Vector3f(0, 5, -15), new Vector3f(r.nextInt(360), r.nextInt(360), r.nextInt(360)), new Vector3f(1.13f, 1.13f, 1.13f));
 
         MeshInstance instance2 = new MeshInstance(this, mesh, new Vector3f(-5, 5, -25), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), new Vector3f(1f, 1f, 1f));
 
@@ -63,8 +63,6 @@ public class Sphere extends GameObject{
         addComponent(instance6);
         addComponent(instance7);
 
-        instance7.setScale(5f);
-
         sphereTexture = TextureLoader.loadTexture("container2.png");
         instance.setTextureID(sphereTexture.getID());
         instance2.setTextureID(sphereTexture.getID());
@@ -91,6 +89,8 @@ public class Sphere extends GameObject{
 //        instance6.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
 //        instance7.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
 
+        getTransform().setPosition(new Vector3f(10, 0, 0));
+
 //        BoundingBox bb = mesh.getBoundingBox();
 //        box = new PhysicsBox(physicsWorld, (bb.max.x-bb.min.x) / 2, (bb.max.y-bb.min.y) / 2, (bb.max.z-bb.min.z) / 2, 1);
 //        box = new PhysicsBox(physicsWorld, 10, 10, 10, 1);
@@ -106,7 +106,7 @@ public class Sphere extends GameObject{
                     MeshInstance instance = (MeshInstance) component;
                     shader.setColor(instance.getColor());
                     shader.setMaterial(instance.getMaterial());
-                    mesh.render(instance.getShader(), instance.getShader().getModelMatrix(), instance, camera);
+                    mesh.render(instance.getShader().getModelMatrix(), instance, camera);
                 }
             }
         }

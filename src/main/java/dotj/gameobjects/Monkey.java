@@ -44,7 +44,7 @@ public class Monkey extends GameObject{
             for(Component component : getComponents()){
                 MeshInstance instance = (MeshInstance) component;
                 shader.setColor(instance.getColor());
-                mesh.render(instance.getShader(), instance.getShader().getModelMatrix(), instance, camera);
+                mesh.render(instance.getShader().getModelMatrix(), instance, camera);
             }
         }
         mesh.disable();

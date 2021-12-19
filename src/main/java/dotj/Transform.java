@@ -28,15 +28,15 @@ public class Transform {
 
     public void add(Transform t1, Transform t2){
         float posx = t1.getPosition().x + t2.getPosition().x;
-        float posy = t1.getPosition().x + t2.getPosition().y;
+        float posy = t1.getPosition().y + t2.getPosition().y;
         float posz = t1.getPosition().z + t2.getPosition().z;
 
         float rotx = t1.getRotation().x + t2.getRotation().x;
-        float roty = t1.getRotation().x + t2.getRotation().y;
+        float roty = t1.getRotation().y + t2.getRotation().y;
         float rotz = t1.getRotation().z + t2.getRotation().z;
 
         float sclx = t1.getScale().x * t2.getScale().x;
-        float scly = t1.getScale().x * t2.getScale().y;
+        float scly = t1.getScale().y * t2.getScale().y;
         float sclz = t1.getScale().z * t2.getScale().z;
 
         setPosition(posx, posy, posz);
