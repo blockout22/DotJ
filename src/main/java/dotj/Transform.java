@@ -1,9 +1,11 @@
 package dotj;
 
+import dotj.interfaces.OnChangedListener;
 import org.joml.Vector3f;
 
 public class Transform {
 
+    private OnChangedListener onChangedListener;
     public Vector3f position;
     public Vector3f rotation;
     public Vector3f scale;
@@ -24,6 +26,10 @@ public class Transform {
 
     public Transform(){
         this(new Vector3f(0f, 0f, 0f));
+    }
+
+    public void setOnChangedListener(OnChangedListener onChangedListener){
+        this.onChangedListener = onChangedListener;
     }
 
     public void add(Transform t1, Transform t2){
@@ -50,6 +56,10 @@ public class Transform {
 
     public void setPosition(Vector3f position) {
         this.position = position;
+
+        if(onChangedListener != null){
+            onChangedListener.onChange();
+        }
     }
 
     public Vector3f getRotation() {
@@ -58,6 +68,10 @@ public class Transform {
 
     public void setRotation(Vector3f rotation) {
         this.rotation = rotation;
+
+        if(onChangedListener != null){
+            onChangedListener.onChange();
+        }
     }
 
     public Vector3f getScale() {
@@ -66,24 +80,40 @@ public class Transform {
 
     public void setScale(Vector3f scale) {
         this.scale = scale;
+
+        if(onChangedListener != null){
+            onChangedListener.onChange();
+        }
     }
 
     public void setPosition(float x, float y, float z){
         position.x = x;
         position.y = y;
         position.z = z;
+
+        if(onChangedListener != null){
+            onChangedListener.onChange();
+        }
     }
 
     public void setRotation(float x, float y, float z){
         rotation.x = x;
         rotation.y = y;
         rotation.z = z;
+
+        if(onChangedListener != null){
+            onChangedListener.onChange();
+        }
     }
 
     public void setScale(float x, float y, float z){
         scale.x = x;
         scale.y = y;
         scale.z = z;
+
+        if(onChangedListener != null){
+            onChangedListener.onChange();
+        }
     }
 
     public String toString(){

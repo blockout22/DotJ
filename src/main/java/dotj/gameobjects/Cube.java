@@ -18,6 +18,7 @@ public class Cube extends GameObject{
     private PerspectiveCamera camera;
     private WorldShader shader;
     private PhysicsWorld physicsWorld;
+    private PhysicsBox box;
 
     public Cube(PerspectiveCamera camera, WorldShader shader, PhysicsWorld physicsWorld){
         this.camera =camera;
@@ -38,13 +39,16 @@ public class Cube extends GameObject{
         addComponent(instance);
 
         BoundingBox bb = mesh.getBoundingBox();
-        PhysicsBox box = new PhysicsBox(physicsWorld, (bb.max.x-bb.min.x) / 2, (bb.max.y-bb.min.y) / 2, (bb.max.z-bb.min.z) / 2, PhysicsBody.massForStatic);
+        box = new PhysicsBox(physicsWorld, (bb.max.x-bb.min.x) / 2, (bb.max.y-bb.min.y) / 2, (bb.max.z-bb.min.z) / 2, PhysicsBody.massForStatic);
         addComponent(box);
 
-        getTransform().setPosition(new Vector3f(1.2f, 2, -5.6f));
-//        getTransform().setPosition(new Vector3f(0, 10, 0));
 
-        instance.getTransform().setPosition(new Vector3f(0, 0, 0));
+
+        getTransform().setPosition(new Vector3f(1.2f, 5, -5.6f));
+
+        instance.getTransform().setPosition(new Vector3f(0, 100, 0));
+
+        box.setPosition(instance.getWorldTransform().getPosition().x, instance.getWorldTransform().getPosition().y, instance.getWorldTransform().getPosition().z);
 
     }
 
@@ -53,6 +57,11 @@ public class Cube extends GameObject{
         mesh.enable();
         {
             mesh.render(instance.getShader().getModelMatrix(), instance, camera);
+
+
+//            instance.setWorldTransform(box.getTransform(instance.getTransform()));
+//            Transform t = box.getTransform(instance.getTransform());
+//            System.out.println(t);
         }
         mesh.disable();
 

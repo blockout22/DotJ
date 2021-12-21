@@ -39,6 +39,11 @@ public class MeshInstance implements Component {
         material = new Material();
 
         this.worldTransform = new Transform();
+        calculateWorldTransform();
+
+        transform.setOnChangedListener(() ->{
+            calculateWorldTransform();
+        });
     }
 
     public MeshInstance(GameObject gameObject, Mesh mesh, Vector3f position, Vector3f rotation, Vector3f scale) {
@@ -72,7 +77,7 @@ public class MeshInstance implements Component {
 
     @Override
     public void execute() {
-        calculateWorldTransform();
+
     }
 
     private void calculateWorldTransform() {
@@ -90,7 +95,6 @@ public class MeshInstance implements Component {
         getTransform().rotation.z = transform.getRotation().z - getWorldTransform().getRotation().z;
 
         getTransform().setScale(transform.scale);
-
     }
 
     public Vector3f getColor() {

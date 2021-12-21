@@ -168,6 +168,7 @@ public class JApp extends App {
                 vgRenderer.setPos(camera.getPosition());
 //                light.setDirection(new Vector3f(r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1));
                 fps = 0;
+//                physicsWorld.step();
             }
             fps++;
 
@@ -222,7 +223,7 @@ public class JApp extends App {
             }
 
             Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_H, () -> {
-                System.out.println("go transform- " + sphere.getTransform() + " : inst transform- " + cube.instance.getTransform() + " : inst world transform- " + sphere.instance.getWorldTransform());
+                System.out.println("go transform- " + cube.getTransform() + " : inst transform- " + cube.instance.getTransform() + " : inst world transform- " + cube.instance.getWorldTransform());
             }, () -> {
 
             });
