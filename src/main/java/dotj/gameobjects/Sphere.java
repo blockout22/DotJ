@@ -9,6 +9,9 @@ import dotj.shaders.WorldShader;
 import org.joml.Random;
 import org.joml.Vector3f;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class Sphere extends GameObject{
 
     private PerspectiveCamera camera;
@@ -30,7 +33,7 @@ public class Sphere extends GameObject{
 
     @Override
     public void init() {
-        mesh = ModelLoader.load("sphere.fbx");
+        mesh = ModelLoader.load("cube.fbx");
 //        mesh = ModelLoader.load("cube.obj");
 
         Random r = new Random();
@@ -63,7 +66,7 @@ public class Sphere extends GameObject{
         addComponent(instance6);
         addComponent(instance7);
 
-        sphereTexture = TextureLoader.loadTexture("container2.png");
+        sphereTexture = TextureLoader.loadTexture("window-transparent.png");
         instance.setTextureID(sphereTexture.getID());
         instance2.setTextureID(sphereTexture.getID());
         lightInstance.setTextureID(sphereTexture.getID());
@@ -97,20 +100,29 @@ public class Sphere extends GameObject{
 //        addComponent(box);
     }
 
+    private HashMap<Float, MeshInstance> sorted = new HashMap<>();
+
     @Override
     public void render() {
         mesh.enable();
         {
-            for(Component component : getComponents()){
-                if(component instanceof MeshInstance) {
+            sorted.clear();
+            for (Component component : getComponents()) {
+                if (component instanceof MeshInstance) {
                     MeshInstance instance = (MeshInstance) component;
-                    shader.setColor(instance.getColor());
-                    shader.setMaterial(instance.getMaterial());
-                    mesh.render(instance.getShader().getModelMatrix(), instance, camera);
+                    Vector3f vec = new Vector3f();
+                    float distance = camera.getPosition().distance(instance.getWorldTransform().getPosition());
+                    sorted.put(distance, instance);
                 }
             }
+
+            for (MeshInstance inst : sorted.values()) {
+                shader.setColor(inst.getColor());
+                shader.setMaterial(inst.getMaterial());
+                mesh.render(inst.getShader().getModelMatrix(), inst, camera);
+            }
+            mesh.disable();
         }
-        mesh.disable();
 
     }
 

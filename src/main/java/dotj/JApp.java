@@ -165,7 +165,7 @@ public class JApp extends App {
 
         stencilTestMesh = ModelLoader.load("cube.fbx");
         stencilTestMeshInstance = new MeshInstance(null, stencilTestMesh);
-        stencilTestMeshInstance.getWorldTransform().setPosition(new Vector3f(0, 10, 0));
+        stencilTestMeshInstance.getWorldTransform().setPosition(new Vector3f(-25, 5, 0));
     }
 
 
@@ -191,6 +191,8 @@ public class JApp extends App {
             glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
             glEnable(GL_MULTISAMPLE);
             glEnable(GL_FRAMEBUFFER_SRGB);
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);

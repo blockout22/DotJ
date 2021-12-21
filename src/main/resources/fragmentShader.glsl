@@ -96,6 +96,12 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir){
 
 
 void main(void){
+	vec4 texColor = texture(material.diffuse, texCoordinates);
+
+	if(texColor.a < 0.1){
+		discard;
+	}
+
 	vec3 norm = normalize(outNormal);
 	vec3 viewDir = normalize(viewPos - FragPos);
 
@@ -107,10 +113,12 @@ void main(void){
 		}
 	}
 
-	float gamma = 2.2;
-	vec3 diffuseColor = pow(texture(material.diffuse, texCoordinates).rgb, vec3(gamma));
 
-	out_Color = vec4(vec3(result * diffuseColor) , 1.0);
+
+	float gamma = 2.2;
+	vec3 diffuseColor = pow(texColor.rgb, vec3(gamma));
+
+	out_Color = vec4(vec3(result * diffuseColor) , texColor.a);
 
 	//depth view
 //	out_Color = vec4(vec3(gl_FragCoord.z), 1.0);
