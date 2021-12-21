@@ -58,7 +58,7 @@ public abstract class Shader {
         GL20.glUseProgram(program);
     }
 
-    public void unbind()
+    public static void unbind()
     {
         GL20.glUseProgram(0);
     }

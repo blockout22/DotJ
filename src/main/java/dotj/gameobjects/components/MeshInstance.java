@@ -81,7 +81,9 @@ public class MeshInstance implements Component {
     }
 
     private void calculateWorldTransform() {
-        worldTransform.add(parent.getTransform(), transform);
+        if(parent != null) {
+            worldTransform.add(parent.getTransform(), transform);
+        }
 //        System.out.println(worldTransform);
     }
 

@@ -1,10 +1,8 @@
 package dotj;
 
 import dotj.UI.Nano.vg.NanoVGRenderer;
-import dotj.gameobjects.Cube;
-import dotj.gameobjects.Floor;
-import dotj.gameobjects.Monkey;
-import dotj.gameobjects.Sphere;
+import dotj.gameobjects.*;
+import dotj.gameobjects.components.MeshInstance;
 import dotj.input.GLFWKey;
 import dotj.input.Input;
 import dotj.interfaces.OnFinishedListener;
@@ -12,6 +10,7 @@ import dotj.light.DirectionalLight;
 import dotj.light.PointLight;
 import dotj.physics.PhysicsWorld;
 import dotj.shaders.DepthShader;
+import dotj.shaders.OutlineColorShader;
 import dotj.shaders.WorldShader;
 import org.joml.Random;
 import org.joml.Vector2f;
@@ -31,7 +30,11 @@ public class JApp extends App {
     private int fps = 0;
 
     private PerspectiveCamera camera;
+
+    //Shaders
     private WorldShader worldShader;
+    private OutlineColorShader outlineColorShader;
+
     //private ArrayList<MeshInstance> instances = new ArrayList<>();
 
     //create a texture that will have the very first ID and any mesh without a texture assigned will use this one
@@ -51,6 +54,9 @@ public class JApp extends App {
     private Cube cube;
 
     private NanoVGRenderer vgRenderer;
+
+    private Mesh stencilTestMesh;
+    private MeshInstance stencilTestMeshInstance;
 
     public JApp(){
         init();
@@ -86,10 +92,14 @@ public class JApp extends App {
 
         camera = new PerspectiveCamera(window, 70, 0.1f, 100000f);
         camera.setPosition(new Vector3f(0, 10f, 10f));
-        worldShader = new WorldShader();
 
+        worldShader = new WorldShader();
         worldShader.bind();
         worldShader.loadMatrix(worldShader.getProjectionMatrix(), camera.getProjectionMatrix());
+
+        outlineColorShader = new OutlineColorShader();
+        outlineColorShader.bind();
+        outlineColorShader.loadMatrix(outlineColorShader.getProjectionMatrix(), camera.getProjectionMatrix());
 
         /** a way to load difference types of models using Assimp
         File file = new File("E:/LWJGL/DotJ/src/main/resources/test.obj");
@@ -152,6 +162,10 @@ public class JApp extends App {
                 System.out.println("Finished Loading Level");
             }
         });
+
+        stencilTestMesh = ModelLoader.load("cube.fbx");
+        stencilTestMeshInstance = new MeshInstance(null, stencilTestMesh);
+        stencilTestMeshInstance.getWorldTransform().setPosition(new Vector3f(0, 10, 0));
     }
 
 
@@ -174,12 +188,17 @@ public class JApp extends App {
 
             glClearColor(.48828125f, 0.8046875f, .91796875f, 1f);
             glEnable(GL_DEPTH_TEST);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+            glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
             glEnable(GL_MULTISAMPLE);
             glEnable(GL_FRAMEBUFFER_SRGB);
 
+
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
             worldShader.bind();
             {
+
+
 
 
                 worldShader.setViewPos(camera);
@@ -195,8 +214,11 @@ public class JApp extends App {
                 worldShader.loadViewMatrix(camera);
 
                 level.update();
+
+                stencilTest_Outline();
+
             }
-            worldShader.unbind();
+            Shader.unbind();
 
             vgRenderer.update();
 
@@ -252,6 +274,43 @@ public class JApp extends App {
         }
     }
 
+    private void stencilTest_Outline(){
+        //things to draw but not to the stencil buffer
+        glStencilMask(0x00);
+        {
+
+        }
+
+        //write to the stencil buffer
+        glStencilFunc(GL_ALWAYS, 1, 0xFF);
+        glStencilMask(0xFF);
+
+        stencilTestMesh.enable();
+        {
+            stencilTestMeshInstance.setColor(new Vector3f(100, 0, 0));
+            worldShader.setColor(stencilTestMeshInstance.getColor());
+            stencilTestMeshInstance.setWorldScale(1.0f);
+            stencilTestMesh.render(worldShader.getModelMatrix(), stencilTestMeshInstance, camera);
+        }
+        stencilTestMesh.disable();
+
+        glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+        glStencilMask(0x00);
+
+        glDisable(GL_DEPTH_TEST);
+        outlineColorShader.bind();
+        outlineColorShader.loadViewMatrix(camera);
+        stencilTestMesh.enable();
+        {
+            stencilTestMeshInstance.setWorldScale(1.05f);
+            stencilTestMesh.render(outlineColorShader.getModelMatrix(), stencilTestMeshInstance, camera);
+        }
+        stencilTestMesh.disable();
+        glStencilMask(0xFF);
+        glStencilFunc(GL_ALWAYS, 0, 0xFF);
+        glEnable(GL_DEPTH_TEST);
+    }
+
     @Override
     public void close() {
 
@@ -260,9 +319,11 @@ public class JApp extends App {
             t.cleanup();
         }
 
+        stencilTestMesh.cleanup();
         level.unload();
         vgRenderer.cleanup();
         defaultTexture.cleanup();
+        outlineColorShader.cleanup();
         worldShader.cleanup();
         window.close();
     }

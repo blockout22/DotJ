@@ -1,4 +1,4 @@
-#version 150
+#version 400
 
 in vec2 texCoordinates;
 in vec3 outNormal;
