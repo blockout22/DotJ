@@ -33,7 +33,7 @@ public class Sphere extends GameObject{
 
     @Override
     public void init() {
-        mesh = ModelLoader.load("cube.fbx");
+        mesh = ModelLoader.load("sphere.fbx");
 //        mesh = ModelLoader.load("cube.obj");
 
         Random r = new Random();
@@ -66,7 +66,7 @@ public class Sphere extends GameObject{
         addComponent(instance6);
         addComponent(instance7);
 
-        sphereTexture = TextureLoader.loadTexture("window-transparent.png");
+        sphereTexture = TextureLoader.loadTexture("container2.png");
         instance.setTextureID(sphereTexture.getID());
         instance2.setTextureID(sphereTexture.getID());
         lightInstance.setTextureID(sphereTexture.getID());
@@ -93,6 +93,16 @@ public class Sphere extends GameObject{
 //        instance7.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
 
         getTransform().setPosition(new Vector3f(10, 0, 0));
+
+        instance.showBoundingBox();
+        instance2.showBoundingBox(new Vector3f(0, 0, 255));
+        lightInstance.showBoundingBox(new Vector3f(0, 255, 0));
+        instance4.showBoundingBox();
+        instance5.showBoundingBox();
+        instance6.showBoundingBox();
+        instance7.showBoundingBox();
+
+//        lightInstance.setWorldTransform(new Transform(new Vector3f(), new Vector3f(), new Vector3f(1f, 1f, 1f)));
 
 //        BoundingBox bb = mesh.getBoundingBox();
 //        box = new PhysicsBox(physicsWorld, (bb.max.x-bb.min.x) / 2, (bb.max.y-bb.min.y) / 2, (bb.max.z-bb.min.z) / 2, 1);

@@ -99,9 +99,9 @@ public class DebugRender {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbois.get(i));
 
             {
-                Vector3f position = new Vector3f();
-                Vector3f rotation = new Vector3f();
-                Vector3f scale = new Vector3f(1f, 1f, 1f);
+//                Vector3f position = new Vector3f();
+//                Vector3f rotation = new Vector3f();
+//                Vector3f scale = new Vector3f(1f, 1f, 1f);
                 Matrix4 transformationMatrix = createTransformationMatrix(instances.get(i).position, instances.get(i).rotation, instances.get(i).scale);
                 Shader.loadMatrix(shader.getModelMatrix(), transformationMatrix);
                 shader.setColor(instances.get(i).getColor());

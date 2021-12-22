@@ -61,13 +61,18 @@ public class MeshInstance implements Component {
      * only call once, use DebugInstances[] if Transform needs updated
      */
     public DebugInstance[] showBoundingBox(){
+        return showBoundingBox(new Vector3f(255, 0, 0));
+    }
+
+    public DebugInstance[] showBoundingBox(Vector3f color){
         DebugInstance[] DebugInstances = DebugRender.addCubeRender(mesh.getBoundingBox().getMin(), mesh.getBoundingBox().getMax());
 
         for(DebugInstance c : DebugInstances){
+            c.setColor(color);
             c.setPosition(getWorldTransform().getPosition());
             c.setRotation(getWorldTransform().getRotation());
             c.setScale(getWorldTransform().getScale());
-      }
+        }
 
         return DebugInstances;
     }
