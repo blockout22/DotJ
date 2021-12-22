@@ -98,8 +98,8 @@ public class ModelLoader {
 
         Mesh mesh = new Mesh();
         mesh.add(vertices, texCoods, normals, indices);
-        mesh.setAABB(new Vector3f(aabb.mMin().x(), aabb.mMin().y(), aabb.mMin().z()), new Vector3f(aabb.mMax().x(), aabb.mMax().y(), aabb.mMax().z()));
-
+//        mesh.setAABB(new Vector3f(aabb.mMin().x(), aabb.mMin().y(), aabb.mMin().z()), new Vector3f(aabb.mMax().x(), aabb.mMax().y(), aabb.mMax().z()));
+        mesh.setIsModel();
 //        scene.free();
 //        buff.free();
 //        aiMesh.free();

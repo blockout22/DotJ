@@ -88,7 +88,7 @@ public class OBJLoader {
 
             Mesh mesh = new Mesh();
             mesh.add(finalVertices, finalTexCoords, finalNormals, finalIndices);
-            mesh.setOBJ();
+            mesh.setIsModel();
 
             return mesh;
         } catch (Exception e) {

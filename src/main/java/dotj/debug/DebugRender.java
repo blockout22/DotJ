@@ -104,7 +104,7 @@ public class DebugRender {
                 Vector3f scale = new Vector3f(1f, 1f, 1f);
                 Matrix4 transformationMatrix = createTransformationMatrix(instances.get(i).position, instances.get(i).rotation, instances.get(i).scale);
                 Shader.loadMatrix(shader.getModelMatrix(), transformationMatrix);
-                shader.setColor(new Vector3f(255, 0, 0));
+                shader.setColor(instances.get(i).getColor());
 
                 glLineWidth(2);
                 glDrawElements(GL_LINES, 2, GL_UNSIGNED_INT, 0);

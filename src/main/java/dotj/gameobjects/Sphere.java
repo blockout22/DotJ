@@ -113,14 +113,19 @@ public class Sphere extends GameObject{
                     Vector3f vec = new Vector3f();
                     float distance = camera.getPosition().distance(instance.getWorldTransform().getPosition());
                     sorted.put(distance, instance);
+
+                    mesh.render(shader.getModelMatrix(), instance, camera);
                 }
             }
 
-            for (MeshInstance inst : sorted.values()) {
-                shader.setColor(inst.getColor());
-                shader.setMaterial(inst.getMaterial());
-                mesh.render(inst.getShader().getModelMatrix(), inst, camera);
-            }
+            /**
+             * render instance in a sorted fashion
+             */
+//            for (MeshInstance inst : sorted.values()) {
+//                shader.setColor(inst.getColor());
+//                shader.setMaterial(inst.getMaterial());
+//                mesh.render(inst.getShader().getModelMatrix(), inst, camera);
+//            }
             mesh.disable();
         }
 

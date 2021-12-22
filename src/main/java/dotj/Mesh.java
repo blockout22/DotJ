@@ -1,11 +1,7 @@
 package dotj;
 
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-
 import dotj.gameobjects.components.MeshInstance;
 import org.joml.Vector3f;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
@@ -22,7 +18,7 @@ public class Mesh {
     private int vboi;
 
     private int indicesSize;
-    private boolean isOBJ = false;
+    private boolean isModel = false;
 
     private BoundingBox boundingBox;
 
@@ -36,9 +32,51 @@ public class Mesh {
         this.boundingBox = new BoundingBox();
     }
 
-    public void setAABB(Vector3f min, Vector3f max){
+    public void setBoundingBox(Vector3f min, Vector3f max){
         boundingBox.setMin(min);
         boundingBox.setMax(max);
+    }
+
+    private void calculateBoundingBox(float[] vertices){
+        float minX = Float.MAX_VALUE;
+        float minY = Float.MAX_VALUE;
+        float minZ = Float.MAX_VALUE;
+
+        float maxX = Float.MIN_VALUE;
+        float maxY = Float.MIN_VALUE;
+        float maxZ = Float.MIN_VALUE;
+
+        for(int i = 0; i < vertices.length; i+= 3){
+            float x = vertices[i + 0];
+            float y = vertices[i + 1];
+            float z = vertices[i + 2];
+
+            if(x < minX){
+                minX = x;
+            }
+
+            if(y < minY){
+                minY = y;
+            }
+
+            if(z < minZ){
+                minZ = z;
+            }
+
+            if(x > maxX){
+                maxX = x;
+            }
+
+            if(y > maxY){
+                maxY = y;
+            }
+
+            if(z > maxZ){
+                maxZ = z;
+            }
+
+            setBoundingBox(new Vector3f(minX, minY, minZ), new Vector3f(maxX, maxY, maxZ));
+        }
     }
 
     public BoundingBox getBoundingBox(){
@@ -47,8 +85,8 @@ public class Mesh {
 
     public void add(float[] vertices, float[] texCoords, float[] normals, int[] indices) {
         this.texCoords = texCoords;
-        if (isOBJ) {
-            System.out.println("Something tried overriding .OBJ coords");
+        if (isModel) {
+            System.out.println("Something tried overriding model coords");
             return;
         }
         indicesSize = indices.length;
@@ -76,6 +114,7 @@ public class Mesh {
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 
         // setBox(vertices);
+        calculateBoundingBox(vertices);
 
     }
 
@@ -86,8 +125,8 @@ public class Mesh {
         }
     }
 
-    protected void setOBJ() {
-        isOBJ = true;
+    protected void setIsModel() {
+        isModel = true;
     }
 
     public void enable() {

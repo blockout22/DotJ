@@ -21,11 +21,6 @@ public class Cube extends GameObject{
     private PhysicsWorld physicsWorld;
     private PhysicsBox box;
 
-    //debug stuff
-    DebugInstance[] instances;
-    private Vector3f debugRot = new Vector3f();
-    private Vector3f debugPos = new Vector3f();
-
     public Cube(PerspectiveCamera camera, WorldShader shader, PhysicsWorld physicsWorld){
         this.camera =camera;
         this.shader = shader;
@@ -44,7 +39,7 @@ public class Cube extends GameObject{
         instance.setTextureID(texture.getID());
         addComponent(instance);
 
-        mesh.setAABB(new Vector3f(-2, -2, -2), new Vector3f(2, 2, 2));
+//        mesh.setAABB(new Vector3f(-2, -2, -2), new Vector3f(2, 2, 2));
 
         BoundingBox bb = mesh.getBoundingBox();
         box = new PhysicsBox(physicsWorld, (bb.max.x-bb.min.x) / 2, (bb.max.y-bb.min.y) / 2, (bb.max.z-bb.min.z) / 2, PhysicsBody.massForStatic);
@@ -59,7 +54,7 @@ public class Cube extends GameObject{
 
         box.setPosition(instance.getWorldTransform().getPosition().x, instance.getWorldTransform().getPosition().y, instance.getWorldTransform().getPosition().z);
 
-        instances = DebugRender.addCubeRender(min, max);
+        instance.showBoundingBox();
     }
 
     @Override
@@ -67,13 +62,6 @@ public class Cube extends GameObject{
         mesh.enable();
         {
             mesh.render(instance.getShader().getModelMatrix(), instance, camera);
-
-            debugRot.add(0.1f, 0.01f, 0.1f);
-            debugPos.add(0f, 0f, -0.01f);
-            for(DebugInstance instance : instances){
-                instance.setRotation(debugRot);
-                instance.setPosition(debugPos);
-            }
 //            instance.setWorldTransform(box.getTransform(instance.getTransform()));
 //            Transform t = box.getTransform(instance.getTransform());
 //            System.out.println(t);

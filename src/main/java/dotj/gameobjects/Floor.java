@@ -2,6 +2,8 @@ package dotj.gameobjects;
 
 import com.jme3.bullet.objects.PhysicsBody;
 import dotj.*;
+import dotj.debug.DebugInstance;
+import dotj.debug.DebugRender;
 import dotj.gameobjects.components.MeshInstance;
 import dotj.gameobjects.components.PhysicsBox;
 import dotj.physics.PhysicsWorld;
@@ -34,6 +36,8 @@ public class Floor extends GameObject{
         floorInstance.setTextureID(floorTexture.getID());
         floorInstance.getTransform().setRotation(new Vector3f(-90, 0, 90));
         addComponent(floorInstance);
+
+        floorInstance.showBoundingBox();
     }
 
     @Override

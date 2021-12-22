@@ -3,6 +3,8 @@ package dotj.gameobjects.components;
 import dotj.Material;
 import dotj.Mesh;
 import dotj.Transform;
+import dotj.debug.DebugInstance;
+import dotj.debug.DebugRender;
 import dotj.gameobjects.GameObject;
 import dotj.gameobjects.components.Component;
 import dotj.shaders.WorldShader;
@@ -53,6 +55,21 @@ public class MeshInstance implements Component {
     public MeshInstance(GameObject gameObject, Mesh mesh){
         this(gameObject, mesh, new Vector3f(0f,0f,0f), new Vector3f(0f, 0f, 0f), new Vector3f(1f, 1f, 1f));
 
+    }
+
+    /**
+     * only call once, use DebugInstances[] if Transform needs updated
+     */
+    public DebugInstance[] showBoundingBox(){
+        DebugInstance[] DebugInstances = DebugRender.addCubeRender(mesh.getBoundingBox().getMin(), mesh.getBoundingBox().getMax());
+
+        for(DebugInstance c : DebugInstances){
+            c.setPosition(getWorldTransform().getPosition());
+            c.setRotation(getWorldTransform().getRotation());
+            c.setScale(getWorldTransform().getScale());
+      }
+
+        return DebugInstances;
     }
 
     public WorldShader getShader() {
