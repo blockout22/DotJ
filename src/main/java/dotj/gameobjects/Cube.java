@@ -2,6 +2,7 @@ package dotj.gameobjects;
 
 import com.jme3.bullet.objects.PhysicsBody;
 import dotj.*;
+import dotj.debug.DebugRender;
 import dotj.gameobjects.components.Component;
 import dotj.gameobjects.components.MeshInstance;
 import dotj.gameobjects.components.PhysicsBox;
@@ -38,18 +39,22 @@ public class Cube extends GameObject{
         instance.setTextureID(texture.getID());
         addComponent(instance);
 
+        mesh.setAABB(new Vector3f(-2, -2, -2), new Vector3f(2, 2, 2));
+
         BoundingBox bb = mesh.getBoundingBox();
         box = new PhysicsBox(physicsWorld, (bb.max.x-bb.min.x) / 2, (bb.max.y-bb.min.y) / 2, (bb.max.z-bb.min.z) / 2, PhysicsBody.massForStatic);
         addComponent(box);
 
-
+        Vector3f min = mesh.getBoundingBox().getMin();
+        Vector3f max = mesh.getBoundingBox().getMax();
 
         getTransform().setPosition(new Vector3f(1.2f, 5, -5.6f));
 
-        instance.getTransform().setPosition(new Vector3f(0, 100, 0));
+        instance.getTransform().setPosition(new Vector3f(0, 5, 0));
 
         box.setPosition(instance.getWorldTransform().getPosition().x, instance.getWorldTransform().getPosition().y, instance.getWorldTransform().getPosition().z);
 
+        DebugRender.addCubeRender(min, max);
     }
 
     @Override

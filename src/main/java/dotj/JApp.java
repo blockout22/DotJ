@@ -1,6 +1,7 @@
 package dotj;
 
 import dotj.UI.Nano.vg.NanoVGRenderer;
+import dotj.debug.DebugRender;
 import dotj.gameobjects.*;
 import dotj.gameobjects.components.MeshInstance;
 import dotj.input.GLFWKey;
@@ -9,11 +10,9 @@ import dotj.interfaces.OnFinishedListener;
 import dotj.light.DirectionalLight;
 import dotj.light.PointLight;
 import dotj.physics.PhysicsWorld;
-import dotj.shaders.DepthShader;
 import dotj.shaders.OutlineColorShader;
 import dotj.shaders.WorldShader;
 import org.joml.Random;
-import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -168,7 +167,6 @@ public class JApp extends App {
         stencilTestMeshInstance.getWorldTransform().setPosition(new Vector3f(-25, 5, 0));
     }
 
-
     @Override
     public void update() {
         while(!window.shouldClose() && !Global.shouldClose){
@@ -199,10 +197,6 @@ public class JApp extends App {
 
             worldShader.bind();
             {
-
-
-
-
                 worldShader.setViewPos(camera);
 
                 worldShader.setPointLight(pointLight, 0);
@@ -216,6 +210,8 @@ public class JApp extends App {
                 worldShader.loadViewMatrix(camera);
 
                 level.update();
+
+                DebugRender.render(worldShader.getModelMatrix(), camera);
 
                 stencilTest_Outline();
 

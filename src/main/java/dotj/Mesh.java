@@ -55,24 +55,24 @@ public class Mesh {
         GL30.glBindVertexArray(vao);
 
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, flip(vertices), GL15.GL_STATIC_DRAW);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, Utilities.flip(vertices), GL15.GL_STATIC_DRAW);
         GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboTexture);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, flip(texCoords), GL15.GL_STATIC_DRAW);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, Utilities.flip(texCoords), GL15.GL_STATIC_DRAW);
         GL20.glVertexAttribPointer(1, 2, GL11.GL_FLOAT, false, 0, 0);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbon);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, flip(normals), GL15.GL_STATIC_DRAW);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, Utilities.flip(normals), GL15.GL_STATIC_DRAW);
         GL20.glVertexAttribPointer(2, 3, GL11.GL_FLOAT, false, 0, 0);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
         GL30.glBindVertexArray(0);
 
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboi);
-        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, flip(indices), GL15.GL_STATIC_DRAW);
+        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, Utilities.flip(indices), GL15.GL_STATIC_DRAW);
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 
         // setBox(vertices);
@@ -152,22 +152,6 @@ public class Mesh {
         GL15.glDeleteBuffers(fbo);
         GL15.glDeleteBuffers(vboi);
         GL30.glDeleteVertexArrays(vao);
-    }
-
-    private static IntBuffer flip(int[] data) {
-        IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
-        buffer.put(data);
-        buffer.flip();
-
-        return buffer;
-    }
-
-    private static FloatBuffer flip(float[] data) {
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
-        buffer.put(data);
-        buffer.flip();
-
-        return buffer;
     }
 
     public int getVao() {

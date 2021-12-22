@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SeekableByteChannel;
@@ -36,6 +38,22 @@ public class Utilities {
         String assetDir = curDir + File.separator + "Assets" + File.separator;
 
         return assetDir;
+    }
+
+    public static IntBuffer flip(int[] data) {
+        IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
+        buffer.put(data);
+        buffer.flip();
+
+        return buffer;
+    }
+
+    public static FloatBuffer flip(float[] data) {
+        FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
+        buffer.put(data);
+        buffer.flip();
+
+        return buffer;
     }
 
     public static String getShaderDir(){

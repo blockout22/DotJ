@@ -1,5 +1,6 @@
 package dotj.gameobjects.components;
 
+import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.objects.PhysicsRigidBody;
@@ -20,6 +21,12 @@ public class PhysicsBox implements Component {
 
     public void setMass(){
 
+    }
+
+    public BoundingBox getBoundingBox(){
+        BoundingBox results = new BoundingBox();
+        results = body.boundingBox(results);
+        return results;
     }
 
     public void setPosition(float x, float y, float z){
