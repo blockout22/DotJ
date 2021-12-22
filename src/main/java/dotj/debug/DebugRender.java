@@ -4,6 +4,7 @@ import dotj.Matrix4;
 import dotj.PerspectiveCamera;
 import dotj.Shader;
 import dotj.Utilities;
+import dotj.shaders.WorldShader;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class DebugRender {
 //    private int vbo;
 //    private int vboi;
 
+    private static  ArrayList<DebugInstance> instances = new ArrayList<>();
     private static ArrayList<Integer> vaos = new ArrayList<Integer>();
     private static ArrayList<Integer> vbos = new ArrayList<Integer>();
     private static ArrayList<Integer> vbois = new ArrayList<Integer>();
@@ -24,12 +26,14 @@ public class DebugRender {
 
     }
 
-    public static void add(Vector3f start, Vector3f end){
+    public static DebugInstance add(Vector3f start, Vector3f end){
 
+        DebugInstance instance = new DebugInstance();
         int vao = glGenVertexArrays();
         int vbo = glGenBuffers();
         int vboi = glGenBuffers();
 
+        instances.add(instance);
         vaos.add(vao);
         vbos.add(vbo);
         vbois.add(vboi);
@@ -56,29 +60,36 @@ public class DebugRender {
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, Utilities.flip(indices), GL_STATIC_DRAW);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+        return instance;
     }
 
-    public static void addCubeRender(Vector3f min, Vector3f max){
+    public static DebugInstance[] addCubeRender(Vector3f min, Vector3f max){
+
+        int i = 0;
+        DebugInstance[] instanceList = new DebugInstance[12];
+
         //front face
-        DebugRender.add(new Vector3f(min.x, max.y, min.z), new Vector3f(max.x, max.y, min.z));
-        DebugRender.add(new Vector3f(max.x, max.y, min.z), new Vector3f(max.x, min.y, min.z));
-        DebugRender.add(new Vector3f(max.x, min.y, min.z), new Vector3f(min.x, min.y, min.z));
-        DebugRender.add(new Vector3f(min.x, min.y, min.z), new Vector3f(min.x, max.y, min.z));
+        instanceList[i++] = DebugRender.add(new Vector3f(min.x, max.y, min.z), new Vector3f(max.x, max.y, min.z));
+        instanceList[i++] = DebugRender.add(new Vector3f(max.x, max.y, min.z), new Vector3f(max.x, min.y, min.z));
+        instanceList[i++] = DebugRender.add(new Vector3f(max.x, min.y, min.z), new Vector3f(min.x, min.y, min.z));
+        instanceList[i++] = DebugRender.add(new Vector3f(min.x, min.y, min.z), new Vector3f(min.x, max.y, min.z));
 
         //back face
-        DebugRender.add(new Vector3f(min.x, max.y, max.z), new Vector3f(max.x, max.y, max.z));
-        DebugRender.add(new Vector3f(max.x, max.y, max.z), new Vector3f(max.x, min.y, max.z));
-        DebugRender.add(new Vector3f(max.x, min.y, max.z), new Vector3f(min.x, min.y, max.z));
-        DebugRender.add(new Vector3f(min.x, min.y, max.z), new Vector3f(min.x, max.y, max.z));
+        instanceList[i++] = DebugRender.add(new Vector3f(min.x, max.y, max.z), new Vector3f(max.x, max.y, max.z));
+        instanceList[i++] = DebugRender.add(new Vector3f(max.x, max.y, max.z), new Vector3f(max.x, min.y, max.z));
+        instanceList[i++] = DebugRender.add(new Vector3f(max.x, min.y, max.z), new Vector3f(min.x, min.y, max.z));
+        instanceList[i++] = DebugRender.add(new Vector3f(min.x, min.y, max.z), new Vector3f(min.x, max.y, max.z));
 
         //sides
-        DebugRender.add(new Vector3f(max.x, max.y, min.z), new Vector3f(max.x, max.y, max.z));
-        DebugRender.add(new Vector3f(max.x, min.y, min.z), new Vector3f(max.x, min.y, max.z));
-        DebugRender.add(new Vector3f(min.x, max.y, min.z), new Vector3f(min.x, max.y, max.z));
-        DebugRender.add(new Vector3f(min.x, min.y, min.z), new Vector3f(min.x, min.y, max.z));
+        instanceList[i++] = DebugRender.add(new Vector3f(max.x, max.y, min.z), new Vector3f(max.x, max.y, max.z));
+        instanceList[i++] = DebugRender.add(new Vector3f(max.x, min.y, min.z), new Vector3f(max.x, min.y, max.z));
+        instanceList[i++] = DebugRender.add(new Vector3f(min.x, max.y, min.z), new Vector3f(min.x, max.y, max.z));
+        instanceList[i++] = DebugRender.add(new Vector3f(min.x, min.y, min.z), new Vector3f(min.x, min.y, max.z));
+
+        return instanceList;
     }
 
-    public static void render(int modelMatrix, PerspectiveCamera camera){
+    public static void render(WorldShader shader, PerspectiveCamera camera){
         for(int i = 0; i < vaos.size(); i++){
             glDisable(GL_DEPTH_TEST);
             glBindVertexArray(vaos.get(i));
@@ -91,10 +102,11 @@ public class DebugRender {
                 Vector3f position = new Vector3f();
                 Vector3f rotation = new Vector3f();
                 Vector3f scale = new Vector3f(1f, 1f, 1f);
-                Matrix4 transformationMatrix = createTransformationMatrix(position, rotation, scale);
-                Shader.loadMatrix(modelMatrix, transformationMatrix);
+                Matrix4 transformationMatrix = createTransformationMatrix(instances.get(i).position, instances.get(i).rotation, instances.get(i).scale);
+                Shader.loadMatrix(shader.getModelMatrix(), transformationMatrix);
+                shader.setColor(new Vector3f(255, 0, 0));
 
-                glLineWidth(10);
+                glLineWidth(2);
                 glDrawElements(GL_LINES, 2, GL_UNSIGNED_INT, 0);
             }
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

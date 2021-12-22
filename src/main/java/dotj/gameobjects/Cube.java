@@ -2,8 +2,8 @@ package dotj.gameobjects;
 
 import com.jme3.bullet.objects.PhysicsBody;
 import dotj.*;
+import dotj.debug.DebugInstance;
 import dotj.debug.DebugRender;
-import dotj.gameobjects.components.Component;
 import dotj.gameobjects.components.MeshInstance;
 import dotj.gameobjects.components.PhysicsBox;
 import dotj.physics.PhysicsWorld;
@@ -20,6 +20,11 @@ public class Cube extends GameObject{
     private WorldShader shader;
     private PhysicsWorld physicsWorld;
     private PhysicsBox box;
+
+    //debug stuff
+    DebugInstance[] instances;
+    private Vector3f debugRot = new Vector3f();
+    private Vector3f debugPos = new Vector3f();
 
     public Cube(PerspectiveCamera camera, WorldShader shader, PhysicsWorld physicsWorld){
         this.camera =camera;
@@ -54,7 +59,7 @@ public class Cube extends GameObject{
 
         box.setPosition(instance.getWorldTransform().getPosition().x, instance.getWorldTransform().getPosition().y, instance.getWorldTransform().getPosition().z);
 
-        DebugRender.addCubeRender(min, max);
+        instances = DebugRender.addCubeRender(min, max);
     }
 
     @Override
@@ -63,7 +68,12 @@ public class Cube extends GameObject{
         {
             mesh.render(instance.getShader().getModelMatrix(), instance, camera);
 
-
+            debugRot.add(0.1f, 0.01f, 0.1f);
+            debugPos.add(0f, 0f, -0.01f);
+            for(DebugInstance instance : instances){
+                instance.setRotation(debugRot);
+                instance.setPosition(debugPos);
+            }
 //            instance.setWorldTransform(box.getTransform(instance.getTransform()));
 //            Transform t = box.getTransform(instance.getTransform());
 //            System.out.println(t);

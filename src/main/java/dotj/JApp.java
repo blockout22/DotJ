@@ -211,7 +211,7 @@ public class JApp extends App {
 
                 level.update();
 
-                DebugRender.render(worldShader.getModelMatrix(), camera);
+                DebugRender.render(worldShader, camera);
 
                 stencilTest_Outline();
 
