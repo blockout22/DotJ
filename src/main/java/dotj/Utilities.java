@@ -3,6 +3,8 @@ package dotj;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,6 +56,28 @@ public class Utilities {
         buffer.flip();
 
         return buffer;
+    }
+
+    public static BufferedImage loadImage(String fileName) throws IOException {
+        InputStream in = null;
+        BufferedImage image;
+        File file = new File(Utilities.getAssetDir() + fileName);
+
+        if(!file.exists()) {
+            in = TextureLoader.class.getResourceAsStream("/" + fileName);
+            image = ImageIO.read(in);
+        }else{
+            image = ImageIO.read(file);
+        }
+
+        if(image == null){
+            throw new IOException("Image Not Found!");
+        }
+
+        if (in != null) {
+            in.close();
+        }
+        return image;
     }
 
     public static String getShaderDir(){
