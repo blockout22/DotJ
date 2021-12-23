@@ -59,6 +59,8 @@ public class JApp extends App {
 
     private FrameBuffer frameBuffer;
 
+    private SkyBox cubeMap;
+
     public JApp(){
         init();
         update();
@@ -92,7 +94,7 @@ public class JApp extends App {
         glEnable(GL_STENCIL_TEST);
 
         camera = new PerspectiveCamera(window, 70, 0.1f, 100000f);
-        camera.setPosition(new Vector3f(0, 10f, 10f));
+        camera.setPosition(new Vector3f(0, 10, 10));
 
         worldShader = new WorldShader();
         worldShader.bind();
@@ -169,6 +171,7 @@ public class JApp extends App {
         stencilTestMeshInstance.getWorldTransform().setPosition(new Vector3f(-25, 5, 0));
 
         frameBuffer = new FrameBuffer();
+        cubeMap = new SkyBox("https://i.pinimg.com/originals/92/33/f4/9233f460aa6b43e937a46dff3857c812.png");
     }
 
     @Override
@@ -199,9 +202,8 @@ public class JApp extends App {
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-
-
-
+//            glEnable(GL_DEPTH_TEST);
+            cubeMap.update(camera);
             worldShader.bind();
             {
                 worldShader.setViewPos(camera);
@@ -218,7 +220,7 @@ public class JApp extends App {
 
                 level.update();
 
-                DebugRender.render(worldShader, camera);
+//                DebugRender.render(worldShader, camera);
 
                 stencilTest_Outline();
 
@@ -226,11 +228,12 @@ public class JApp extends App {
             Shader.unbind();
 
             frameBuffer.disable();
+//            glClear(GL_DEPTH_BUFFER_BIT);
+//            glEnable(GL_DEPTH_TEST);
 
-
+//            cubeMap.update(camera);
             //update UI
             vgRenderer.update();
-
 
 
             //camera movement
@@ -261,8 +264,7 @@ public class JApp extends App {
             });
 
             Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_L, () -> {
-
-                sphere.getTransform().setPosition(new Vector3f(10, 10, 10));
+                sphere.getTransform().setPosition(new Vector3f(0, 0, 0));
             }, () -> {
 
             });
@@ -329,6 +331,7 @@ public class JApp extends App {
             t.cleanup();
         }
 
+        cubeMap.cleanup();
         frameBuffer.cleanup();
 
         stencilTestMesh.cleanup();

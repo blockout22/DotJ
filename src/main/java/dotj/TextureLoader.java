@@ -47,9 +47,6 @@ public class TextureLoader {
 
         buffer.flip();
 
-
-
-
         Texture texture = new Texture(image.getWidth(), image.getHeight());
         texture.genTextureID(buffer);
 

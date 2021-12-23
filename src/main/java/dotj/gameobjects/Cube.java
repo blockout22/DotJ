@@ -10,11 +10,16 @@ import dotj.physics.PhysicsWorld;
 import dotj.shaders.WorldShader;
 import org.joml.Vector3f;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
 public class Cube extends GameObject{
 
     public Mesh mesh;
     public MeshInstance instance;
     private Texture texture;
+//    private Texture cubemapTexture;
 
     private PerspectiveCamera camera;
     private WorldShader shader;
@@ -22,7 +27,7 @@ public class Cube extends GameObject{
     private PhysicsBox box;
 
     public Cube(PerspectiveCamera camera, WorldShader shader, PhysicsWorld physicsWorld){
-        this.camera =camera;
+        this.camera = camera;
         this.shader = shader;
         this.physicsWorld = physicsWorld;
     }
@@ -54,7 +59,19 @@ public class Cube extends GameObject{
 
         box.setPosition(instance.getWorldTransform().getPosition().x, instance.getWorldTransform().getPosition().y, instance.getWorldTransform().getPosition().z);
 
-        instance.showBoundingBox();
+//        instance.showBoundingBox();
+
+//        BufferedImage image = null;
+//        try {
+//             image = Utilities.loadImage("skybox.png");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+//        cubemapTexture = new Texture(256, 256);
+//        ByteBuffer[] buffers = Utilities.loadToCubeMap(image);
+//        cubemapTexture.genTextureID(buffers[0]);
+//        instance.setTextureID(cubemapTexture.getID());
     }
 
     @Override

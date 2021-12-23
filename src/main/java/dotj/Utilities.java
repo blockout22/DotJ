@@ -6,8 +6,10 @@ import org.lwjgl.BufferUtils;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -65,10 +67,27 @@ public class Utilities {
 
         if(!file.exists()) {
             in = TextureLoader.class.getResourceAsStream("/" + fileName);
-            image = ImageIO.read(in);
+            //if filename starts with http ... try to load from URL if image isn't found in file system
+            if(fileName.startsWith("http")){
+                URL url = new URL(fileName);
+                String urlFileName = url.getFile().substring(url.getFile().lastIndexOf("/") + 1);
+
+                //check if saved image already exists
+                File urlFile = new File(getAssetDir() + urlFileName);
+                if(!urlFile.exists()) {
+                    image = ImageIO.read(url);
+                    ImageIO.write(image, "png", new FileOutputStream(urlFile));
+                }else{
+                    image = ImageIO.read(urlFile);
+                }
+
+            }else {
+                image = ImageIO.read(in);
+            }
         }else{
             image = ImageIO.read(file);
         }
+
 
         if(image == null){
             throw new IOException("Image Not Found!");
@@ -78,6 +97,169 @@ public class Utilities {
             in.close();
         }
         return image;
+    }
+
+    public static ByteBuffer[] loadToCubeMap(BufferedImage image, int channels){
+        ByteBuffer[] buffers = new ByteBuffer[6];
+
+        int[] pixels = new int[image.getWidth() * image.getHeight()];
+        image.getRGB(0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth());
+
+        int ww = 0;
+        int hh = 0;
+
+        //right
+        ByteBuffer rightBuffer = ByteBuffer.allocateDirect((image.getWidth() / 4) * (image.getHeight() / 3) * channels);
+        for(int h = image.getHeight() / 3 * 1; h < image.getHeight() / 3 * 2; h++) {
+            for (int w = image.getWidth() / 4 * 2; w < image.getWidth() / 4 * 3; w++) {
+                int pixel = pixels[h * image.getWidth() + w];
+
+                if (channels > 0) {
+                    rightBuffer.put((byte) ((pixel >> 16) & 0xFF));
+                    if(channels > 1){
+                        rightBuffer.put((byte) ((pixel >> 8) & 0xFF));
+                        if(channels > 2){
+                            rightBuffer.put((byte) (pixel & 0xFF));
+                            if(channels > 3){
+                                rightBuffer.put((byte) ((pixel >> 24) & 0xFF));
+
+                            }
+                        }
+                    }
+                }
+
+            }
+
+        }
+        rightBuffer.flip();
+
+
+        //left
+        ByteBuffer leftBuffer = ByteBuffer.allocateDirect((image.getWidth() / 4) * (image.getHeight() / 3) * channels);
+        for(int h = image.getHeight() / 3 * 1; h < image.getHeight() / 3 * 2; h++) {
+            for (int w = 0; w < image.getWidth() / 4 * 1; w++) {
+                int pixel = pixels[h * image.getWidth() + w];
+
+                if (channels > 0) {
+                    leftBuffer.put((byte) ((pixel >> 16) & 0xFF));
+                    if(channels > 1){
+                        leftBuffer.put((byte) ((pixel >> 8) & 0xFF));
+                        if(channels > 2){
+                            leftBuffer.put((byte) (pixel & 0xFF));
+                            if(channels > 3){
+                                leftBuffer.put((byte) ((pixel >> 24) & 0xFF));
+
+                            }
+                        }
+                    }
+                }
+
+            }
+
+        }
+        leftBuffer.flip();
+
+        //top
+        ByteBuffer topBuffer = ByteBuffer.allocateDirect((image.getWidth() / 4) * (image.getHeight() / 3) * channels);
+        for(int h = 0; h < image.getHeight() / 3 * 1; h++) {
+            for (int w = image.getWidth() / 4 * 1; w < image.getWidth() / 4 * 2; w++) {
+                int pixel = pixels[h * image.getWidth() + w];
+
+                if (channels > 0) {
+                    topBuffer.put((byte) ((pixel >> 16) & 0xFF));
+                    if(channels > 1){
+                        topBuffer.put((byte) ((pixel >> 8) & 0xFF));
+                        if(channels > 2){
+                            topBuffer.put((byte) (pixel & 0xFF));
+                            if(channels > 3){
+                                topBuffer.put((byte) ((pixel >> 24) & 0xFF));
+
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+        topBuffer.flip();
+
+        //bottom
+        ByteBuffer bottomBuffer = ByteBuffer.allocateDirect((image.getWidth() / 4) * (image.getHeight() / 3) * channels);
+        for(int h = image.getHeight() / 3 * 2; h < image.getHeight() / 3 * 3; h++) {
+            for (int w = image.getWidth() / 4 * 1; w < image.getWidth() / 4 * 2; w++) {
+                int pixel = pixels[h * image.getWidth() + w];
+
+                if (channels > 0) {
+                    bottomBuffer.put((byte) ((pixel >> 16) & 0xFF));
+                    if(channels > 1){
+                        bottomBuffer.put((byte) ((pixel >> 8) & 0xFF));
+                        if(channels > 2){
+                            bottomBuffer.put((byte) (pixel & 0xFF));
+                            if(channels > 3){
+                                bottomBuffer.put((byte) ((pixel >> 24) & 0xFF));
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        bottomBuffer.flip();
+
+        //front
+        ByteBuffer frontBuffer = ByteBuffer.allocateDirect((image.getWidth() / 4) * (image.getHeight() / 3) * channels);
+        for(int h = image.getHeight() / 3 * 1; h < image.getHeight() / 3 * 2; h++) {
+            for (int w = image.getWidth() / 4 * 1; w < image.getWidth() / 4 * 2; w++) {
+                int pixel = pixels[h * image.getWidth() + w];
+
+                if (channels > 0) {
+                    frontBuffer.put((byte) ((pixel >> 16) & 0xFF));
+                    if(channels > 1){
+                        frontBuffer.put((byte) ((pixel >> 8) & 0xFF));
+                        if(channels > 2){
+                            frontBuffer.put((byte) (pixel & 0xFF));
+                            if(channels > 3){
+                                frontBuffer.put((byte) ((pixel >> 24) & 0xFF));
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        frontBuffer.flip();
+
+        //back
+        ByteBuffer backBuffer = ByteBuffer.allocateDirect((image.getWidth() / 4) * (image.getHeight() / 3) * channels);
+        for(int h = image.getHeight() / 3 * 1; h < image.getHeight() / 3 * 2; h++) {
+            for (int w = image.getWidth() / 4 * 3; w < image.getWidth() / 4 * 4; w++) {
+                int pixel = pixels[h * image.getWidth() + w];
+
+                if (channels > 0) {
+                    backBuffer.put((byte) ((pixel >> 16) & 0xFF));
+                    if(channels > 1){
+                        backBuffer.put((byte) ((pixel >> 8) & 0xFF));
+                        if(channels > 2){
+                            backBuffer.put((byte) (pixel & 0xFF));
+                            if(channels > 3){
+                                backBuffer.put((byte) ((pixel >> 24) & 0xFF));
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        backBuffer.flip();
+
+        buffers[0] = rightBuffer;
+        buffers[1] = leftBuffer;
+        buffers[2] = topBuffer;
+        buffers[3] = bottomBuffer;
+        buffers[4] = frontBuffer;
+        buffers[5] = backBuffer;
+
+        return buffers;
     }
 
     public static String getShaderDir(){

@@ -42,7 +42,9 @@ public class Floor extends GameObject{
         floorInstance.getTransform().setRotation(new Vector3f(-90, 0, 90));
         addComponent(floorInstance);
 
-//        floorInstance.showBoundingBox();
+        floorInstance.showBoundingBox();
+
+
 
         Vector3f halfExtents = new Vector3f(floor.getBoundingBox().max.x - floor.getBoundingBox().min.x, floor.getBoundingBox().max.y - floor.getBoundingBox().min.y, floor.getBoundingBox().max.z - floor.getBoundingBox().min.z);
         physicsBox = new PhysicsBox(physicsWorld, halfExtents.x, halfExtents.y, halfExtents.z, 0);
@@ -62,6 +64,8 @@ public class Floor extends GameObject{
 //            bi.setRotation(physicsBox.getRotation());
 ////            bi.setScale(physicsBox.getScale());
 //        }
+
+        floorInstance.getWorldTransform().setPosition(new Vector3f(0, 1, 0));
     }
 
     @Override
