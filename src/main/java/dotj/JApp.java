@@ -11,18 +11,13 @@ import dotj.light.DirectionalLight;
 import dotj.light.PointLight;
 import dotj.physics.PhysicsWorld;
 import dotj.shaders.OutlineColorShader;
-import dotj.shaders.ScreenShader;
 import dotj.shaders.WorldShader;
 import org.joml.Random;
 import org.joml.Vector3f;
-import org.lwjgl.opengl.GL20;
-
-import java.nio.ByteBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class JApp extends App {
 
@@ -61,6 +56,8 @@ public class JApp extends App {
 
     private Mesh stencilTestMesh;
     private MeshInstance stencilTestMeshInstance;
+
+    private FrameBuffer frameBuffer;
 
     public JApp(){
         init();
@@ -171,79 +168,11 @@ public class JApp extends App {
         stencilTestMeshInstance = new MeshInstance(null, stencilTestMesh);
         stencilTestMeshInstance.getWorldTransform().setPosition(new Vector3f(-25, 5, 0));
 
-
+        frameBuffer = new FrameBuffer();
     }
 
     @Override
     public void update() {
-
-        ScreenShader screenShader = new ScreenShader();
-
-        //create quad for Frame Buffer
-        float quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
-                // positions   // texCoords
-                -1.0f,  1.0f,  0.0f, 1.0f,
-                -1.0f, -1.0f,  0.0f, 0.0f,
-                1.0f, -1.0f,  1.0f, 0.0f,
-
-                -1.0f,  1.0f,  0.0f, 1.0f,
-                1.0f, -1.0f,  1.0f, 0.0f,
-                1.0f,  1.0f,  1.0f, 1.0f
-        };
-        /**
-         * requires cleanup
-         */
-        int quadVAO = glGenVertexArrays();
-        int quadVBO = glGenBuffers();
-        int quadVBT = glGenBuffers();
-        glBindVertexArray(quadVAO);
-        glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-        glBufferData(GL_ARRAY_BUFFER, Utilities.flip(quadVertices), GL_STATIC_DRAW);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 2, GL_FLOAT, false, 16, 0);
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 2, GL_FLOAT, false, 16, 8);
-
-        screenShader.bind();
-        screenShader.loadInt(screenShader.screenTexture, 0);
-
-        //Frame Buffer
-        int frameBuffer = glGenFramebuffers();
-        glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-
-        int textureColorbuffer = glGenTextures();
-        glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-        int[] pixels = new int[800 * 600];
-        ByteBuffer buffer = ByteBuffer.allocateDirect(800 * 600 * 4);
-        for (int h = 0; h < 600; h++) {
-            for (int w = 0; w < 800; w++) {
-                int pixel = 0;
-
-                buffer.put((byte) ((pixel >> 16) & 0xFF));
-                buffer.put((byte) ((pixel >> 8) & 0xFF));
-                buffer.put((byte) (pixel & 0xFF));
-                buffer.put((byte) ((pixel >> 24) & 0xFF));
-            }
-        }
-        buffer.flip();
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glBindTexture(GL_TEXTURE_2D, 0);
-
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
-
-        int rbo = glGenRenderbuffers();
-        glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 600);
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
-
-        if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
-            System.out.println("Error: FrameBuffer is not complete!");
-        }
-
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
         while(!window.shouldClose() && !Global.shouldClose){
 
             Time.setDelta();
@@ -256,14 +185,13 @@ public class JApp extends App {
 //                light.setDirection(new Vector3f(r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1));
                 fps = 0;
 //                physicsWorld.step();
+
             }
             fps++;
 
-            //Start rendering to the frame buffer
-            glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-            glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+            frameBuffer.enable();
+            glClearColor(.48828125f, 0.8046875f, .91796875f, 1f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-            glEnable(GL_DEPTH_TEST);
             glEnable(GL_DEPTH_TEST);
             glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
             glEnable(GL_MULTISAMPLE);
@@ -297,16 +225,8 @@ public class JApp extends App {
             }
             Shader.unbind();
 
-            //Stop rendering to Frame buffer then render quad that contains frame buffer information
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
-            glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
-            screenShader.bind();
-            glBindVertexArray(quadVAO);
-            glDisable(GL_DEPTH_TEST);
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-            glDrawArrays(GL_TRIANGLES, 0, 6);
+            frameBuffer.disable();
+
 
             //update UI
             vgRenderer.update();
@@ -408,6 +328,8 @@ public class JApp extends App {
         for(Texture t : Global.texturePool.values()){
             t.cleanup();
         }
+
+        frameBuffer.cleanup();
 
         stencilTestMesh.cleanup();
         level.unload();

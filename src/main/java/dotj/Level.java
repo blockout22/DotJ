@@ -14,7 +14,6 @@ public class Level {
     int count = 0;
 
     public Level(){
-
     }
 
     public void update(){
@@ -43,12 +42,10 @@ public class Level {
 
         GameObjects.get(count).init();
         count++;
-
-
-
     }
 
     public void unload(){
+        System.out.println("Level Closing...");
         for(GameObject object : GameObjects){
             object.cleanup();
         }

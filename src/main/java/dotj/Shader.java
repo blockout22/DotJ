@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import dotj.Matrix4;
 import dotj.PerspectiveCamera;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
@@ -67,6 +68,14 @@ public abstract class Shader {
         matrix.store(matrixBuffer);
         matrixBuffer.flip();
         GL20.glUniformMatrix4fv(location, false, matrixBuffer);
+    }
+
+    public void loadVector2f(int location, Vector2f vector2f){
+        loadVector2f(location, vector2f.x, vector2f.y);
+    }
+
+    public void loadVector2f(int location, float x, float y){
+        GL20.glUniform2f(location, x, y);
     }
 
     public void loadVector3f(int location, Vector3f vector3f) {
