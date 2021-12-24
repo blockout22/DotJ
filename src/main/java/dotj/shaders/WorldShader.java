@@ -7,7 +7,6 @@ import dotj.Shader;
 import dotj.light.DirectionalLight;
 import dotj.light.PointLight;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
 
 public class WorldShader extends Shader {
 
@@ -106,6 +105,9 @@ public class WorldShader extends Shader {
 
     public void setColor(Vector3f col){
         loadVector3f(color, col);
+    }
+    public void setColor(float r, float g, float b){
+        loadVector3f(color, r, g, b);
     }
 
 //    public void setLightColor(float r, float g, float b){

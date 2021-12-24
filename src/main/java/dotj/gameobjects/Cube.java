@@ -39,12 +39,13 @@ public class Cube extends GameObject{
     public void init() {
 //        mesh = ModelLoader.load("Backpack.fbx");
 
-        meshes = ModelLoader.loadModel(new File(Utilities.getModelDir() + "Backpack.fbx"));
+        meshes = ModelLoader.loadModel(new File(Utilities.getModelDir() + "cube.fbx"));
 
         instances = new MeshInstance[meshes.length];
         for (int i = 0; i < meshes.length; i++) {
             MeshInstance instance = new MeshInstance(this, meshes[i]);
             instance.setShader(shader);
+            instance.setTextureID(TextureLoader.loadTexture("container2.png").getID());
             instance.getTransform().setPosition(new Vector3f(-25, 9, 0));
             instances[i] = instance;
         }

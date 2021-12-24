@@ -33,6 +33,7 @@ public class Mesh {
         vbon = GL15.glGenBuffers();
         vboi = GL15.glGenBuffers();
         this.boundingBox = new BoundingBox();
+        this.material = new Material();
     }
 
     public void setBoundingBox(Vector3f min, Vector3f max){

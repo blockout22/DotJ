@@ -220,10 +220,11 @@ public class JApp extends App {
             worldShader.bind();
             {
                 worldShader.setViewPos(camera);
+                worldShader.setColor(1f, 1f, 1f);
 
-                worldShader.setPointLight(pointLight, 0);
-                worldShader.setPointLight(pointLight2, 1);
-                worldShader.setPointLight(pointLight3, 2);
+//                worldShader.setPointLight(pointLight, 0);
+//                worldShader.setPointLight(pointLight2, 1);
+//                worldShader.setPointLight(pointLight3, 2);
 //                shader.setPointLight(pointLight4, 3);
                 worldShader.setLight(light);
 

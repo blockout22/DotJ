@@ -67,13 +67,13 @@ public class Sphere extends GameObject{
         addComponent(instance7);
 
         sphereTexture = TextureLoader.loadTexture("container2.png");
-        instance.setTextureID(sphereTexture.getID());
-        instance2.setTextureID(sphereTexture.getID());
-        lightInstance.setTextureID(sphereTexture.getID());
-        instance4.setTextureID(sphereTexture.getID());
-        instance5.setTextureID(sphereTexture.getID());
-        instance6.setTextureID(sphereTexture.getID());
-        instance7.setTextureID(sphereTexture.getID());
+//        instance.setTextureID(sphereTexture.getID());
+//        instance2.setTextureID(sphereTexture.getID());
+//        lightInstance.setTextureID(sphereTexture.getID());
+//        instance4.setTextureID(sphereTexture.getID());
+//        instance5.setTextureID(sphereTexture.getID());
+//        instance6.setTextureID(sphereTexture.getID());
+//        instance7.setTextureID(sphereTexture.getID());
 
         specularTexture = TextureLoader.loadTexture("container2_specular.png");
         instance.setSpecularTextureID(specularTexture.getID());
@@ -84,11 +84,11 @@ public class Sphere extends GameObject{
         instance6.setSpecularTextureID(specularTexture.getID());
         instance7.setSpecularTextureID(specularTexture.getID());
 
-        instance.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
-        instance2.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
-        lightInstance.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
+//        instance.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
+//        instance2.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
+//        lightInstance.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
 //        instance4.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
-        instance5.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
+//        instance5.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
 //        instance6.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
 //        instance7.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
 
@@ -125,6 +125,8 @@ public class Sphere extends GameObject{
                     sorted.put(distance, instance);
 
                     mesh.render(shader.getModelMatrix(), instance, camera);
+                    shader.setColor(instance.getColor());
+                    shader.setMaterial(instance.getMaterial());
                 }
             }
 

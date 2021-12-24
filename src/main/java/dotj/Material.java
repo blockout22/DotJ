@@ -4,7 +4,7 @@ public class Material {
 
 //    private Vector3f diffuseColor = new Vector3f(1, 1, 1);
     private int diffuse = 0;
-    private int specular = 1;
+    private int specular = 0;
     private float shininess = 32f;
 
     public Material(int diffuseColor, int specularColor, float shininess) {
