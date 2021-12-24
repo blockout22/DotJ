@@ -17,6 +17,7 @@ public class DebugRender {
 //    private int vbo;
 //    private int vboi;
 
+    private static boolean shouldDepthTest = false;
     private static  ArrayList<DebugInstance> instances = new ArrayList<>();
     private static ArrayList<Integer> vaos = new ArrayList<Integer>();
     private static ArrayList<Integer> vbos = new ArrayList<Integer>();
@@ -89,9 +90,19 @@ public class DebugRender {
         return instanceList;
     }
 
+    public static void enableDepthTesting(){
+        DebugRender.shouldDepthTest = true;
+    }
+
+    public static void disableDepthTesting(){
+        DebugRender.shouldDepthTest = false;
+    }
+
     public static void render(WorldShader shader, PerspectiveCamera camera){
         for(int i = 0; i < vaos.size(); i++){
-            glDisable(GL_DEPTH_TEST);
+            if(!DebugRender.shouldDepthTest){
+                glDisable(GL_DEPTH_TEST);
+            }
             glBindVertexArray(vaos.get(i));
             glEnableVertexAttribArray(0);
             glEnableVertexAttribArray(1);

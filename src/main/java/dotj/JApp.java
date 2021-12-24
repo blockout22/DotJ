@@ -186,7 +186,6 @@ public class JApp extends App {
 
         reflectShader.bind();
         reflectShader.loadMatrix(reflectShader.projection, camera.getProjectionMatrix());
-
     }
 
     @Override

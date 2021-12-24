@@ -180,15 +180,10 @@ public class ModelLoader {
         List<Float> normals  = new ArrayList<>();
         List<Integer> indices   = new ArrayList<>();
 
-//        System.out.println("Waiting for Vertices...");
         processVertices(aiMesh, vertices);
-//        System.out.println("Waiting for Normals...");
         processNormals(aiMesh, normals);
-//        System.out.println("Waiting for Textures...");
         processTextCoords(aiMesh, textures);
-//        System.out.println("Waiting for Indices...");
         processIndices(aiMesh, indices);
-//        System.out.println("Finished Processing Mesh");
 
         Mesh mesh = new Mesh();
         mesh.add(Utilities.toFloatArray(vertices), Utilities.toFloatArray(textures), Utilities.toFloatArray(normals), Utilities.toIntArray(indices));
@@ -230,7 +225,6 @@ public class ModelLoader {
     private static void processTextCoords(AIMesh aiMesh, List<Float> textures) {
         AIVector3D.Buffer aiTextureCoords = aiMesh.mTextureCoords(0);
         System.out.println(aiTextureCoords.capacity());
-        int texIndex = 0;
         for(int i = 0; i < aiTextureCoords.capacity(); i++){
             textures.add(aiTextureCoords.get(i).x());
             textures.add(aiTextureCoords.get(i).y());
