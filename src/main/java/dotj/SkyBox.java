@@ -109,7 +109,8 @@ public class SkyBox {
     }
 
     public void update(PerspectiveCamera camera){
-        glDepthMask(false);
+//        glDepthMask(false);
+        glDepthFunc(GL_LEQUAL);
         shader.bind();
         Matrix4 matrix = shader.createViewMatrix(camera);
         shader.loadProjection(camera.getProjectionMatrix());
@@ -119,7 +120,6 @@ public class SkyBox {
         view.m32 = 0;
         shader.loadView(view);
 
-        glDepthFunc(GL_LEQUAL);
         glBindVertexArray(vao);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
@@ -127,7 +127,7 @@ public class SkyBox {
         glBindVertexArray(0);
 
         glDepthFunc(GL_LESS);
-        glDepthMask(true);
+//        glDepthMask(true);
     }
 
     public void cleanup()

@@ -11,13 +11,16 @@ import dotj.shaders.WorldShader;
 import org.joml.Vector3f;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class Cube extends GameObject{
 
-    public Mesh mesh;
-    public MeshInstance instance;
+    public Mesh[] meshes;
+    public MeshInstance[] instances;
+//    public Mesh mesh;
+//    public MeshInstance instance;
     private Texture texture;
 //    private Texture cubemapTexture;
 
@@ -34,30 +37,38 @@ public class Cube extends GameObject{
 
     @Override
     public void init() {
-        mesh = ModelLoader.load("cube.fbx");
-        instance = new MeshInstance(this, mesh);
+//        mesh = ModelLoader.load("Backpack.fbx");
 
-        instance.setShader(shader);
+        meshes = ModelLoader.loadModel(new File(Utilities.getModelDir() + "Backpack.fbx"));
+
+        instances = new MeshInstance[meshes.length];
+        for (int i = 0; i < meshes.length; i++) {
+            MeshInstance instance = new MeshInstance(this, meshes[i]);
+            instance.setShader(shader);
+            instance.getTransform().setPosition(new Vector3f(-25, 9, 0));
+            instances[i] = instance;
+        }
+//        instance.setShader(shader);
         texture = TextureLoader.loadTexture("container2.png");
 
 
-        instance.setTextureID(texture.getID());
-        addComponent(instance);
+//        instance.setTextureID(texture.getID());
+//        instance.setColor(new Vector3f(.75f, .75f, .75f));
 
 //        mesh.setAABB(new Vector3f(-2, -2, -2), new Vector3f(2, 2, 2));
 
-        BoundingBox bb = mesh.getBoundingBox();
-        box = new PhysicsBox(physicsWorld, (bb.max.x-bb.min.x) / 2, (bb.max.y-bb.min.y) / 2, (bb.max.z-bb.min.z) / 2, PhysicsBody.massForStatic);
-        addComponent(box);
-
-        Vector3f min = mesh.getBoundingBox().getMin();
-        Vector3f max = mesh.getBoundingBox().getMax();
-
-        getTransform().setPosition(new Vector3f(1.2f, 5, -5.6f));
-
-        instance.getTransform().setPosition(new Vector3f(0, 5, 0));
-
-        box.setPosition(instance.getWorldTransform().getPosition().x, instance.getWorldTransform().getPosition().y, instance.getWorldTransform().getPosition().z);
+//        BoundingBox bb = mesh.getBoundingBox();
+//        box = new PhysicsBox(physicsWorld, (bb.max.x-bb.min.x) / 2, (bb.max.y-bb.min.y) / 2, (bb.max.z-bb.min.z) / 2, PhysicsBody.massForStatic);
+//        addComponent(box);
+//
+//        Vector3f min = mesh.getBoundingBox().getMin();
+//        Vector3f max = mesh.getBoundingBox().getMax();
+//
+//        getTransform().setPosition(new Vector3f(1.2f, 5, -5.6f));
+//
+//        instance.getTransform().setPosition(new Vector3f(-25, 6, 0));
+//
+//        box.setPosition(instance.getWorldTransform().getPosition().x, instance.getWorldTransform().getPosition().y, instance.getWorldTransform().getPosition().z);
 
 //        instance.showBoundingBox();
 
@@ -76,19 +87,31 @@ public class Cube extends GameObject{
 
     @Override
     public void render() {
-        mesh.enable();
-        {
-            mesh.render(instance.getShader().getModelMatrix(), instance, camera);
-//            instance.setWorldTransform(box.getTransform(instance.getTransform()));
-//            Transform t = box.getTransform(instance.getTransform());
-//            System.out.println(t);
+
+        for (int i = 0; i < meshes.length; i++) {
+            meshes[i].enable();
+            {
+               meshes[i].render(instances[i].getShader().getModelMatrix(), instances[i], camera);
+            }
+            meshes[i].disable();
         }
-        mesh.disable();
+
+//        mesh.enable();
+//        {
+//            mesh.render(instance.getShader().getModelMatrix(), instance, camera);
+////            instance.setWorldTransform(box.getTransform(instance.getTransform()));
+////            Transform t = box.getTransform(instance.getTransform());
+////            System.out.println(t);
+//        }
+//        mesh.disable();
 
     }
 
     @Override
     public void cleanup() {
-        mesh.cleanup();
+        for (int i = 0; i < meshes.length; i++) {
+            meshes[i].cleanup();
+        }
+//        mesh.cleanup();
     }
 }

@@ -38,7 +38,8 @@ public class MeshInstance implements Component {
 //        this.rotation = rotation;
 //        this.scale = scale;
         color = new Vector3f(1, 1, 1);
-        material = new Material();
+//        material = new Material();
+        material = mesh.getMaterial();
 
         this.worldTransform = new Transform();
         calculateWorldTransform();
@@ -99,7 +100,7 @@ public class MeshInstance implements Component {
 
     @Override
     public void execute() {
-
+//        shader.setMaterial(material);
     }
 
     private void calculateWorldTransform() {

@@ -11,6 +11,7 @@ import dotj.light.DirectionalLight;
 import dotj.light.PointLight;
 import dotj.physics.PhysicsWorld;
 import dotj.shaders.OutlineColorShader;
+import dotj.shaders.ReflectShader;
 import dotj.shaders.WorldShader;
 import org.joml.Random;
 import org.joml.Vector3f;
@@ -56,6 +57,10 @@ public class JApp extends App {
 
     private Mesh stencilTestMesh;
     private MeshInstance stencilTestMeshInstance;
+
+    private ReflectShader reflectShader;
+    private Mesh ReflectMesh;
+    private MeshInstance ReflectMeshInstance;
 
     private FrameBuffer frameBuffer;
 
@@ -134,16 +139,16 @@ public class JApp extends App {
         pointLight3.setPosition(new Vector3f(0, 0, 20));
         pointLight4.setPosition(new Vector3f(50, 0, 50));
 
-        pointLight2.setAmbient(new Vector3f(1f, 0, 0));
-        pointLight3.setDiffuse(new Vector3f(0f, 0, 1));
+//        pointLight2.setAmbient(new Vector3f(1f, 0, 0));
+//        pointLight3.setDiffuse(new Vector3f(0f, 0, 1));
 
         pointLight.setPosition(new Vector3f(0, 0, -20));
-        pointLight.setAmbient(new Vector3f(5, 0, 0));
-        pointLight.setDiffuse(new Vector3f(0, 50, 0));
-        pointLight.setSpecular(new Vector3f(0, 0, 100));
-        pointLight.setConstant(r.nextFloat());
-        pointLight.setLinear(r.nextFloat());
-        pointLight.setQuadratic(r.nextFloat());
+//        pointLight.setAmbient(new Vector3f(5, 0, 0));
+//        pointLight.setDiffuse(new Vector3f(0, 50, 0));
+//        pointLight.setSpecular(new Vector3f(0, 0, 100));
+//        pointLight.setConstant(r.nextFloat());
+//        pointLight.setLinear(r.nextFloat());
+//        pointLight.setQuadratic(r.nextFloat());
 
         level = new Level();
 
@@ -171,7 +176,17 @@ public class JApp extends App {
         stencilTestMeshInstance.getWorldTransform().setPosition(new Vector3f(-25, 5, 0));
 
         frameBuffer = new FrameBuffer();
-        cubeMap = new SkyBox("https://i.pinimg.com/originals/92/33/f4/9233f460aa6b43e937a46dff3857c812.png");
+//        cubeMap = new SkyBox("https://i.pinimg.com/originals/92/33/f4/9233f460aa6b43e937a46dff3857c812.png");
+        cubeMap = new SkyBox("skybox.png");
+
+        reflectShader = new ReflectShader();
+        ReflectMesh = ModelLoader.load("cube.fbx");
+        ReflectMeshInstance = new MeshInstance(null, ReflectMesh);
+        ReflectMeshInstance.getWorldTransform().setPosition(10, 10, -20);
+
+        reflectShader.bind();
+        reflectShader.loadMatrix(reflectShader.projection, camera.getProjectionMatrix());
+
     }
 
     @Override
@@ -202,8 +217,6 @@ public class JApp extends App {
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-//            glEnable(GL_DEPTH_TEST);
-            cubeMap.update(camera);
             worldShader.bind();
             {
                 worldShader.setViewPos(camera);
@@ -220,18 +233,23 @@ public class JApp extends App {
 
                 level.update();
 
-//                DebugRender.render(worldShader, camera);
+                DebugRender.render(worldShader, camera);
 
                 stencilTest_Outline();
 
             }
             Shader.unbind();
 
+            reflectShader.bind();
+            reflectShader.loadViewMatrix(camera);
+            ReflectMesh.enable();
+            ReflectMesh.render(reflectShader.model, ReflectMeshInstance, camera);
+            ReflectMesh.disable();
+
+            cubeMap.update(camera);
             frameBuffer.disable();
 //            glClear(GL_DEPTH_BUFFER_BIT);
 //            glEnable(GL_DEPTH_TEST);
-
-//            cubeMap.update(camera);
             //update UI
             vgRenderer.update();
 
@@ -258,7 +276,7 @@ public class JApp extends App {
             }
 
             Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_H, () -> {
-                System.out.println("go transform- " + cube.getTransform() + " : inst transform- " + cube.instance.getTransform() + " : inst world transform- " + cube.instance.getWorldTransform());
+//                System.out.println("go transform- " + cube.getTransform() + " : inst transform- " + cube.instance.getTransform() + " : inst world transform- " + cube.instance.getWorldTransform());
             }, () -> {
 
             });
@@ -274,7 +292,7 @@ public class JApp extends App {
                 Transform transform = new Transform();
                 transform.setPosition(new Vector3f(1.2f, 2, -5.6f));
                 transform.setScale(new Vector3f(.5f, .5f, .5f));
-                cube.instance.setWorldTransform(transform);
+//                cube.instance.setWorldTransform(transform);
 //                physicsWorld.step();
             }, () -> {
 
@@ -333,6 +351,8 @@ public class JApp extends App {
 
         cubeMap.cleanup();
         frameBuffer.cleanup();
+        ReflectMesh.cleanup();
+        reflectShader.cleanup();
 
         stencilTestMesh.cleanup();
         level.unload();

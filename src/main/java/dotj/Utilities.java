@@ -19,6 +19,7 @@ import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import static org.lwjgl.BufferUtils.createByteBuffer;
 import static org.lwjgl.system.MemoryUtil.memSlice;
@@ -58,6 +59,26 @@ public class Utilities {
         buffer.flip();
 
         return buffer;
+    }
+
+    public static int[] toIntArray(List<Integer> list){
+        int[] arr = new int[list.size()];
+
+        for (int i = 0; i < list.size(); i++) {
+            arr[i] = list.get(i);
+        }
+
+        return arr;
+    }
+
+    public static float[] toFloatArray(List<Float> list){
+        float[] arr = new float[list.size()];
+
+        for (int i = 0; i < list.size(); i++) {
+            arr[i] = list.get(i);
+        }
+
+        return arr;
     }
 
     public static BufferedImage loadImage(String fileName) throws IOException {

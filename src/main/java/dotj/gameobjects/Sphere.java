@@ -33,7 +33,7 @@ public class Sphere extends GameObject{
 
     @Override
     public void init() {
-        mesh = ModelLoader.load("sphere.fbx");
+        mesh = ModelLoader.load("cube.fbx");
 //        mesh = ModelLoader.load("cube.obj");
 
         Random r = new Random();

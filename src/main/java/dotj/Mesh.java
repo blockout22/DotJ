@@ -2,6 +2,7 @@ package dotj;
 
 import dotj.gameobjects.components.MeshInstance;
 import org.joml.Vector3f;
+import org.lwjgl.assimp.AIScene;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
@@ -9,6 +10,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 public class Mesh {
+
 
     private int vao;
     private int vbo;
@@ -19,6 +21,7 @@ public class Mesh {
 
     private int indicesSize;
     private boolean isModel = false;
+    private Material material;
 
     private BoundingBox boundingBox;
 
@@ -191,6 +194,14 @@ public class Mesh {
         GL15.glDeleteBuffers(fbo);
         GL15.glDeleteBuffers(vboi);
         GL30.glDeleteVertexArrays(vao);
+    }
+
+    public Material getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(Material material) {
+        this.material = material;
     }
 
     public int getVao() {

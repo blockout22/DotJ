@@ -1,15 +1,17 @@
 package dotj;
 
-import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.assimp.*;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
+import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.lwjgl.assimp.Assimp.*;
 
 public class ModelLoader {
 
@@ -105,5 +107,146 @@ public class ModelLoader {
 //        aiMesh.free();
 //        aabb.free();
         return mesh;
+    }
+
+    public static Mesh[] loadModel(File file){
+        AIScene aiScene = Assimp.aiImportFile(file.toString(),
+                Assimp.aiProcess_Triangulate |
+                        Assimp.aiProcess_GenSmoothNormals |
+                        Assimp.aiProcess_FlipUVs |
+                        Assimp.aiProcess_CalcTangentSpace |
+                        Assimp.aiProcess_LimitBoneWeights);
+
+        int numMaterial = aiScene.mNumMaterials();
+        PointerBuffer aiMaterials = aiScene.mMaterials();
+
+        List<Material> materials = new ArrayList<>();
+
+        for(int i = 0; i < numMaterial; i++){
+            AIMaterial aiMaterial = AIMaterial.create(aiMaterials.get(i));
+            processMaterial(aiMaterial, materials);
+        }
+
+        int numMeshes = aiScene.mNumMeshes();
+        PointerBuffer aiMeshes = aiScene.mMeshes();
+        Mesh[] meshes = new Mesh[numMeshes];
+        for (int i = 0; i < numMeshes; i++) {
+            AIMesh aiMesh = AIMesh.create(aiMeshes.get(i));
+            Mesh mesh = processMesh(aiMesh, materials);
+            meshes[i] = mesh;
+        }
+
+        return meshes;
+    }
+
+    private static void processMaterial(AIMaterial aiMaterial, List<Material> materials) {
+        AIColor4D color = AIColor4D.create();
+
+        AIString path = AIString.calloc();
+        Assimp.aiGetMaterialTexture(aiMaterial, aiTextureType_DIFFUSE, 0, path, (IntBuffer) null, null, null, null, null, null);
+        String textPath = path.dataString();
+        Texture texture = null;
+        if (textPath != null && textPath.length() > 0) {
+//            TextureCache textCache = TextureCache.getInstance();
+//            texture = textcache.getTexture(texturesDir + "/" + textPath);
+        }
+
+//        Vector4f ambient = Material.DEFAULT_COLOR;
+//        int result = aiGetMaterialColor(aiMaterial, AI_MATKEY_COLOR_AMBIENT, aiTextureType_NONE, 0, color);
+//        if(result == 0){
+//            ambient = new Vector4f(color.r(), color.g(), color.b(), color.a());
+//        }
+
+//        Vector4f diffuse = Material.DEFAULT_COLOUR;
+//        result = aiGetMaterialColor(aiMaterial, AI_MATKEY_COLOR_DIFFUSE, aiTextureType_NONE, 0, colour);
+//        if (result == 0) {
+//            diffuse = new Vector4f(colour.r(), colour.g(), colour.b(), colour.a());
+//        }
+//
+//        Vector4f specular = Material.DEFAULT_COLOUR;
+//        result = aiGetMaterialColor(aiMaterial, AI_MATKEY_COLOR_SPECULAR, aiTextureType_NONE, 0, colour);
+//        if (result == 0) {
+//            specular = new Vector4f(colour.r(), colour.g(), colour.b(), colour.a());
+//        }
+//
+//        Material material = new Material(ambient, diffuse, specular, 1.0f);
+//        material.setTexture(texture);
+//        materials.add(material);
+    }
+
+    private static Mesh processMesh(AIMesh aiMesh, List<Material> materials){
+        List<Float> vertices = new ArrayList<>();
+        List<Float> textures = new ArrayList<>();
+        List<Float> normals  = new ArrayList<>();
+        List<Integer> indices   = new ArrayList<>();
+
+//        System.out.println("Waiting for Vertices...");
+        processVertices(aiMesh, vertices);
+//        System.out.println("Waiting for Normals...");
+        processNormals(aiMesh, normals);
+//        System.out.println("Waiting for Textures...");
+        processTextCoords(aiMesh, textures);
+//        System.out.println("Waiting for Indices...");
+        processIndices(aiMesh, indices);
+//        System.out.println("Finished Processing Mesh");
+
+        Mesh mesh = new Mesh();
+        mesh.add(Utilities.toFloatArray(vertices), Utilities.toFloatArray(textures), Utilities.toFloatArray(normals), Utilities.toIntArray(indices));
+
+        Material material;
+        int materialIdx = aiMesh.mMaterialIndex();
+        if(materialIdx >= 0 && materialIdx < materials.size()){
+            material = materials.get(materialIdx);
+        }else{
+            material = new Material();
+        }
+
+        mesh.setMaterial(material);
+        return mesh;
+    }
+
+    private static void processVertices(AIMesh aiMesh, List<Float> vertices) {
+        AIVector3D.Buffer aiVertices = aiMesh.mVertices();
+
+        while(aiVertices.remaining() > 0){
+            AIVector3D aiVertex = aiVertices.get();
+            vertices.add(aiVertex.x());
+            vertices.add(aiVertex.y());
+            vertices.add(aiVertex.z());
+        }
+    }
+
+    private static void processNormals(AIMesh aiMesh, List<Float> normals) {
+        AIVector3D.Buffer aiNormals = aiMesh.mNormals();
+
+        while(aiNormals.remaining() > 0){
+            AIVector3D aiNormal = aiNormals.get();
+            normals.add(aiNormal.x());
+            normals.add(aiNormal.y());
+            normals.add(aiNormal.z());
+        }
+    }
+
+    private static void processTextCoords(AIMesh aiMesh, List<Float> textures) {
+        AIVector3D.Buffer aiTextureCoords = aiMesh.mTextureCoords(0);
+        System.out.println(aiTextureCoords.capacity());
+        int texIndex = 0;
+        for(int i = 0; i < aiTextureCoords.capacity(); i++){
+            textures.add(aiTextureCoords.get(i).x());
+            textures.add(aiTextureCoords.get(i).y());
+        }
+    }
+
+    private static void processIndices(AIMesh aiMesh, List<Integer> indices) {
+        AIFace.Buffer aiFace = aiMesh.mFaces();
+
+        while(aiFace.remaining() > 0){
+            AIFace face = aiFace.get();
+            IntBuffer indicesBuffer = face.mIndices();
+
+            for (int i = 0; i < indicesBuffer.capacity(); i++) {
+                indices.add(indicesBuffer.get(i));
+            }
+        }
     }
 }
