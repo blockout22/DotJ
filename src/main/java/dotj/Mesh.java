@@ -154,24 +154,12 @@ public class Mesh {
         }
 
         if (camera.isInBounds(object.getWorldTransform().getPosition().x, object.getWorldTransform().getPosition().y, object.getWorldTransform().getPosition().z)) {
-            Matrix4 transformationMatrix = createTransformationMatrix(object.getWorldTransform().getPosition(), object.getWorldTransform().getRotation(), object.getWorldTransform().getScale());
+            Matrix4 transformationMatrix = Utilities.createTransformationMatrix(object.getWorldTransform().getPosition(), object.getWorldTransform().getRotation(), object.getWorldTransform().getScale());
             Shader.loadMatrix(modelMatrix, transformationMatrix);
 //            object.update();
             GL11.glDrawElements(GL11.GL_TRIANGLES, indicesSize, GL11.GL_UNSIGNED_INT, 0);
         }
 
-    }
-
-    private Matrix4 createTransformationMatrix(Vector3f translation, Vector3f rotation, Vector3f scale) {
-        Matrix4 matrix = new Matrix4();
-        matrix.setIdentity();
-        Matrix4.translate(translation, matrix, matrix);
-        Matrix4.rotate((float) Math.toRadians(rotation.x), new Vector3f(1, 0, 0), matrix, matrix);
-        Matrix4.rotate((float) Math.toRadians(rotation.y), new Vector3f(0, 1, 0), matrix, matrix);
-        Matrix4.rotate((float) Math.toRadians(rotation.z), new Vector3f(0, 0, 1), matrix, matrix);
-        Matrix4.scale(scale, matrix, matrix);
-
-        return matrix;
     }
 
     public void disable() {

@@ -8,6 +8,7 @@ public class SkyboxShader extends Shader {
     public int projection;
     public int view;
     public int skybox;
+    public int cameraPos;
 
     public SkyboxShader() {
         super("SkyboxShader_vs.glsl", "SkyboxShader_fs.glsl");
@@ -17,14 +18,7 @@ public class SkyboxShader extends Shader {
 
         projection = getUniformLocation("projection");
         view = getUniformLocation("view");
+        cameraPos = getUniformLocation("cameraPos");
         skybox = getUniformLocation("skybox");
-    }
-
-    public void loadProjection(Matrix4 matrix){
-        loadMatrix(projection, matrix);
-    }
-
-    public void loadView(Matrix4 matrix) {
-        loadMatrix(view, matrix);
     }
 }

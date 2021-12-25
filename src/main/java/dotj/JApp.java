@@ -13,8 +13,11 @@ import dotj.physics.PhysicsWorld;
 import dotj.shaders.OutlineColorShader;
 import dotj.shaders.ReflectShader;
 import dotj.shaders.WorldShader;
+import org.joml.Matrix4f;
 import org.joml.Random;
 import org.joml.Vector3f;
+
+import java.io.File;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.*;
@@ -180,12 +183,14 @@ public class JApp extends App {
         cubeMap = new SkyBox("skybox.png");
 
         reflectShader = new ReflectShader();
-        ReflectMesh = ModelLoader.load("cube.fbx");
+//        ReflectMesh = ModelLoader.load("monkey.fbx");
+        ReflectMesh = ModelLoader.loadModel(new File(Utilities.getModelDir() + "Backpack.fbx"))[4];
         ReflectMeshInstance = new MeshInstance(null, ReflectMesh);
-        ReflectMeshInstance.getWorldTransform().setPosition(10, 10, -20);
+        ReflectMeshInstance.getWorldTransform().setPosition(-20, 7, -20);
 
         reflectShader.bind();
-        reflectShader.loadMatrix(reflectShader.projection, camera.getProjectionMatrix());
+        reflectShader.loadInt(reflectShader.skybox, 0);
+//        reflectShader.loadMatrix(reflectShader.projection, camera.getProjectionMatrix());
     }
 
     @Override
@@ -241,7 +246,28 @@ public class JApp extends App {
             Shader.unbind();
 
             reflectShader.bind();
+            reflectShader.loadMatrix(reflectShader.projection, camera.getProjectionMatrix());
+            Matrix4 matrix = Utilities.createTransformationMatrix(ReflectMeshInstance.getWorldTransform().getPosition(), ReflectMeshInstance.getWorldTransform().getRotation(), ReflectMeshInstance.getWorldTransform().getScale());
+            Matrix4 matrix4 = new Matrix4();
+            matrix4.m00 = 1f;
+            matrix4.m01 = 1f;
+            matrix4.m02 = 1f;
+            matrix4.m03 = 1f;
+            matrix4.m10 = 1f;
+            matrix4.m11 = 1f;
+            matrix4.m12 = 1f;
+            matrix4.m13 = 1f;
+            matrix4.m20 = 1f;
+            matrix4.m21 = 1f;
+            matrix4.m22 = 1f;
+            matrix4.m23 = 1f;
+            matrix4.m30 = 1f;
+            matrix4.m31 = 1f;
+            matrix4.m32 = 1f;
+            matrix4.m33 = 1f;
+            Shader.loadMatrix(reflectShader.model, matrix);
             reflectShader.loadViewMatrix(camera);
+            reflectShader.loadVector3f(reflectShader.cameraPos, camera.getPosition());
             ReflectMesh.enable();
             ReflectMesh.render(reflectShader.model, ReflectMeshInstance, camera);
             ReflectMesh.disable();
@@ -254,54 +280,63 @@ public class JApp extends App {
             vgRenderer.update();
 
 
-            //camera movement
-            if(Input.isKeyDown(window.getWindowID(), GLFWKey.KEY_W))
-            {
-                camera.getPosition().x += Math.sin(camera.getYaw() * Math.PI / 180) * SPEED * Time.getDelta();
-                camera.getPosition().z += -Math.cos(camera.getYaw() * Math.PI / 180) * SPEED * Time.getDelta();
-            }else if(Input.isKeyDown(window.getWindowID(), GLFWKey.KEY_S))
-            {
-                camera.getPosition().x -= Math.sin(camera.getYaw() * Math.PI / 180) * SPEED * Time.getDelta();
-                camera.getPosition().z -= -Math.cos(camera.getYaw() * Math.PI / 180) * SPEED * Time.getDelta();
-            }
-
-            if(Input.isKeyDown(window.getWindowID(), GLFWKey.KEY_A))
-            {
-                camera.getPosition().x += Math.sin((camera.getYaw() - 90) * Math.PI / 180) * SPEED * Time.getDelta();
-                camera.getPosition().z += -Math.cos((camera.getYaw() - 90) * Math.PI / 180) * SPEED * Time.getDelta();
-            }else if(Input.isKeyDown(window.getWindowID(), GLFWKey.KEY_D))
-            {
-                camera.getPosition().x += Math.sin((camera.getYaw() + 90) * Math.PI / 180) * SPEED * Time.getDelta();
-                camera.getPosition().z += -Math.cos((camera.getYaw() + 90) * Math.PI / 180) * SPEED * Time.getDelta();
-            }
-
-            Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_H, () -> {
-//                System.out.println("go transform- " + cube.getTransform() + " : inst transform- " + cube.instance.getTransform() + " : inst world transform- " + cube.instance.getWorldTransform());
-            }, () -> {
-
-            });
-
-            Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_L, () -> {
-                sphere.getTransform().setPosition(new Vector3f(0, 0, 0));
-            }, () -> {
-
-            });
-
-            Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_M, () -> {
-
-                Transform transform = new Transform();
-                transform.setPosition(new Vector3f(1.2f, 2, -5.6f));
-                transform.setScale(new Vector3f(.5f, .5f, .5f));
-//                cube.instance.setWorldTransform(transform);
-//                physicsWorld.step();
-            }, () -> {
-
-            });
+            Input();
 
             camera.update();
 
             window.update();
         }
+    }
+
+    private void Input()
+    {
+        //camera movement
+        if(Input.isKeyDown(window.getWindowID(), GLFWKey.KEY_W))
+        {
+            camera.getPosition().x += Math.sin(camera.getYaw() * Math.PI / 180) * SPEED * Time.getDelta();
+            camera.getPosition().z += -Math.cos(camera.getYaw() * Math.PI / 180) * SPEED * Time.getDelta();
+        }else if(Input.isKeyDown(window.getWindowID(), GLFWKey.KEY_S))
+        {
+            camera.getPosition().x -= Math.sin(camera.getYaw() * Math.PI / 180) * SPEED * Time.getDelta();
+            camera.getPosition().z -= -Math.cos(camera.getYaw() * Math.PI / 180) * SPEED * Time.getDelta();
+        }
+
+        if(Input.isKeyDown(window.getWindowID(), GLFWKey.KEY_A))
+        {
+            camera.getPosition().x += Math.sin((camera.getYaw() - 90) * Math.PI / 180) * SPEED * Time.getDelta();
+            camera.getPosition().z += -Math.cos((camera.getYaw() - 90) * Math.PI / 180) * SPEED * Time.getDelta();
+        }else if(Input.isKeyDown(window.getWindowID(), GLFWKey.KEY_D))
+        {
+            camera.getPosition().x += Math.sin((camera.getYaw() + 90) * Math.PI / 180) * SPEED * Time.getDelta();
+            camera.getPosition().z += -Math.cos((camera.getYaw() + 90) * Math.PI / 180) * SPEED * Time.getDelta();
+        }else if(Input.isKeyDown(window.getWindowID(), GLFWKey.KEY_Q)){
+            camera.getPosition().y -= SPEED * Time.getDelta();
+        }else if(Input.isKeyDown(window.getWindowID(), GLFWKey.KEY_E)){
+            camera.getPosition().y += SPEED * Time.getDelta();
+        }
+
+        Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_H, () -> {
+//                System.out.println("go transform- " + cube.getTransform() + " : inst transform- " + cube.instance.getTransform() + " : inst world transform- " + cube.instance.getWorldTransform());
+        }, () -> {
+
+        });
+
+        Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_L, () -> {
+            sphere.getTransform().setPosition(new Vector3f(0, 0, 0));
+        }, () -> {
+
+        });
+
+        Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_M, () -> {
+
+            Transform transform = new Transform();
+            transform.setPosition(new Vector3f(1.2f, 2, -5.6f));
+            transform.setScale(new Vector3f(.5f, .5f, .5f));
+//                cube.instance.setWorldTransform(transform);
+//                physicsWorld.step();
+        }, () -> {
+
+        });
     }
 
     private void stencilTest_Outline(){
@@ -347,6 +382,11 @@ public class JApp extends App {
         //handle the cleanup of all textures in the texturePool
         for(Texture t : Global.texturePool.values()){
             t.cleanup();
+        }
+
+        for(Mesh mesh : Global.meshPool.values())
+        {
+            mesh.cleanup();
         }
 
         cubeMap.cleanup();

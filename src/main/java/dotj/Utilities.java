@@ -1,6 +1,7 @@
 package dotj;
 
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 
 import javax.imageio.ImageIO;
@@ -327,5 +328,17 @@ public class Utilities {
         buffer.flip();
         newBuffer.put(buffer);
         return newBuffer;
+    }
+
+    public static Matrix4 createTransformationMatrix(Vector3f translation, Vector3f rotation, Vector3f scale) {
+        Matrix4 matrix = new Matrix4();
+        matrix.setIdentity();
+        Matrix4.translate(translation, matrix, matrix);
+        Matrix4.rotate((float) Math.toRadians(rotation.x), new Vector3f(1, 0, 0), matrix, matrix);
+        Matrix4.rotate((float) Math.toRadians(rotation.y), new Vector3f(0, 1, 0), matrix, matrix);
+        Matrix4.rotate((float) Math.toRadians(rotation.z), new Vector3f(0, 0, 1), matrix, matrix);
+        Matrix4.scale(scale, matrix, matrix);
+
+        return matrix;
     }
 }

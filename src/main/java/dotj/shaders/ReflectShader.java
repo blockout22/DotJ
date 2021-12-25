@@ -10,6 +10,9 @@ public class ReflectShader extends Shader {
     public int view;
     public int projection;
 
+    public int cameraPos;
+    public int skybox;
+
     public ReflectShader() {
         super("ReflectShader_vs.glsl", "ReflectShader_fs.glsl");
 
@@ -21,6 +24,8 @@ public class ReflectShader extends Shader {
         view = getUniformLocation("view");
         projection = getUniformLocation("projection");
 
+        cameraPos = getUniformLocation("cameraPos");
+        skybox = getUniformLocation("skybox");
     }
 
     public void loadViewMatrix(PerspectiveCamera camera) {
