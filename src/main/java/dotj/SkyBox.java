@@ -87,7 +87,7 @@ public class SkyBox {
         }
         int width = image.getWidth() / 4;
         int height = image.getHeight() / 3;
-        System.out.println("w: " + width + " h: " + height);
+//        System.out.println("w: " + width + " h: " + height);
         int channels = 3;
 
         ByteBuffer[] buffers = Utilities.loadToCubeMap(image, 3);

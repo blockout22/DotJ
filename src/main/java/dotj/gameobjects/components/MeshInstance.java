@@ -103,7 +103,7 @@ public class MeshInstance implements Component {
 //        shader.setMaterial(material);
     }
 
-    private void calculateWorldTransform() {
+    public void calculateWorldTransform() {
         if(parent != null) {
             worldTransform.add(parent.getTransform(), transform);
         }

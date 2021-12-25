@@ -330,6 +330,15 @@ public class Utilities {
         return newBuffer;
     }
 
+    /**
+     * cleanup memory if argument is NOT NULL
+     */
+    public static void cleanup(Mesh mesh){
+        if(mesh != null){
+            mesh.cleanup();
+        }
+    }
+
     public static Matrix4 createTransformationMatrix(Vector3f translation, Vector3f rotation, Vector3f scale) {
         Matrix4 matrix = new Matrix4();
         matrix.setIdentity();

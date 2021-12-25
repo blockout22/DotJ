@@ -52,6 +52,6 @@ public class Monkey extends GameObject{
 
     @Override
     public void cleanup() {
-        mesh.cleanup();
+        Utilities.cleanup(mesh);
     }
 }

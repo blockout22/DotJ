@@ -147,6 +147,8 @@ public class Sphere extends GameObject{
     public void cleanup() {
 //        specularTexture.cleanup();
 //        sphereTexture.cleanup();
-        mesh.cleanup();
+//        mesh.cleanup();
+        Utilities.cleanup(mesh);
     }
+
 }

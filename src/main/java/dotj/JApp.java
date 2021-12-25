@@ -7,13 +7,14 @@ import dotj.gameobjects.components.MeshInstance;
 import dotj.input.GLFWKey;
 import dotj.input.Input;
 import dotj.interfaces.OnFinishedListener;
+import dotj.levels.Level;
+import dotj.levels.TestLevel;
 import dotj.light.DirectionalLight;
 import dotj.light.PointLight;
 import dotj.physics.PhysicsWorld;
 import dotj.shaders.OutlineColorShader;
 import dotj.shaders.ReflectShader;
 import dotj.shaders.WorldShader;
-import org.joml.Matrix4f;
 import org.joml.Random;
 import org.joml.Vector3f;
 
@@ -50,11 +51,6 @@ public class JApp extends App {
 
     private Level level;
     private PhysicsWorld physicsWorld;
-
-    private Floor floor;
-    private Monkey monkey;
-    private Sphere sphere;
-    private Cube cube;
 
     private NanoVGRenderer vgRenderer;
 
@@ -153,26 +149,11 @@ public class JApp extends App {
 //        pointLight.setLinear(r.nextFloat());
 //        pointLight.setQuadratic(r.nextFloat());
 
-        level = new Level();
-
-        floor = new Floor(physicsWorld, camera, worldShader);
-        level.addGameObject(floor);
-        monkey = new Monkey(camera, worldShader);
-        level.addGameObject(monkey);
-        sphere = new Sphere(camera, worldShader, physicsWorld);
-        level.addGameObject(sphere);
-        cube = new Cube(camera, worldShader, physicsWorld);
-        level.addGameObject(cube);
+        level = new TestLevel(physicsWorld, camera, worldShader);
 
         this.vgRenderer = new NanoVGRenderer(window);
 
-
-        level.load(new OnFinishedListener() {
-            @Override
-            public void finished() {
-                System.out.println("Finished Loading Level");
-            }
-        });
+//        level.load();
 
         stencilTestMesh = ModelLoader.load("cube.fbx");
         stencilTestMeshInstance = new MeshInstance(null, stencilTestMesh);
@@ -322,7 +303,8 @@ public class JApp extends App {
         });
 
         Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_L, () -> {
-            sphere.getTransform().setPosition(new Vector3f(0, 0, 0));
+//            sphere.getTransform().setPosition(new Vector3f(0, 0, 0));
+            level.load();
         }, () -> {
 
         });

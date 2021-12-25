@@ -71,8 +71,12 @@ public class Cube extends GameObject{
 
     @Override
     public void cleanup() {
+        if(meshes == null){
+            return;
+        }
         for (int i = 0; i < meshes.length; i++) {
-            meshes[i].cleanup();
+//            meshes[i].cleanup();
+            Utilities.cleanup(meshes[i]);
         }
 //        mesh.cleanup();
     }

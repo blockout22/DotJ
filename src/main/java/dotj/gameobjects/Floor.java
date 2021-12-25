@@ -80,6 +80,7 @@ public class Floor extends GameObject{
     @Override
     public void cleanup() {
 //        floorTexture.cleanup();
-        floor.cleanup();
+        Utilities.cleanup(floor);
+//        floor.cleanup();
     }
 }

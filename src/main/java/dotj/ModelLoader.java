@@ -1,6 +1,5 @@
 package dotj;
 
-import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.assimp.*;
@@ -20,12 +19,12 @@ public class ModelLoader {
     }
 
     public static Mesh load(File file){
-        AIScene scene = Assimp.aiImportFile(file.toString(),
-                Assimp.aiProcess_Triangulate |
-                        Assimp.aiProcess_GenSmoothNormals |
-                        Assimp.aiProcess_FlipUVs |
-                        Assimp.aiProcess_CalcTangentSpace |
-                        Assimp.aiProcess_LimitBoneWeights);
+        AIScene scene = aiImportFile(file.toString(),
+                aiProcess_Triangulate |
+                        aiProcess_GenSmoothNormals |
+                        aiProcess_FlipUVs |
+                        aiProcess_CalcTangentSpace |
+                        aiProcess_LimitBoneWeights );
 
         AIMatrix4x4 transform = scene.mRootNode().mTransformation();
 //        System.out.println(file);
@@ -224,7 +223,7 @@ public class ModelLoader {
 
     private static void processTextCoords(AIMesh aiMesh, List<Float> textures) {
         AIVector3D.Buffer aiTextureCoords = aiMesh.mTextureCoords(0);
-        System.out.println(aiTextureCoords.capacity());
+//        System.out.println(aiTextureCoords.capacity());
         for(int i = 0; i < aiTextureCoords.capacity(); i++){
             textures.add(aiTextureCoords.get(i).x());
             textures.add(aiTextureCoords.get(i).y());
