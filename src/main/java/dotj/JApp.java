@@ -2,6 +2,7 @@ package dotj;
 
 import dotj.UI.Nano.vg.NanoVGRenderer;
 import dotj.debug.DebugRender;
+import dotj.example.ReflectionExample;
 import dotj.gameobjects.*;
 import dotj.gameobjects.components.MeshInstance;
 import dotj.input.GLFWKey;
@@ -57,13 +58,11 @@ public class JApp extends App {
     private Mesh stencilTestMesh;
     private MeshInstance stencilTestMeshInstance;
 
-    private ReflectShader reflectShader;
-    private Mesh ReflectMesh;
-    private MeshInstance ReflectMeshInstance;
-
     private FrameBuffer frameBuffer;
 
     private SkyBox cubeMap;
+
+    private ReflectionExample reflectionExample;
 
     public JApp(){
         init();
@@ -163,15 +162,7 @@ public class JApp extends App {
 //        cubeMap = new SkyBox("https://i.pinimg.com/originals/92/33/f4/9233f460aa6b43e937a46dff3857c812.png");
         cubeMap = new SkyBox("skybox.png");
 
-        reflectShader = new ReflectShader();
-//        ReflectMesh = ModelLoader.load("monkey.fbx");
-        ReflectMesh = ModelLoader.loadModel(new File(Utilities.getModelDir() + "Backpack.fbx"))[4];
-        ReflectMeshInstance = new MeshInstance(null, ReflectMesh);
-        ReflectMeshInstance.getWorldTransform().setPosition(-20, 7, -20);
-
-        reflectShader.bind();
-        reflectShader.loadInt(reflectShader.skybox, 0);
-//        reflectShader.loadMatrix(reflectShader.projection, camera.getProjectionMatrix());
+        reflectionExample = new ReflectionExample();
     }
 
     @Override
@@ -226,32 +217,7 @@ public class JApp extends App {
             }
             Shader.unbind();
 
-            reflectShader.bind();
-            reflectShader.loadMatrix(reflectShader.projection, camera.getProjectionMatrix());
-            Matrix4 matrix = Utilities.createTransformationMatrix(ReflectMeshInstance.getWorldTransform().getPosition(), ReflectMeshInstance.getWorldTransform().getRotation(), ReflectMeshInstance.getWorldTransform().getScale());
-            Matrix4 matrix4 = new Matrix4();
-            matrix4.m00 = 1f;
-            matrix4.m01 = 1f;
-            matrix4.m02 = 1f;
-            matrix4.m03 = 1f;
-            matrix4.m10 = 1f;
-            matrix4.m11 = 1f;
-            matrix4.m12 = 1f;
-            matrix4.m13 = 1f;
-            matrix4.m20 = 1f;
-            matrix4.m21 = 1f;
-            matrix4.m22 = 1f;
-            matrix4.m23 = 1f;
-            matrix4.m30 = 1f;
-            matrix4.m31 = 1f;
-            matrix4.m32 = 1f;
-            matrix4.m33 = 1f;
-            Shader.loadMatrix(reflectShader.model, matrix);
-            reflectShader.loadViewMatrix(camera);
-            reflectShader.loadVector3f(reflectShader.cameraPos, camera.getPosition());
-            ReflectMesh.enable();
-            ReflectMesh.render(reflectShader.model, ReflectMeshInstance, camera);
-            ReflectMesh.disable();
+            reflectionExample.update(camera);
 
             cubeMap.update(camera);
             frameBuffer.disable();
@@ -373,8 +339,7 @@ public class JApp extends App {
 
         cubeMap.cleanup();
         frameBuffer.cleanup();
-        ReflectMesh.cleanup();
-        reflectShader.cleanup();
+        reflectionExample.cleanup();
 
         stencilTestMesh.cleanup();
         level.unload();
