@@ -141,15 +141,20 @@ public class TestLevel extends Level {
 
     @Override
     public void update() {
-        Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_Y, () -> {
-            sphere.getTransform().getRotation().y += 1;
-            sphere.getTransform().apply();
+//        Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_Y, () -> {
+//            sphere.getTransform().getRotation().y += 1;
+//            sphere.getTransform().apply();
+//
+////            for(Component c : cube.getComponents()){
+////                MeshInstance instance = (MeshInstance) c;
+////                instance.calculateWorldTransform();
+////            }
+//        }, () -> {});
 
-//            for(Component c : cube.getComponents()){
-//                MeshInstance instance = (MeshInstance) c;
-//                instance.calculateWorldTransform();
-//            }
-        }, () -> {});
+        if(Input.isKeyDown(window.getWindowID(), GLFWKey.KEY_Y)){
+            sphere.getTransform().getRotation().y += 0.1f * Time.getDelta();
+            sphere.getTransform().apply();
+        }
 
 //        cube.getTransform().setPosition(new Vector3f(camera.getPosition().x, camera.getPosition().y, camera.getPosition().z - 10));
 //        if(cube.getComponents().size() > 0) {

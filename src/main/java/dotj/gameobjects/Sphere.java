@@ -40,7 +40,7 @@ public class Sphere extends GameObject{
         Random r = new Random();
         instance = new MeshInstance(this, mesh, new Vector3f(0, 5, -15), new Vector3f(r.nextInt(360), r.nextInt(360), r.nextInt(360)), new Vector3f(1.13f, 1.13f, 1.13f));
 
-        MeshInstance instance2 = new MeshInstance(this, mesh, new Vector3f(-5, 5, -25), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), new Vector3f(1f, 1f, 1f));
+        MeshInstance instance2 = new MeshInstance(this, mesh, new Vector3f(-2, 0, 0), new Vector3f(-0, 0, 0), new Vector3f(2f, 2f, 2f));
 
         MeshInstance lightInstance = new MeshInstance(this, mesh, new Vector3f(4, 15, 45), new Vector3f(r.nextInt(360),r.nextInt(360),r.nextInt(360)), new Vector3f(.2f, .2f, .2f));
 
@@ -69,7 +69,7 @@ public class Sphere extends GameObject{
 
         sphereTexture = TextureLoader.loadTexture("container2.png");
         instance.setTexture(sphereTexture);
-        instance2.setTexture(sphereTexture);
+//        instance2.setTexture(sphereTexture);
         lightInstance.setTexture(sphereTexture);
         instance4.setTexture(sphereTexture);
         instance5.setTexture(sphereTexture);
@@ -93,7 +93,8 @@ public class Sphere extends GameObject{
 //        instance6.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
 //        instance7.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
 
-        getTransform().setPosition(new Vector3f(10, 0, 0));
+        getTransform().setPosition(new Vector3f(0, 2, 0));
+        getTransform().apply();
 
 //        instance.showBoundingBox();
 //        instance2.showBoundingBox(new Vector3f(0, 0, 255));

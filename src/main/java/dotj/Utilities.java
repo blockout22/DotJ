@@ -394,14 +394,28 @@ public class Utilities {
         }
     }
 
-    public static Matrix4f createTransformationMatrix(Vector3f translation, Vector3f rotation, Vector3f scale) {
+    public static Matrix4f createTransformationMatrix(Vector3f translation, Vector3f rotation, Vector3f scale, Vector3f pivot) {
         Matrix4f matrix = new Matrix4f();
         matrix.identity();
+
+        if(pivot == null)
+        {
+            pivot = new Vector3f(0, 0, 0);
+        }
+        matrix = matrix.translate(new Vector3f(pivot.x, pivot.y, pivot.z), matrix);
+//        matrix.scale(scale, matrix);
+        //reset rotation
+//        matrix.setRotationXYZ(0, 0, 0);
+
+//        matrix.rotateX((float) Math.toRadians(rotation.x), matrix);
+//        matrix.rotateY((float) Math.toRadians(rotation.y), matrix);
+//        matrix.rotateZ((float) Math.toRadians(rotation.z), matrix);
+        matrix.setRotationXYZ((float)Math.toRadians(rotation.x), (float)Math.toRadians(rotation.y), (float)Math.toRadians(rotation.z));
+//        matrix.rotate((float)Math.toRadians(rotation.x), new Vector3f(1, 0, 0), matrix);
+//        matrix.rotate((float)Math.toRadians(rotation.y), new Vector3f(0, 1, 0), matrix);
+//        matrix.rotate((float)Math.toRadians(rotation.z), new Vector3f(0, 0, 1), matrix);
+
         matrix.translate(translation, matrix);
-        matrix.rotateX((float) Math.toRadians(rotation.x), matrix);
-        matrix.rotateY((float) Math.toRadians(rotation.y), matrix);
-        matrix.rotateZ((float) Math.toRadians(rotation.z), matrix);
-        matrix.scale(scale, matrix);
 
         return matrix;
     }

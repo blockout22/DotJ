@@ -153,7 +153,7 @@ public class Mesh {
         }
 
         if (camera.isInBounds(object.getWorldTransform().getPosition().x, object.getWorldTransform().getPosition().y, object.getWorldTransform().getPosition().z)) {
-            Matrix4f transformationMatrix = Utilities.createTransformationMatrix(object.getWorldTransform().getPosition(), object.getWorldTransform().getRotation(), object.getWorldTransform().getScale());
+            Matrix4f transformationMatrix = Utilities.createTransformationMatrix(object.getWorldTransform().getPosition(), object.getWorldTransform().getRotation(), object.getWorldTransform().getScale(), object.getParent() == null ? null :object.getParent().getTransform().getPosition());
             Shader.loadMatrix4f(modelMatrix, transformationMatrix);
 //            object.update();
             glDrawElements(GL_TRIANGLES, indicesSize, GL_UNSIGNED_INT, 0);

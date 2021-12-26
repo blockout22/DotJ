@@ -44,6 +44,16 @@ public class Input {
        }
     }
 
+//    public static void KeyEventDown(long window, GLFWKey key, PressedEvent evtPressed, ReleasedEvent evtReleased){
+//        if(isKeyDown(window, key)){
+//            evtPressed.exec();
+//        }
+//
+//        if(isKeyReleased(window, key)){
+//            evtReleased.exec();
+//        }
+//    }
+
 
     private static boolean isKeyPressed(long window, GLFWKey keyCode) {
         if (isKeyDown(window, keyCode)) {

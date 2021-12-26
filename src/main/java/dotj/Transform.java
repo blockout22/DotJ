@@ -55,8 +55,15 @@ public class Transform {
         float scly = t1.getScale().y * t2.getScale().y;
         float sclz = t1.getScale().z * t2.getScale().z;
 
-        setPosition(posx, posy, posz);
+//        Vector3f pos = t1.getPosition().add(t2.getPosition());
+//        Vector3f rot = t1.getRotation().add(t2.getRotation());
+//
+//        System.out.println(t2.getPosition());
+//        setPosition(pos);
+//        setRotation(rot);
+
         setRotation(rotx, roty, rotz);
+        setPosition(posx, posy, posz);
         setScale(sclx, scly, sclz);
     }
 

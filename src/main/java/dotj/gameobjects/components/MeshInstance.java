@@ -8,7 +8,6 @@ import org.joml.Vector3f;
 
 public class MeshInstance extends Component {
 
-
     private Mesh mesh;
 
     private Vector3f color;

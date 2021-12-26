@@ -24,17 +24,17 @@ public abstract class Component {
 //        System.out.println(worldTransform);
     }
 
-    public void setWorldTransform(Transform transform){
-        getLocalTransform().position.x = transform.getPosition().x - getWorldTransform().getPosition().x;
-        getLocalTransform().position.y = transform.getPosition().y - getWorldTransform().getPosition().y;
-        getLocalTransform().position.z = transform.getPosition().z - getWorldTransform().getPosition().z;
-
-        getLocalTransform().rotation.x = transform.getRotation().x - getWorldTransform().getRotation().x;
-        getLocalTransform().rotation.y = transform.getRotation().y - getWorldTransform().getRotation().y;
-        getLocalTransform().rotation.z = transform.getRotation().z - getWorldTransform().getRotation().z;
-
-        getLocalTransform().setScale(transform.scale);
-    }
+//    public void setWorldTransform(Transform transform){
+//        getLocalTransform().position.x = transform.getPosition().x - getWorldTransform().getPosition().x;
+//        getLocalTransform().position.y = transform.getPosition().y - getWorldTransform().getPosition().y;
+//        getLocalTransform().position.z = transform.getPosition().z - getWorldTransform().getPosition().z;
+//
+//        getLocalTransform().rotation.x = transform.getRotation().x - getWorldTransform().getRotation().x;
+//        getLocalTransform().rotation.y = transform.getRotation().y - getWorldTransform().getRotation().y;
+//        getLocalTransform().rotation.z = transform.getRotation().z - getWorldTransform().getRotation().z;
+////
+//        getLocalTransform().setScale(transform.scale);
+//    }
 
     public Transform getLocalTransform(){
         return localTransform;
@@ -54,5 +54,9 @@ public abstract class Component {
         worldTransform.scale.x = scl;
         worldTransform.scale.y = scl;
         worldTransform.scale.z = scl;
+    }
+
+    public GameObject getParent(){
+        return parent;
     }
 }

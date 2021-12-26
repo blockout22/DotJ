@@ -29,7 +29,7 @@ public class ReflectionExample {
     public void update(PerspectiveCamera camera){
         reflectShader.bind();
         reflectShader.loadMatrix4f(reflectShader.projection, camera.getProjectionMatrix());
-        Matrix4f matrix = Utilities.createTransformationMatrix(ReflectMeshInstance.getWorldTransform().getPosition(), ReflectMeshInstance.getWorldTransform().getRotation(), ReflectMeshInstance.getWorldTransform().getScale());
+        Matrix4f matrix = Utilities.createTransformationMatrix(ReflectMeshInstance.getWorldTransform().getPosition(), ReflectMeshInstance.getWorldTransform().getRotation(), ReflectMeshInstance.getWorldTransform().getScale(), null);
         Matrix4f matrix4 = new Matrix4f();
         matrix4.m00(1f);
         matrix4.m01(1f);
