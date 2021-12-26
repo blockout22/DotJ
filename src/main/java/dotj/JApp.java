@@ -83,13 +83,13 @@ public class JApp extends App {
 
         defaultTexture = TextureLoader.loadTexture("white.png");
 
-        level = new TestLevel(physicsWorld, camera);
+        level = new TestLevel(physicsWorld, camera, window);
 
         this.vgRenderer = new NanoVGRenderer(window);
 
         frameBuffer = new FrameBuffer();
-//        cubeMap = new SkyBox("https://i.pinimg.com/originals/92/33/f4/9233f460aa6b43e937a46dff3857c812.png");
-        cubeMap = new SkyBox("skybox.png");
+        cubeMap = new SkyBox("https://i.pinimg.com/originals/92/33/f4/9233f460aa6b43e937a46dff3857c812.png");
+//        cubeMap = new SkyBox("skybox.png");
 
         reflectionExample = new ReflectionExample();
     }
@@ -117,7 +117,7 @@ public class JApp extends App {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
             glEnable(GL_DEPTH_TEST);
             glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-            glEnable(GL_MULTISAMPLE);
+//            glEnable(GL_MULTISAMPLE);
             glEnable(GL_FRAMEBUFFER_SRGB);
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

@@ -1,27 +1,15 @@
 package dotj.gameobjects.components;
 
-import dotj.Material;
-import dotj.Mesh;
-import dotj.Shader;
-import dotj.Transform;
+import dotj.*;
 import dotj.debug.DebugInstance;
 import dotj.debug.DebugRender;
 import dotj.gameobjects.GameObject;
-import dotj.gameobjects.components.Component;
-import dotj.shaders.WorldShader;
 import org.joml.Vector3f;
 
-public class MeshInstance implements Component {
+public class MeshInstance extends Component {
 
-    private GameObject parent = null;
+
     private Mesh mesh;
-//    private Shader shader;
-    private Transform transform;
-//    protected Vector3f positiontion;
-//    private Vector3f rotation;
-//    private Vector3f scale;
-
-    private Transform worldTransform;
 
     private Vector3f color;
     private Material material;
@@ -32,20 +20,16 @@ public class MeshInstance implements Component {
     private boolean shouldUpdateOutsideBounds = false;
 
     public MeshInstance(GameObject gameObject, Mesh mesh, Transform transform){
-        this.parent = gameObject;
+        super(gameObject);
         this.mesh = mesh;
-        this.transform = transform;
-//        this.position = position;
-//        this.rotation = rotation;
-//        this.scale = scale;
+        this.localTransform = transform;
         color = new Vector3f(1, 1, 1);
 //        material = new Material();
         material = mesh.getMaterial();
 
-        this.worldTransform = new Transform();
         calculateWorldTransform();
 
-        transform.setOnChangedListener(() ->{
+        localTransform.setOnChangedListener(() ->{
             calculateWorldTransform();
         });
     }
@@ -104,25 +88,6 @@ public class MeshInstance implements Component {
 //        shader.setMaterial(material);
     }
 
-    public void calculateWorldTransform() {
-        if(parent != null) {
-            worldTransform.add(parent.getTransform(), transform);
-        }
-//        System.out.println(worldTransform);
-    }
-
-    public void setWorldTransform(Transform transform){
-        getTransform().position.x = transform.getPosition().x - getWorldTransform().getPosition().x;
-        getTransform().position.y = transform.getPosition().y - getWorldTransform().getPosition().y;
-        getTransform().position.z = transform.getPosition().z - getWorldTransform().getPosition().z;
-
-        getTransform().rotation.x = transform.getRotation().x - getWorldTransform().getRotation().x;
-        getTransform().rotation.y = transform.getRotation().y - getWorldTransform().getRotation().y;
-        getTransform().rotation.z = transform.getRotation().z - getWorldTransform().getRotation().z;
-
-        getTransform().setScale(transform.scale);
-    }
-
     public Vector3f getColor() {
         return color;
     }
@@ -159,6 +124,10 @@ public class MeshInstance implements Component {
 //        System.out.println(material.getDiffuse());
     }
 
+    public void setTexture(Texture texture){
+        setTextureID(texture.getID());
+    }
+
     public int getSpecularTextureID() {
         return specularTextureID;
     }
@@ -167,23 +136,9 @@ public class MeshInstance implements Component {
         this.specularTextureID = specularTextureID;
     }
 
-    public Transform getTransform(){
-        return transform;
+    public void setSpecularTexture(Texture texture){
+        setSpecularTextureID(texture.getID());
     }
 
-    public void setScale(float scl){
-        transform.scale.x = scl;
-        transform.scale.y = scl;
-        transform.scale.z = scl;
-    }
 
-    public Transform getWorldTransform(){
-        return worldTransform;
-    }
-
-    public void setWorldScale(float scl){
-        worldTransform.scale.x = scl;
-        worldTransform.scale.y = scl;
-        worldTransform.scale.z = scl;
-    }
 }

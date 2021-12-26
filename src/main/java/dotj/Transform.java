@@ -28,6 +28,14 @@ public class Transform {
         this(new Vector3f(0f, 0f, 0f));
     }
 
+    /**
+     * triggers the OnChange Listener
+     */
+    public void apply()
+    {
+        onChangedListener.onChange();
+    }
+
     public void setOnChangedListener(OnChangedListener onChangedListener){
         this.onChangedListener = onChangedListener;
     }

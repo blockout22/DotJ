@@ -170,9 +170,9 @@ public class PerspectiveCamera {
 //        projectionMatrix.m33 = 0;
 
         projectionMatrix = new Matrix4f();
-//        Matrix4f matrix4f = new Matrix4f();
+        projectionMatrix.identity();
         projectionMatrix.perspective(70, aspectRatio, z_near, z_far, false, projectionMatrix);
-//        projectionMatrix.copy(matrix4f);
+
     }
 
     protected void createOrthographicMatrix(){

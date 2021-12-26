@@ -23,6 +23,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import static org.joml.Math.*;
 import static org.lwjgl.BufferUtils.createByteBuffer;
 import static org.lwjgl.system.MemoryUtil.memSlice;
 
@@ -38,6 +39,19 @@ public class Utilities {
         float yRes = remapFloat(value.y, inA.y, inB.y, outA.y, outB.y);
 
         return new Vector2f(xRes, yRes);
+    }
+
+    public static float clamp(float value, float min, float max)
+    {
+        if(value > max){
+            value = max;
+        }
+
+        if(value < min){
+            value = min;
+        }
+
+        return value;
     }
 
     public static String getAssetDir(){

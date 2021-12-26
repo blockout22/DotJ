@@ -68,22 +68,22 @@ public class Sphere extends GameObject{
         addComponent(instance7);
 
         sphereTexture = TextureLoader.loadTexture("container2.png");
-//        instance.setTextureID(sphereTexture.getID());
-//        instance2.setTextureID(sphereTexture.getID());
-//        lightInstance.setTextureID(sphereTexture.getID());
-//        instance4.setTextureID(sphereTexture.getID());
-//        instance5.setTextureID(sphereTexture.getID());
-//        instance6.setTextureID(sphereTexture.getID());
-//        instance7.setTextureID(sphereTexture.getID());
+        instance.setTexture(sphereTexture);
+        instance2.setTexture(sphereTexture);
+        lightInstance.setTexture(sphereTexture);
+        instance4.setTexture(sphereTexture);
+        instance5.setTexture(sphereTexture);
+        instance6.setTexture(sphereTexture);
+        instance7.setTexture(sphereTexture);
 
         specularTexture = TextureLoader.loadTexture("container2_specular.png");
-        instance.setSpecularTextureID(specularTexture.getID());
-        instance2.setSpecularTextureID(specularTexture.getID());
-        lightInstance.setSpecularTextureID(specularTexture.getID());
-        instance4.setSpecularTextureID(specularTexture.getID());
-        instance5.setSpecularTextureID(specularTexture.getID());
-        instance6.setSpecularTextureID(specularTexture.getID());
-        instance7.setSpecularTextureID(specularTexture.getID());
+        instance.setSpecularTexture(specularTexture);
+        instance2.setSpecularTexture(specularTexture);
+        lightInstance.setSpecularTexture(specularTexture);
+        instance4.setSpecularTexture(specularTexture);
+        instance5.setSpecularTexture(specularTexture);
+        instance6.setSpecularTexture(specularTexture);
+        instance7.setSpecularTexture(specularTexture);
 
 //        instance.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
 //        instance2.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
@@ -95,13 +95,13 @@ public class Sphere extends GameObject{
 
         getTransform().setPosition(new Vector3f(10, 0, 0));
 
-        instance.showBoundingBox();
-        instance2.showBoundingBox(new Vector3f(0, 0, 255));
-        lightInstance.showBoundingBox(new Vector3f(0, 255, 0));
-        instance4.showBoundingBox();
-        instance5.showBoundingBox();
-        instance6.showBoundingBox();
-        instance7.showBoundingBox();
+//        instance.showBoundingBox();
+//        instance2.showBoundingBox(new Vector3f(0, 0, 255));
+//        lightInstance.showBoundingBox(new Vector3f(0, 255, 0));
+//        instance4.showBoundingBox();
+//        instance5.showBoundingBox();
+//        instance6.showBoundingBox();
+//        instance7.showBoundingBox();
 
 //        lightInstance.setWorldTransform(new Transform(new Vector3f(), new Vector3f(), new Vector3f(1f, 1f, 1f)));
 

@@ -1,19 +1,13 @@
 package dotj.gameobjects;
 
-import com.jme3.bullet.objects.PhysicsBody;
 import dotj.*;
-import dotj.debug.DebugInstance;
-import dotj.debug.DebugRender;
 import dotj.gameobjects.components.MeshInstance;
 import dotj.gameobjects.components.PhysicsBox;
 import dotj.physics.PhysicsWorld;
 import dotj.shaders.WorldShader;
 import org.joml.Vector3f;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.nio.ByteBuffer;
 
 public class Cube extends GameObject{
 
@@ -43,9 +37,10 @@ public class Cube extends GameObject{
             MeshInstance instance = new MeshInstance(this, meshes[i]);
 //            instance.setShader(shader);
             instance.setTextureID(TextureLoader.loadTexture("container2.png").getID());
-            instance.getTransform().setPosition(new Vector3f(-25, 9, 0));
+            instance.getLocalTransform().setPosition(new Vector3f(-25, 9, 0));
             instances[i] = instance;
             instance.showBoundingBox();
+            addComponent(instance);
         }
         texture = TextureLoader.loadTexture("container2.png");
     }

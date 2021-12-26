@@ -9,11 +9,12 @@ import com.jme3.math.Transform;
 import com.jme3.math.Vector3f;
 import dotj.physics.PhysicsWorld;
 
-public class PhysicsBox implements Component {
+public class PhysicsBox extends Component {
+    private Transform transform;
     private PhysicsRigidBody body;
-    private Transform transform = new Transform();
 
     public PhysicsBox(PhysicsWorld physicsWorld, float xHalfExtent, float yHalfExtent, float zHalfExtent, float mass){
+        super(null);
         CollisionShape shape = new BoxCollisionShape(xHalfExtent, yHalfExtent, zHalfExtent);
 //        float mass = PhysicsBody.massForStatic;
         body = new PhysicsRigidBody(shape, mass);

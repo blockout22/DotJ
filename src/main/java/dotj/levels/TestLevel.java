@@ -6,7 +6,10 @@ import dotj.gameobjects.Cube;
 import dotj.gameobjects.Floor;
 import dotj.gameobjects.Monkey;
 import dotj.gameobjects.Sphere;
+import dotj.gameobjects.components.Component;
 import dotj.gameobjects.components.MeshInstance;
+import dotj.input.GLFWKey;
+import dotj.input.Input;
 import dotj.interfaces.OnFinishedListener;
 import dotj.light.DirectionalLight;
 import dotj.light.PointLight;
@@ -14,6 +17,7 @@ import dotj.physics.PhysicsWorld;
 import dotj.shaders.OutlineColorShader;
 import dotj.shaders.WorldInstancedShader;
 import dotj.shaders.WorldShader;
+import org.joml.Random;
 import org.joml.Vector3f;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -43,9 +47,10 @@ public class TestLevel extends Level {
     private Mesh stencilTestMesh;
     private MeshInstance stencilTestMeshInstance;
 
-    public TestLevel(PhysicsWorld physicsWorld, PerspectiveCamera camera){
+    public TestLevel(PhysicsWorld physicsWorld, PerspectiveCamera camera, GLFWWindow window){
         super(physicsWorld, camera);
         this.camera = camera;
+        this.window = window;
 
         /**
          * Init Shaders
@@ -65,15 +70,19 @@ public class TestLevel extends Level {
         /**
          * Init Lights
          */
-        Vector3f direction = new Vector3f(-1, 0, -1f);
-        Vector3f ambient = new Vector3f(0.2f, 0.2f, 0.2f);
+        Vector3f direction = new Vector3f(1, 1, 1f);
+        Vector3f ambient = new Vector3f(0.1f, 0.1f, 0.1f);
         Vector3f diffuse = new Vector3f(0.5f, 0.5f, 0.5f);
         Vector3f specular = new Vector3f(1f, 1f, 1f);
         light = new DirectionalLight(direction, ambient, diffuse, specular);
 
 //        setupPointLights();
 
+        pointLight = new PointLight();
+        pointLight.setPosition(new Vector3f(0, 25, -10));
 
+        pointLight.setDiffuse(new Vector3f(25, 25, 25));
+        pointLight.setAmbient(new Vector3f(5, 5, 5));
         /**
          * Init Game Objects
          */
@@ -100,6 +109,7 @@ public class TestLevel extends Level {
                 System.out.println("Finished Loading Test Level");
             }
         });
+        load();
     }
 
     private void setupPointLights()
@@ -123,16 +133,40 @@ public class TestLevel extends Level {
 //        pointLight.setConstant(r.nextFloat());
 //        pointLight.setLinear(r.nextFloat());
 //        pointLight.setQuadratic(r.nextFloat());
+
     }
+
+    float value = 0;
+    GLFWWindow window;
 
     @Override
     public void update() {
+        Input.KeyEvent(window.getWindowID(), GLFWKey.KEY_Y, () -> {
+            sphere.getTransform().getRotation().y += 1;
+            sphere.getTransform().apply();
+
+//            for(Component c : cube.getComponents()){
+//                MeshInstance instance = (MeshInstance) c;
+//                instance.calculateWorldTransform();
+//            }
+        }, () -> {});
+
+//        cube.getTransform().setPosition(new Vector3f(camera.getPosition().x, camera.getPosition().y, camera.getPosition().z - 10));
+//        if(cube.getComponents().size() > 0) {
+//            cube.getComponents().get(0).getLocalTransform().setPosition(0, 0, 5);
+//            cube.getComponents().get(0).getLocalTransform().apply();
+//            cube.getTransform().setPosition(camera.getPosition());
+//            cube.getTransform().setRotation(new Vector3f(camera.getPitch(), camera.getYaw(), camera.getRoll()));
+//            cube.getTransform().apply();
+//            System.out.println(cube.getComponents().get(0).getWorldTransform());
+//        }
         worldShader.bind();
         {
+            light.setDirection(camera.getPosition());
             worldShader.setViewPos(camera);
             worldShader.setColor(1f, 1f, 1f);
 
-//                worldShader.setPointLight(pointLight, 0);
+                worldShader.setPointLight(pointLight, 0);
 //                worldShader.setPointLight(pointLight2, 1);
 //                worldShader.setPointLight(pointLight3, 2);
 //                shader.setPointLight(pointLight4, 3);
