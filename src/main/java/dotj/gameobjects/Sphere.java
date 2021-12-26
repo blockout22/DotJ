@@ -33,7 +33,8 @@ public class Sphere extends GameObject{
 
     @Override
     public void init() {
-        mesh = ModelLoader.load("cube.fbx");
+        Model model = ModelLoader.load("cube.fbx");
+        mesh = new Mesh(model);
 //        mesh = ModelLoader.load("cube.obj");
 
         Random r = new Random();
@@ -51,13 +52,13 @@ public class Sphere extends GameObject{
 
         MeshInstance instance7 = new MeshInstance(this, mesh, new Vector3f(15, 10, -15), new Vector3f(0, 0, 0), new Vector3f(2f, 2f, 2f));
 
-        instance.setShader(shader);
-        instance2.setShader(shader);
-        lightInstance.setShader(shader);
-        instance4.setShader(shader);
-        instance5.setShader(shader);
-        instance6.setShader(shader);
-        instance7.setShader(shader);
+//        instance.setShader(shader);
+//        instance2.setShader(shader);
+//        lightInstance.setShader(shader);
+//        instance4.setShader(shader);
+//        instance5.setShader(shader);
+//        instance6.setShader(shader);
+//        instance7.setShader(shader);
         addComponent(instance);
         addComponent(instance2);
         addComponent(lightInstance);

@@ -9,7 +9,8 @@ import java.util.ArrayList;
 
 public class OBJLoader {
 
-    public static Mesh load(String objFile){
+    //TODO just delete this OBJLoader as Assimp already loads these types of files
+    public static Model load(String objFile){
         try {
 
             BufferedReader br = new BufferedReader(new InputStreamReader(OBJLoader.class.getResourceAsStream("/" + objFile)));
@@ -86,11 +87,11 @@ public class OBJLoader {
                 finalNormals[vertex * 3 + 2] = normals.get(normalsPos).z;
             }
 
-            Mesh mesh = new Mesh();
-            mesh.add(finalVertices, finalTexCoords, finalNormals, finalIndices);
-            mesh.setIsModel();
+            Model model = new Model(finalVertices, finalTexCoords, finalNormals, finalIndices);
+//            mesh.add(finalVertices, finalTexCoords, finalNormals, finalIndices);
+//            mesh.setIsModel();
 
-            return mesh;
+            return model;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

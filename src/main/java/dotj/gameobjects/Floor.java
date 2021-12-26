@@ -31,14 +31,15 @@ public class Floor extends GameObject{
 
     public void init(){
 
-        floor = ModelLoader.load("floor.fbx");
+        Model model = ModelLoader.load("floor.fbx");
+        floor = new Mesh(model);
 
         floorInstance = new MeshInstance(this, floor);
-        floorInstance.setShader(shader);
+//        floorInstance.setShader(shader);
 
         floorTexture = TextureLoader.loadTexture("Image.png");
         floorInstance.setScale(1f);
-//        floorInstance.setTextureID(floorTexture.getID());
+        floorInstance.setTextureID(floorTexture.getID());
         floorInstance.getTransform().setRotation(new Vector3f(-90, 0, 90));
         addComponent(floorInstance);
 
@@ -73,7 +74,7 @@ public class Floor extends GameObject{
         floor.enable();
         shader.setColor(floorInstance.getColor());
         shader.setMaterial(floorInstance.getMaterial());
-        floor.render(floorInstance.getShader().getModelMatrix(), floorInstance, camera);
+        floor.render(shader.getUnform("modelMatrix"), floorInstance, camera);
         floor.disable();
     }
 

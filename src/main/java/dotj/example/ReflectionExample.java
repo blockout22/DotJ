@@ -15,7 +15,8 @@ public class ReflectionExample {
     public ReflectionExample(){
         reflectShader = new ReflectShader();
 //        ReflectMesh = ModelLoader.load("monkey.fbx");
-        ReflectMesh = ModelLoader.loadModel(new File(Utilities.getModelDir() + "Backpack.fbx"))[4];
+        Model model = ModelLoader.loadModel(new File(Utilities.getModelDir() + "Backpack.fbx"))[4];
+        ReflectMesh = new Mesh(model);
         ReflectMeshInstance = new MeshInstance(null, ReflectMesh);
         ReflectMeshInstance.getWorldTransform().setPosition(-20, 7, -20);
 

@@ -3,6 +3,7 @@ package dotj;
 import java.io.*;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import dotj.Matrix4;
 import dotj.PerspectiveCamera;
@@ -23,6 +24,8 @@ public abstract class Shader {
 
     private ArrayList<String> uniformsDetection = new ArrayList<String>();
 
+    private HashMap<String, Integer> cachedUniforms = new HashMap<>();
+
     private boolean shouldValidateUniform = false;
 
     public Shader(String vertexShader, String fragmentShader){
@@ -42,6 +45,21 @@ public abstract class Shader {
         program = GL20.glCreateProgram();
         GL20.glAttachShader(program, vertex);
         GL20.glAttachShader(program, fragment);
+    }
+
+    public int getUnform(String uniformName){
+        int value = 0;
+        if(!cachedUniforms.isEmpty()) {
+            value = cachedUniforms.get(uniformName);
+        }
+        if(value == 0) {
+            int uniform = getUniformLocation(uniformName);
+            if (uniform != 0) {
+                cachedUniforms.put(uniformName, uniform);
+            }
+        }
+
+        return value;
     }
 
     public void bindAttribLocation(int index, String name){
@@ -80,6 +98,11 @@ public abstract class Shader {
 
     public void loadVector3f(int location, Vector3f vector3f) {
         loadVector3f(location, vector3f.x, vector3f.y, vector3f.z);
+    }
+
+    public void loadVector3f(String location, Vector3f vector3f){
+        int loc = getUniformLocation(location);
+        loadVector3f(loc, vector3f);
     }
 
     public void loadVector4f(int location, Vector4f vector4f){

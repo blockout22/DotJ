@@ -14,11 +14,11 @@ import static org.lwjgl.assimp.Assimp.*;
 
 public class ModelLoader {
 
-    public static Mesh load(String fileName){
+    public static Model load(String fileName){
         return load(new File(Utilities.getModelDir() + fileName));
     }
 
-    public static Mesh load(File file){
+    public static Model load(File file){
         AIScene scene = aiImportFile(file.toString(),
                 aiProcess_Triangulate |
                         aiProcess_GenSmoothNormals |
@@ -97,18 +97,20 @@ public class ModelLoader {
             texCoods[texIndex++] = buff.get(i).y();
         }
 
-        Mesh mesh = new Mesh();
-        mesh.add(vertices, texCoods, normals, indices);
+        Model model = new Model(vertices, texCoods, normals, indices);
+
+//        Mesh mesh = new Mesh();
+//        mesh.add(vertices, texCoods, normals, indices);
 //        mesh.setAABB(new Vector3f(aabb.mMin().x(), aabb.mMin().y(), aabb.mMin().z()), new Vector3f(aabb.mMax().x(), aabb.mMax().y(), aabb.mMax().z()));
-        mesh.setIsModel();
+//        mesh.setIsModel();
 //        scene.free();
 //        buff.free();
 //        aiMesh.free();
 //        aabb.free();
-        return mesh;
+        return model;
     }
 
-    public static Mesh[] loadModel(File file){
+    public static Model[] loadModel(File file){
         AIScene aiScene = Assimp.aiImportFile(file.toString(),
                 Assimp.aiProcess_Triangulate |
                         Assimp.aiProcess_GenSmoothNormals |
@@ -128,16 +130,19 @@ public class ModelLoader {
 
         int numMeshes = aiScene.mNumMeshes();
         PointerBuffer aiMeshes = aiScene.mMeshes();
-        Mesh[] meshes = new Mesh[numMeshes];
+        Model[] models = new Model[numMeshes];
         for (int i = 0; i < numMeshes; i++) {
             AIMesh aiMesh = AIMesh.create(aiMeshes.get(i));
-            Mesh mesh = processMesh(aiMesh, materials);
-            meshes[i] = mesh;
+            Model mesh = processMesh(aiMesh, materials);
+            models[i] = mesh;
         }
 
-        return meshes;
+        return models;
     }
 
+    /**
+     * TODO process materials correctly
+     */
     private static void processMaterial(AIMaterial aiMaterial, List<Material> materials) {
         AIColor4D color = AIColor4D.create();
 
@@ -173,7 +178,7 @@ public class ModelLoader {
 //        materials.add(material);
     }
 
-    private static Mesh processMesh(AIMesh aiMesh, List<Material> materials){
+    private static Model processMesh(AIMesh aiMesh, List<Material> materials){
         List<Float> vertices = new ArrayList<>();
         List<Float> textures = new ArrayList<>();
         List<Float> normals  = new ArrayList<>();
@@ -184,8 +189,8 @@ public class ModelLoader {
         processTextCoords(aiMesh, textures);
         processIndices(aiMesh, indices);
 
-        Mesh mesh = new Mesh();
-        mesh.add(Utilities.toFloatArray(vertices), Utilities.toFloatArray(textures), Utilities.toFloatArray(normals), Utilities.toIntArray(indices));
+//        Mesh mesh = new Mesh();
+        Model model = new Model(Utilities.toFloatArray(vertices), Utilities.toFloatArray(textures), Utilities.toFloatArray(normals), Utilities.toIntArray(indices));
 
         Material material;
         int materialIdx = aiMesh.mMaterialIndex();
@@ -195,8 +200,9 @@ public class ModelLoader {
             material = new Material();
         }
 
-        mesh.setMaterial(material);
-        return mesh;
+        //TODO add material to models
+//        mesh.setMaterial(material);
+        return model;
     }
 
     private static void processVertices(AIMesh aiMesh, List<Float> vertices) {

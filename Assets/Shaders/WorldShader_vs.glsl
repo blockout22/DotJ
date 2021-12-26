@@ -14,9 +14,10 @@ uniform mat4 viewMatrix;
 
 void main(void){
 
-	vec4 worldPosition = modelMatrix * vec4(position,1.0);
+	vec4 worldPosition = modelMatrix * vec4(position, 1.0);
 	vec4 positionRelativeToCam = viewMatrix * worldPosition;
-	gl_Position = projectionMatrix * positionRelativeToCam;
+	vec4 pos = projectionMatrix * positionRelativeToCam;
+	gl_Position = pos;
 
 //	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
 

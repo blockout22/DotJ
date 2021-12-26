@@ -2,6 +2,7 @@ package dotj.gameobjects.components;
 
 import dotj.Material;
 import dotj.Mesh;
+import dotj.Shader;
 import dotj.Transform;
 import dotj.debug.DebugInstance;
 import dotj.debug.DebugRender;
@@ -14,7 +15,7 @@ public class MeshInstance implements Component {
 
     private GameObject parent = null;
     private Mesh mesh;
-    private WorldShader shader;
+//    private Shader shader;
     private Transform transform;
 //    protected Vector3f positiontion;
 //    private Vector3f rotation;
@@ -78,13 +79,13 @@ public class MeshInstance implements Component {
         return DebugInstances;
     }
 
-    public WorldShader getShader() {
-        return shader;
-    }
-
-    public void setShader(WorldShader shader) {
-        this.shader = shader;
-    }
+//    public Shader getShader() {
+//        return shader;
+//    }
+//
+//    public void setShader(Shader shader) {
+//        this.shader = shader;
+//    }
 
     public Material getMaterial() {
         return material;

@@ -2,16 +2,13 @@ package dotj;
 
 import dotj.gameobjects.components.MeshInstance;
 import org.joml.Vector3f;
-import org.lwjgl.assimp.AIScene;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
+
+import static org.lwjgl.opengl.GL33.*;
 
 public class Mesh {
 
 
+    private Model model;
     private int vao;
     private int vbo;
     private int vboTexture;
@@ -25,15 +22,18 @@ public class Mesh {
 
     private BoundingBox boundingBox;
 
-    public Mesh() {
-        vao = GL30.glGenVertexArrays();
-        vbo = GL15.glGenBuffers();
-        vboTexture = GL15.glGenBuffers();
-        fbo = GL15.glGenBuffers();
-        vbon = GL15.glGenBuffers();
-        vboi = GL15.glGenBuffers();
+    public Mesh(Model model) {
+        this.model = model;
+        vao = glGenVertexArrays();
+        vbo = glGenBuffers();
+        vboTexture = glGenBuffers();
+        fbo = glGenBuffers();
+        vbon = glGenBuffers();
+        vboi = glGenBuffers();
         this.boundingBox = new BoundingBox();
         this.material = new Material();
+
+        add(model.getVertices(), model.getTexCoords(), model.getNormals(), model.getIndices());
     }
 
     public void setBoundingBox(Vector3f min, Vector3f max){
@@ -87,39 +87,39 @@ public class Mesh {
         return boundingBox;
     }
 
-    public void add(float[] vertices, float[] texCoords, float[] normals, int[] indices) {
+    private void add(float[] vertices, float[] texCoords, float[] normals, int[] indices) {
 //        this.texCoords = texCoords;
         if (isModel) {
             System.out.println("Something tried overriding model coords");
             return;
         }
         indicesSize = indices.length;
-        GL30.glBindVertexArray(vao);
+        glBindVertexArray(vao);
 
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, Utilities.flip(vertices), GL15.GL_STATIC_DRAW);
-        GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glBufferData(GL_ARRAY_BUFFER, Utilities.flip(vertices), GL_STATIC_DRAW);
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboTexture);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, Utilities.flip(texCoords), GL15.GL_STATIC_DRAW);
-        GL20.glVertexAttribPointer(1, 2, GL11.GL_FLOAT, false, 0, 0);
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ARRAY_BUFFER, vboTexture);
+        glBufferData(GL_ARRAY_BUFFER, Utilities.flip(texCoords), GL_STATIC_DRAW);
+        glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, 0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbon);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, Utilities.flip(normals), GL15.GL_STATIC_DRAW);
-        GL20.glVertexAttribPointer(2, 3, GL11.GL_FLOAT, false, 0, 0);
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ARRAY_BUFFER, vbon);
+        glBufferData(GL_ARRAY_BUFFER, Utilities.flip(normals), GL_STATIC_DRAW);
+        glVertexAttribPointer(2, 3, GL_FLOAT, false, 0, 0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-        GL30.glBindVertexArray(0);
 
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboi);
-        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, Utilities.flip(indices), GL15.GL_STATIC_DRAW);
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+        glBindVertexArray(0);
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboi);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, Utilities.flip(indices), GL_STATIC_DRAW);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
         // setBox(vertices);
         calculateBoundingBox(vertices);
-
     }
 
 //    private float[] texCoords;
@@ -134,55 +134,53 @@ public class Mesh {
     }
 
     public void enable() {
-        GL30.glBindVertexArray(vao);
-        GL20.glEnableVertexAttribArray(0);
-        GL20.glEnableVertexAttribArray(1);
-        GL20.glEnableVertexAttribArray(2);
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboi);
-
-
+        glBindVertexArray(vao);
+        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
+        glEnableVertexAttribArray(2);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboi);
     }
 
     public void render(int modelMatrix, MeshInstance object, PerspectiveCamera camera) {
 //        GL11.glBindTexture(GL11.GL_TEXTURE_2D, object.getMaterial().getDiffuse());
-        GL13.glActiveTexture(GL13.GL_TEXTURE0);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, object.getTextureID());
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, object.getTextureID());
 
         if(object.getSpecularTextureID() != 0){
-            GL13.glActiveTexture(GL13.GL_TEXTURE1);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, object.getSpecularTextureID());
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, object.getSpecularTextureID());
         }
 
         if (camera.isInBounds(object.getWorldTransform().getPosition().x, object.getWorldTransform().getPosition().y, object.getWorldTransform().getPosition().z)) {
             Matrix4 transformationMatrix = Utilities.createTransformationMatrix(object.getWorldTransform().getPosition(), object.getWorldTransform().getRotation(), object.getWorldTransform().getScale());
             Shader.loadMatrix(modelMatrix, transformationMatrix);
 //            object.update();
-            GL11.glDrawElements(GL11.GL_TRIANGLES, indicesSize, GL11.GL_UNSIGNED_INT, 0);
+            glDrawElements(GL_TRIANGLES, indicesSize, GL_UNSIGNED_INT, 0);
         }
-
     }
 
     public void disable() {
-
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
-        GL20.glDisableVertexAttribArray(0);
-        GL20.glDisableVertexAttribArray(1);
-        GL20.glDisableVertexAttribArray(2);
-        GL30.glBindVertexArray(0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        glDisableVertexAttribArray(0);
+        glDisableVertexAttribArray(1);
+        glDisableVertexAttribArray(2);
+        glDisableVertexAttribArray(3);
+        glBindVertexArray(0);
     }
 
     public void cleanup() {
-        GL30.glBindVertexArray(0);
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
-        GL20.glDisableVertexAttribArray(0);
-        GL20.glDisableVertexAttribArray(1);
-        GL20.glDisableVertexAttribArray(2);
-        GL15.glDeleteBuffers(vbo);
-        GL15.glDeleteBuffers(vboTexture);
-        GL15.glDeleteBuffers(fbo);
-        GL15.glDeleteBuffers(vboi);
-        GL30.glDeleteVertexArrays(vao);
+        glBindVertexArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        glDisableVertexAttribArray(0);
+        glDisableVertexAttribArray(1);
+        glDisableVertexAttribArray(2);
+
+        glDeleteBuffers(vbo);
+        glDeleteBuffers(vboTexture);
+        glDeleteBuffers(fbo);
+        glDeleteBuffers(vboi);
+        glDeleteVertexArrays(vao);
     }
 
     public Material getMaterial() {

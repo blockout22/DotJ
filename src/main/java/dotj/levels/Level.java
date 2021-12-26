@@ -15,11 +15,12 @@ public abstract class Level {
 
     private boolean initLoading = false;
     private ArrayList<GameObject> GameObjects = new ArrayList<>();
+    private ArrayList<GameObject> GameObjectsInstanced = new ArrayList<>();
 
     private OnFinishedListener onFinishedListener;
     int count = 0;
 
-    public Level(PhysicsWorld physicsWorld, PerspectiveCamera camera, WorldShader shader){
+    public Level(PhysicsWorld physicsWorld, PerspectiveCamera camera){
     }
 
     public void update(){
@@ -33,11 +34,25 @@ public abstract class Level {
             for (GameObject root : GameObjects) {
                 root.update();
             }
+
+            prepareInstancedRender();
+            for(GameObject instanced : GameObjectsInstanced){
+                instanced.update();
+            }
         }
     }
 
+    /**
+     * called right before the list of instanced GameObjects are rendered allowing the user to switch shaders
+     */
+    public abstract void prepareInstancedRender();
+
     protected void addGameObject(GameObject object){
         GameObjects.add(object);
+    }
+
+    protected void addGameObjectInstanced(GameObject object){
+        GameObjectsInstanced.add(object);
     }
 
     public void setOnLevelLoaded(OnFinishedListener onFinishedListener){
@@ -49,6 +64,9 @@ public abstract class Level {
     }
 
     private void continueLoading(){
+        for(GameObject i : GameObjectsInstanced){
+            i.init();
+        }
         if(count >= GameObjects.size() - 1)
         {
             if(onFinishedListener != null){
@@ -66,5 +84,11 @@ public abstract class Level {
         for(GameObject object : GameObjects){
             object.cleanup();
         }
+
+        for(GameObject object : GameObjectsInstanced){
+            object.cleanup();
+        }
     }
+
+    public abstract void cleanup();
 }

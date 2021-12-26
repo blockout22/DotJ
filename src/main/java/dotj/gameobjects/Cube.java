@@ -34,12 +34,14 @@ public class Cube extends GameObject{
 
     @Override
     public void init() {
-        meshes = ModelLoader.loadModel(new File(Utilities.getModelDir() + "cube.fbx"));
+        Model[] models = ModelLoader.loadModel(new File(Utilities.getModelDir() + "cube.fbx"));
 
-        instances = new MeshInstance[meshes.length];
-        for (int i = 0; i < meshes.length; i++) {
+        instances = new MeshInstance[models.length];
+        meshes = new Mesh[models.length];
+        for (int i = 0; i < models.length; i++) {
+            meshes[i] = new Mesh(models[i]);
             MeshInstance instance = new MeshInstance(this, meshes[i]);
-            instance.setShader(shader);
+//            instance.setShader(shader);
             instance.setTextureID(TextureLoader.loadTexture("container2.png").getID());
             instance.getTransform().setPosition(new Vector3f(-25, 9, 0));
             instances[i] = instance;
@@ -53,7 +55,7 @@ public class Cube extends GameObject{
         for (int i = 0; i < meshes.length; i++) {
             meshes[i].enable();
             {
-               meshes[i].render(instances[i].getShader().getModelMatrix(), instances[i], camera);
+               meshes[i].render(shader.getModelMatrix(), instances[i], camera);
             }
             meshes[i].disable();
         }

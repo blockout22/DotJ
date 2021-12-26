@@ -24,8 +24,8 @@ public class WorldShader extends Shader {
 
 
     public WorldShader() {
-//        super("vertexShader.glsl", "fragmentShader.glsl");
-        super("vertexShader.glsl", "fragmentShader.glsl");
+//        super("WorldShader_vs.glsl", "WorldShader_fs.glsl");
+        super("WorldShader_vs.glsl", "WorldShader_fs.glsl");
 
         bindAttribLocation(0, "position");
         bindAttribLocation(1, "textureCoordinates");

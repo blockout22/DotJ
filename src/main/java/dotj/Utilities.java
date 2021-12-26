@@ -82,6 +82,19 @@ public class Utilities {
         return arr;
     }
 
+    public static float[] toFloatArray(Vector3f[] vectorArray){
+        float[] arr = new float[vectorArray.length * 3];
+
+        int index = 0;
+        for (int i = 0; i < vectorArray.length; i++) {
+            arr[index++] = vectorArray[i].x;
+            arr[index++] = vectorArray[i].y;
+            arr[index++] = vectorArray[i].z;
+        }
+
+        return arr;
+    }
+
     public static BufferedImage loadImage(String fileName) throws IOException {
         InputStream in = null;
         BufferedImage image;
