@@ -33,7 +33,9 @@ public class Transform {
      */
     public void apply()
     {
-        onChangedListener.onChange();
+        if(onChangedListener != null) {
+            onChangedListener.onChange();
+        }
     }
 
     public void setOnChangedListener(OnChangedListener onChangedListener){

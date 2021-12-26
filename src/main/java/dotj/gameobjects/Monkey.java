@@ -54,7 +54,6 @@ public class Monkey extends GameObject{
 //                shader.bind();
 //                shader.loadVector3f("offseta[" + i + "]", instance.getWorldTransform().getPosition());
 //            }
-
             mesh.renderInstances(total);
 //            for(Component component : getComponents()){
 //                MeshInstance instance = (MeshInstance) component;

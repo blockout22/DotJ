@@ -12,7 +12,7 @@ public class Floor extends GameObject{
     private PerspectiveCamera camera;
     private WorldShader shader;
 
-    private MeshInstance floorInstance;
+    private MeshInstance floorInstance, wallInstance;
     private Mesh floor;
     private Texture floorTexture;
 
@@ -38,6 +38,13 @@ public class Floor extends GameObject{
         floorInstance.setTextureID(floorTexture.getID());
         floorInstance.getLocalTransform().setRotation(new Vector3f(-90, 0, 90));
         addComponent(floorInstance);
+
+        wallInstance = new MeshInstance(this, floor);
+        wallInstance.getWorldTransform().setPosition(new Vector3f(0, 0, -50));
+        wallInstance.getWorldTransform().apply();
+        addComponent(wallInstance);
+
+
 
 //        floorInstance.showBoundingBox();
 
@@ -71,6 +78,8 @@ public class Floor extends GameObject{
         shader.setColor(floorInstance.getColor());
         shader.setMaterial(floorInstance.getMaterial());
         floor.render(shader.getUnform("modelMatrix"), floorInstance, camera);
+        shader.setMaterial(wallInstance.getMaterial());
+        floor.render(shader.getUnform("modelMatrix"), wallInstance, camera);
         floor.disable();
     }
 
