@@ -1,10 +1,10 @@
 package dotj.debug;
 
-import dotj.Matrix4;
 import dotj.PerspectiveCamera;
 import dotj.Shader;
 import dotj.Utilities;
 import dotj.shaders.WorldShader;
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
@@ -113,8 +113,8 @@ public class DebugRender {
 //                Vector3f position = new Vector3f();
 //                Vector3f rotation = new Vector3f();
 //                Vector3f scale = new Vector3f(1f, 1f, 1f);
-                Matrix4 transformationMatrix = createTransformationMatrix(instances.get(i).position, instances.get(i).rotation, instances.get(i).scale);
-                Shader.loadMatrix(shader.getModelMatrix(), transformationMatrix);
+                Matrix4f transformationMatrix = createTransformationMatrix(instances.get(i).position, instances.get(i).rotation, instances.get(i).scale);
+                Shader.loadMatrix4f(shader.getModelMatrix(), transformationMatrix);
                 shader.setColor(instances.get(i).getColor());
 
                 glLineWidth(2);
@@ -129,14 +129,14 @@ public class DebugRender {
         }
     }
 
-    private static Matrix4 createTransformationMatrix(Vector3f translation, Vector3f rotation, Vector3f scale) {
-        Matrix4 matrix = new Matrix4();
-        matrix.setIdentity();
-        Matrix4.translate(translation, matrix, matrix);
-        Matrix4.rotate((float) Math.toRadians(rotation.x), new Vector3f(1, 0, 0), matrix, matrix);
-        Matrix4.rotate((float) Math.toRadians(rotation.y), new Vector3f(0, 1, 0), matrix, matrix);
-        Matrix4.rotate((float) Math.toRadians(rotation.z), new Vector3f(0, 0, 1), matrix, matrix);
-        Matrix4.scale(scale, matrix, matrix);
+    private static Matrix4f createTransformationMatrix(Vector3f translation, Vector3f rotation, Vector3f scale) {
+        Matrix4f matrix = new Matrix4f();
+        matrix.identity();
+        matrix.translate(translation, matrix);
+        matrix.rotateX((float) Math.toRadians(rotation.x), matrix);
+        matrix.rotateY((float) Math.toRadians(rotation.y), matrix);
+        matrix.rotateZ((float) Math.toRadians(rotation.z), matrix);
+        matrix.scale(scale, matrix);
 
         return matrix;
     }

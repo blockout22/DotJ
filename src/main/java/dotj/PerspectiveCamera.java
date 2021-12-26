@@ -4,6 +4,7 @@ import dotj.input.GLFWKey;
 import dotj.input.Input;
 import dotj.interfaces.PressedEvent;
 import dotj.interfaces.ReleasedEvent;
+import org.joml.Matrix4f;
 import org.joml.Vector2f;
 
 import java.nio.DoubleBuffer;
@@ -33,7 +34,7 @@ public class PerspectiveCamera {
     private Vector2f previousPos = new Vector2f(-1, -1);
     private Vector2f curPos = new Vector2f(0, 0);
 
-    private Matrix4 projectionMatrix;
+    private Matrix4f projectionMatrix;
 
     public PerspectiveCamera(GLFWWindow glfwWindow, float fov, float z_near, float z_far) {
         window = glfwWindow;
@@ -44,9 +45,9 @@ public class PerspectiveCamera {
         createProjectionMatrix(window.getWidth(), window.getHeight());
     }
     public void update() {
-        float speed = 0.01f;
-        float x = 0;
-        float z = 0;
+//        float speed = 0.01f;
+//        float x = 0;
+//        float z = 0;
 //		float y = 0;
 
 
@@ -159,14 +160,22 @@ public class PerspectiveCamera {
         float y_scale = 1f / (float) Math.tan(Math.toRadians(FOV / 2f)) * aspectRatio;
         float x_scale = y_scale / aspectRatio;
         float frustum_length = z_far - z_near;
+//
+//        projectionMatrix = new Matrix4();
+//        projectionMatrix.m00 = x_scale;
+//        projectionMatrix.m11 = y_scale;
+//        projectionMatrix.m22 = -((z_far + z_near) / frustum_length);
+//        projectionMatrix.m23 = -1;
+//        projectionMatrix.m32 = -((2 * z_near * z_far) / frustum_length);
+//        projectionMatrix.m33 = 0;
 
-        projectionMatrix = new Matrix4();
-        projectionMatrix.m00 = x_scale;
-        projectionMatrix.m11 = y_scale;
-        projectionMatrix.m22 = -((z_far + z_near) / frustum_length);
-        projectionMatrix.m23 = -1;
-        projectionMatrix.m32 = -((2 * z_near * z_far) / frustum_length);
-        projectionMatrix.m33 = 0;
+        projectionMatrix = new Matrix4f();
+//        Matrix4f matrix4f = new Matrix4f();
+        projectionMatrix.perspective(70, aspectRatio, z_near, z_far, false, projectionMatrix);
+//        projectionMatrix.copy(matrix4f);
+    }
+
+    protected void createOrthographicMatrix(){
     }
 
     public void moveX(float amt) {
@@ -221,11 +230,11 @@ public class PerspectiveCamera {
         FOV = fOV;
     }
 
-    public Matrix4 getProjectionMatrix() {
+    public Matrix4f getProjectionMatrix() {
         return projectionMatrix;
     }
 
-    public void setProjectionMatrix(Matrix4 projectionMatrix) {
+    public void setProjectionMatrix(Matrix4f projectionMatrix) {
         this.projectionMatrix = projectionMatrix;
     }
 }

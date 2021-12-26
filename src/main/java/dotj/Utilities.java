@@ -1,5 +1,6 @@
 package dotj;
 
+import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
@@ -297,6 +298,33 @@ public class Utilities {
         return buffers;
     }
 
+    public static FloatBuffer toFlippedFloatBuffer(Matrix4f matrix){
+        FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
+        buffer.put(matrix.m00());
+        buffer.put(matrix.m01());
+        buffer.put(matrix.m02());
+        buffer.put(matrix.m03());
+
+        buffer.put(matrix.m10());
+        buffer.put(matrix.m11());
+        buffer.put(matrix.m12());
+        buffer.put(matrix.m13());
+
+        buffer.put(matrix.m20());
+        buffer.put(matrix.m21());
+        buffer.put(matrix.m22());
+        buffer.put(matrix.m23());
+
+        buffer.put(matrix.m30());
+        buffer.put(matrix.m31());
+        buffer.put(matrix.m32());
+        buffer.put(matrix.m33());
+
+        buffer.flip();
+
+        return buffer;
+    }
+
     public static String getShaderDir(){
         return getAssetDir() + "Shaders" + File.separator;
     }
@@ -352,14 +380,14 @@ public class Utilities {
         }
     }
 
-    public static Matrix4 createTransformationMatrix(Vector3f translation, Vector3f rotation, Vector3f scale) {
-        Matrix4 matrix = new Matrix4();
-        matrix.setIdentity();
-        Matrix4.translate(translation, matrix, matrix);
-        Matrix4.rotate((float) Math.toRadians(rotation.x), new Vector3f(1, 0, 0), matrix, matrix);
-        Matrix4.rotate((float) Math.toRadians(rotation.y), new Vector3f(0, 1, 0), matrix, matrix);
-        Matrix4.rotate((float) Math.toRadians(rotation.z), new Vector3f(0, 0, 1), matrix, matrix);
-        Matrix4.scale(scale, matrix, matrix);
+    public static Matrix4f createTransformationMatrix(Vector3f translation, Vector3f rotation, Vector3f scale) {
+        Matrix4f matrix = new Matrix4f();
+        matrix.identity();
+        matrix.translate(translation, matrix);
+        matrix.rotateX((float) Math.toRadians(rotation.x), matrix);
+        matrix.rotateY((float) Math.toRadians(rotation.y), matrix);
+        matrix.rotateZ((float) Math.toRadians(rotation.z), matrix);
+        matrix.scale(scale, matrix);
 
         return matrix;
     }

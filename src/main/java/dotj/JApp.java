@@ -1,21 +1,12 @@
 package dotj;
 
 import dotj.UI.Nano.vg.NanoVGRenderer;
-import dotj.debug.DebugRender;
 import dotj.example.ReflectionExample;
-import dotj.gameobjects.*;
-import dotj.gameobjects.components.MeshInstance;
 import dotj.input.GLFWKey;
 import dotj.input.Input;
-import dotj.interfaces.OnFinishedListener;
 import dotj.levels.Level;
 import dotj.levels.TestLevel;
-import dotj.light.DirectionalLight;
-import dotj.light.PointLight;
 import dotj.physics.PhysicsWorld;
-import dotj.shaders.OutlineColorShader;
-import dotj.shaders.ReflectShader;
-import dotj.shaders.WorldShader;
 import org.joml.Random;
 import org.joml.Vector3f;
 
@@ -137,7 +128,7 @@ public class JApp extends App {
             level.update();
 
 
-            reflectionExample.update(camera);
+//            reflectionExample.update(camera);
 
             cubeMap.update(camera);
             frameBuffer.disable();

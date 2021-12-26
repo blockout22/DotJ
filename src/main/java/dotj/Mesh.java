@@ -1,6 +1,7 @@
 package dotj;
 
 import dotj.gameobjects.components.MeshInstance;
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import static org.lwjgl.opengl.GL33.*;
@@ -152,8 +153,8 @@ public class Mesh {
         }
 
         if (camera.isInBounds(object.getWorldTransform().getPosition().x, object.getWorldTransform().getPosition().y, object.getWorldTransform().getPosition().z)) {
-            Matrix4 transformationMatrix = Utilities.createTransformationMatrix(object.getWorldTransform().getPosition(), object.getWorldTransform().getRotation(), object.getWorldTransform().getScale());
-            Shader.loadMatrix(modelMatrix, transformationMatrix);
+            Matrix4f transformationMatrix = Utilities.createTransformationMatrix(object.getWorldTransform().getPosition(), object.getWorldTransform().getRotation(), object.getWorldTransform().getScale());
+            Shader.loadMatrix4f(modelMatrix, transformationMatrix);
 //            object.update();
             glDrawElements(GL_TRIANGLES, indicesSize, GL_UNSIGNED_INT, 0);
         }

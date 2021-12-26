@@ -5,8 +5,7 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import dotj.Matrix4;
-import dotj.PerspectiveCamera;
+import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -82,10 +81,10 @@ public abstract class Shader {
         GL20.glUseProgram(0);
     }
 
-    public static void loadMatrix(int location, Matrix4 matrix){
-        matrix.store(matrixBuffer);
-        matrixBuffer.flip();
-        GL20.glUniformMatrix4fv(location, false, matrixBuffer);
+
+    public static void loadMatrix4f(int location, Matrix4f matrix){
+        FloatBuffer buffer = Utilities.toFlippedFloatBuffer(matrix);
+        GL20.glUniformMatrix4fv(location, false, buffer);
     }
 
     public void loadVector2f(int location, Vector2f vector2f){
@@ -198,18 +197,18 @@ public abstract class Shader {
         return shaderID;
     }
 
-    public Matrix4 createViewMatrix(PerspectiveCamera camera)
+    public Matrix4f createViewMatrix(PerspectiveCamera camera)
     {
-        Matrix4 viewMatrix = new Matrix4();
-        viewMatrix.setIdentity();
-        Matrix4.rotate((float)Math.toRadians(camera.getPitch()), new Vector3f(1, 0, 0), viewMatrix, viewMatrix);
-        Matrix4.rotate((float)Math.toRadians(camera.getYaw()), new Vector3f(0, 1, 0), viewMatrix, viewMatrix);
-        Matrix4.rotate((float)Math.toRadians(camera.getRoll()), new Vector3f(0, 0, 1), viewMatrix, viewMatrix);
-        Vector3f cameraPos = camera.getPosition();
-        Vector3f negativeCameraPos = new Vector3f(-cameraPos.x, -cameraPos.y, -cameraPos.z);
-        Matrix4.translate(negativeCameraPos, viewMatrix, viewMatrix);
+        Matrix4f vm = new Matrix4f();
+        vm.identity();
 
-        return viewMatrix;
+        vm.rotateX((float)Math.toRadians(camera.getPitch()), vm);
+        vm.rotateY((float)Math.toRadians(camera.getYaw()), vm);
+        vm.rotateZ((float)Math.toRadians(camera.getRoll()), vm);
+        Vector3f camPos = camera.getPosition();
+        Vector3f negCamPos = new Vector3f(-camPos.x, -camPos.y, - camPos.z);
+        vm.translate(negCamPos, vm);
+        return vm;
     }
 
     public void cleanup() {

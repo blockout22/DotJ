@@ -1,6 +1,7 @@
 package dotj;
 
 import dotj.shaders.SkyboxShader;
+import org.joml.Matrix4f;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -114,12 +115,12 @@ public class SkyBox {
         shader.bind();
 //        Matrix4 matrix = shader.createViewMatrix(camera);
 //        shader.loadProjection(camera.getProjectionMatrix());
-        Shader.loadMatrix(shader.projection, camera.getProjectionMatrix());
-        Matrix4 view = shader.createViewMatrix(camera);
-        view.m30 = 0;
-        view.m31 = 0;
-        view.m32 = 0;
-        Shader.loadMatrix(shader.view, view);
+        Shader.loadMatrix4f(shader.projection, camera.getProjectionMatrix());
+        Matrix4f view = shader.createViewMatrix(camera);
+        view.m30(0);
+        view.m31(0);
+        view.m32(0);
+        Shader.loadMatrix4f(shader.view, view);
         shader.loadVector3f(shader.cameraPos, camera.getPosition());
 //        shader.loadView(view);
 

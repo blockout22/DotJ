@@ -1,6 +1,5 @@
 package dotj.shaders;
 
-import dotj.Matrix4;
 import dotj.Shader;
 
 public class SkyboxShader extends Shader {

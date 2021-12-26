@@ -45,6 +45,7 @@ public class Cube extends GameObject{
             instance.setTextureID(TextureLoader.loadTexture("container2.png").getID());
             instance.getTransform().setPosition(new Vector3f(-25, 9, 0));
             instances[i] = instance;
+            instance.showBoundingBox();
         }
         texture = TextureLoader.loadTexture("container2.png");
     }

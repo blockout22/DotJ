@@ -1,8 +1,8 @@
 package dotj.shaders;
 
-import dotj.Matrix4;
 import dotj.PerspectiveCamera;
 import dotj.Shader;
+import org.joml.Matrix4f;
 
 public class DepthShader extends Shader {
 
@@ -20,8 +20,8 @@ public class DepthShader extends Shader {
     }
 
     public void loadViewMatrix(PerspectiveCamera camera) {
-        Matrix4 matrix = createViewMatrix(camera);
-        loadMatrix(viewMatrix, matrix);
+        Matrix4f matrix = createViewMatrix(camera);
+        loadMatrix4f(viewMatrix, matrix);
     }
 
     public int getViewMatrix() {

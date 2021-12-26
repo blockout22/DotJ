@@ -1,6 +1,7 @@
 package dotj;
 
 import dotj.gameobjects.components.MeshInstance;
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.*;
 
@@ -31,21 +32,29 @@ public class MeshRenderer {
         }
 
 //        if (camera.isInBounds(object.getWorldPosition().x, object.getWorldPosition().y, object.getWorldPosition().z)) {
-            Matrix4 transformationMatrix = createTransformationMatrix(object.getWorldTransform().getPosition(), object.getWorldTransform().getRotation(), object.getWorldTransform().getScale());
-            shader.loadMatrix(modelMatrix, transformationMatrix);
+            Matrix4f transformationMatrix = createTransformationMatrix(object.getWorldTransform().getPosition(), object.getWorldTransform().getRotation(), object.getWorldTransform().getScale());
+            shader.loadMatrix4f(modelMatrix, transformationMatrix);
 //            object.update();
             GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.getIndicesSize(), GL11.GL_UNSIGNED_INT, 0);
 //        }
     }
 
-    private Matrix4 createTransformationMatrix(Vector3f translation, Vector3f rotation, Vector3f scale) {
-        Matrix4 matrix = new Matrix4();
-        matrix.setIdentity();
-        Matrix4.translate(translation, matrix, matrix);
-        Matrix4.rotate((float) Math.toRadians(rotation.x), new Vector3f(1, 0, 0), matrix, matrix);
-        Matrix4.rotate((float) Math.toRadians(rotation.y), new Vector3f(0, 1, 0), matrix, matrix);
-        Matrix4.rotate((float) Math.toRadians(rotation.z), new Vector3f(0, 0, 1), matrix, matrix);
-        Matrix4.scale(scale, matrix, matrix);
+    private Matrix4f createTransformationMatrix(Vector3f translation, Vector3f rotation, Vector3f scale) {
+//        Matrix4 matrix = new Matrix4();
+//        matrix.setIdentity();
+//        Matrix4.translate(translation, matrix, matrix);
+//        Matrix4.rotate((float) Math.toRadians(rotation.x), new Vector3f(1, 0, 0), matrix, matrix);
+//        Matrix4.rotate((float) Math.toRadians(rotation.y), new Vector3f(0, 1, 0), matrix, matrix);
+//        Matrix4.rotate((float) Math.toRadians(rotation.z), new Vector3f(0, 0, 1), matrix, matrix);
+//        Matrix4.scale(scale, matrix, matrix);
+
+        Matrix4f matrix = new Matrix4f();
+        matrix.identity();
+        matrix.rotateX((float)Math.toRadians(rotation.x), matrix);
+        matrix.rotateY((float)Math.toRadians(rotation.y), matrix);
+        matrix.rotateZ((float)Math.toRadians(rotation.z), matrix);
+        matrix.translate(translation, matrix);
+        matrix.scale(scale, matrix);
 
         return matrix;
     }

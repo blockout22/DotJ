@@ -16,7 +16,7 @@ public class Monkey extends GameObject{
     private MeshInstanced mesh;
     //100,000 non instance (13 FPS)
     // 100,000 instanced (40 FPS)
-    private int total = 100000 ;
+    private int total = 10000;
 
     public Monkey(PerspectiveCamera camera, Shader shader) {
         this.camera = camera;

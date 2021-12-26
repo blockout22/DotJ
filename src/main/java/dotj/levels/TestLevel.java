@@ -52,15 +52,15 @@ public class TestLevel extends Level {
          */
         worldShader = new WorldShader();
         worldShader.bind();
-        worldShader.loadMatrix(worldShader.getProjectionMatrix(), camera.getProjectionMatrix());
+        worldShader.loadMatrix4f(worldShader.getProjectionMatrix(), camera.getProjectionMatrix());
 
         worldInstancedShader = new WorldInstancedShader();
         worldInstancedShader.bind();
-        worldInstancedShader.loadMatrix(worldInstancedShader.getProjectionMatrix(), camera.getProjectionMatrix());
+        worldInstancedShader.loadMatrix4f(worldInstancedShader.getProjectionMatrix(), camera.getProjectionMatrix());
 
         outlineColorShader = new OutlineColorShader();
         outlineColorShader.bind();
-        outlineColorShader.loadMatrix(outlineColorShader.getProjectionMatrix(), camera.getProjectionMatrix());
+        outlineColorShader.loadMatrix4f(outlineColorShader.getProjectionMatrix(), camera.getProjectionMatrix());
 
         /**
          * Init Lights
@@ -147,10 +147,10 @@ public class TestLevel extends Level {
 
 
             DebugRender.render(worldShader, camera);
+            stencilTest_Outline();
 
         }
         Shader.unbind();
-        stencilTest_Outline();
     }
 
     @Override
@@ -204,7 +204,7 @@ public class TestLevel extends Level {
     public void cleanup() {
         outlineColorShader.cleanup();
         worldShader.cleanup();
-
+        worldInstancedShader.cleanup();
         stencilTestMesh.cleanup();
     }
 }

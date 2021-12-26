@@ -1,8 +1,8 @@
 package dotj.shaders;
 
-import dotj.Matrix4;
 import dotj.PerspectiveCamera;
 import dotj.Shader;
+import org.joml.Matrix4f;
 
 public class ReflectShader extends Shader {
 
@@ -29,7 +29,7 @@ public class ReflectShader extends Shader {
     }
 
     public void loadViewMatrix(PerspectiveCamera camera) {
-        Matrix4 matrix = createViewMatrix(camera);
-        loadMatrix(view, matrix);
+        Matrix4f matrix = createViewMatrix(camera);
+        loadMatrix4f(view, matrix);
     }
 }

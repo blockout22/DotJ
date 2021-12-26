@@ -1,11 +1,11 @@
 package dotj.shaders;
 
 import dotj.Material;
-import dotj.Matrix4;
 import dotj.PerspectiveCamera;
 import dotj.Shader;
 import dotj.light.DirectionalLight;
 import dotj.light.PointLight;
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 public class WorldInstancedShader extends Shader {
@@ -114,8 +114,8 @@ public class WorldInstancedShader extends Shader {
         }
 
         public void loadViewMatrix(PerspectiveCamera camera) {
-            Matrix4 matrix = createViewMatrix(camera);
-            loadMatrix(viewMatrix, matrix);
+            Matrix4f matrix = createViewMatrix(camera);
+            loadMatrix4f(viewMatrix, matrix);
         }
 
         public int getViewMatrix() {
