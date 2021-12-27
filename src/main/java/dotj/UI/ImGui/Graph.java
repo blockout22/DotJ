@@ -1,5 +1,7 @@
 package dotj.UI.ImGui;
 
+import imgui.extension.nodeditor.NodeEditor;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,9 +12,9 @@ public final class Graph {
     public final Map<Integer, GraphNode> nodes = new HashMap<>();
 
     public Graph() {
-        final GraphNode first = createGraphNode();
-        final GraphNode second = createGraphNode();
-        first.outputNodeId = second.nodeId;
+//        final GraphNode first = createGraphNode();
+//        final GraphNode second = createGraphNode();
+//        first.outputNodeId = second.nodeId;
     }
 
     public GraphNode createGraphNode() {

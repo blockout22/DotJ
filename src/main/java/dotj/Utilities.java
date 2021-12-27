@@ -419,4 +419,16 @@ public class Utilities {
 
         return matrix;
     }
+
+    public static boolean nearlyEqual(float value, float equalTo, float tolerance){
+        return((value < equalTo + tolerance && value > equalTo - tolerance) || value == equalTo);
+    }
+
+    public static boolean nearlyEqual(int value, int equalTo, int tolerance){
+        return((value < equalTo + tolerance && value > equalTo - tolerance) || value == equalTo);
+    }
+
+    public static boolean nearlyEqual(double value, double equalTo, double tolerance){
+        return((value < equalTo + tolerance && value > equalTo - tolerance) || value == equalTo);
+    }
 }

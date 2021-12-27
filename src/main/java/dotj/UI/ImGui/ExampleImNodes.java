@@ -7,7 +7,6 @@ import imgui.extension.imnodes.flag.ImNodesMiniMapLocation;
 import imgui.extension.imnodes.flag.ImNodesPinShape;
 import imgui.flag.ImGuiCond;
 import imgui.flag.ImGuiMouseButton;
-import imgui.type.ImBoolean;
 import imgui.type.ImInt;
 
 import static imgui.ImGui.*;
@@ -25,11 +24,11 @@ public class ExampleImNodes {
         ImNodes.createContext();
     }
 
-    public static void show(final ImBoolean showImNodesWindow, final Graph graph){
+    public static void show(final Graph graph){
         ImGui.setNextWindowSize(500, 400, ImGuiCond.Once);
         ImGui.setNextWindowPos(ImGui.getMainViewport().getPosX() + 100, ImGui.getMainViewport().getPosY() + 100, ImGuiCond.Once);
 
-        if(ImGui.begin("ImNodes Demo", showImNodesWindow)){
+        if(ImGui.begin("ImNodes Demo")){
             text("This is a demo graphi Editor for ImNodes");
 
             ImGui.alignTextToFramePadding();

@@ -8,14 +8,9 @@ import dotj.input.Input;
 import dotj.levels.Level;
 import dotj.levels.TestLevel;
 import dotj.physics.PhysicsWorld;
-import imgui.ImGui;
-import imgui.flag.ImGuiInputTextFlags;
-import imgui.type.ImBoolean;
 import imgui.type.ImString;
 import org.joml.Random;
 import org.joml.Vector3f;
-
-import java.io.File;
 
 import static org.lwjgl.opengl.GL32.*;
 
@@ -48,8 +43,7 @@ public class JApp extends App {
 
     // Im Gui
     private ImGuiApp guiApp;
-    private Graph graph = new Graph();
-    private final ImBoolean imBoolean = new ImBoolean();
+    private Graph graph;
     private final ImString str = new ImString(5);
     private final float[] flt = new float[1];
 
@@ -77,7 +71,6 @@ public class JApp extends App {
         float routA = 0;
         float routB = 800;
         float res = Utilities.remapFloat(rValue, rinA, rinB, routA, routB);
-//        System.out.println(res);
 
 
         physicsWorld = new PhysicsWorld();
@@ -107,6 +100,7 @@ public class JApp extends App {
         reflectionExample = new ReflectionExample();
 
         guiApp = new ImGuiApp(window);
+        graph = new Graph();
     }
 
     @Override
@@ -149,8 +143,10 @@ public class JApp extends App {
             frameBuffer.disable();
             //update UI
             guiApp.begin();
-            ExampleImGuiNodeEditor.show(imBoolean, graph, 1420, 250);
-            ExampleImPlot.show(imBoolean, 0, 400);
+//            ImGui.showDemoWindow();
+//            ImBlueprint.show(graph);
+//            ExampleImGuiNodeEditor.show(imBoolean, graph, 1420, 250);
+            ExampleImPlot.show(0, 400);
             guiApp.end();
             vgRenderer.update();
 

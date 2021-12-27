@@ -66,6 +66,9 @@ public class ExampleImGuiNodeEditor {
             }
             NodeEditor.endCreate();
 
+            /**
+             * Connect the wires together
+             */
             int uniqueLinkId = 1;
             for (Graph.GraphNode node : graph.nodes.values()) {
                 if (graph.nodes.containsKey(node.outputNodeId)) {
@@ -76,6 +79,12 @@ public class ExampleImGuiNodeEditor {
             NodeEditor.suspend();
 
             final long nodeWithContextMenu = NodeEditor.getNodeWithContextMenu();
+            final long pinWithContextMenu = NodeEditor.getPinWithContextMenu();
+
+//            if(pinWithContextMenu != -1){
+//                ImGui.openPopup("node_context");
+//                ImGui.getStateStorage().setInt(ImGui.getID("delete_pin_id"), (int) pinWithContextMenu);
+//            }else
             if (nodeWithContextMenu != -1) {
                 ImGui.openPopup("node_context");
                 ImGui.getStateStorage().setInt(ImGui.getID("delete_node_id"), (int) nodeWithContextMenu);
@@ -98,10 +107,14 @@ public class ExampleImGuiNodeEditor {
 
             if (ImGui.beginPopup("node_editor_context")) {
                 if (ImGui.button("Create New Node")) {
+                    //Create a new node in Graph
                     final Graph.GraphNode node = graph.createGraphNode();
+                    //gets the current mouse position in the NodeEditor
                     final float canvasX = NodeEditor.toCanvasX(ImGui.getMousePosX());
                     final float canvasY = NodeEditor.toCanvasY(ImGui.getMousePosY());
+                    //sets the position of the node
                     NodeEditor.setNodePosition(node.nodeId, canvasX, canvasY);
+                    //closes the current popup once clicked
                     ImGui.closeCurrentPopup();
                 }
                 ImGui.endPopup();

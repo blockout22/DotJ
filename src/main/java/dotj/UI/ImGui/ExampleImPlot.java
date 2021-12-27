@@ -17,13 +17,18 @@ public class ExampleImPlot {
     static {
         ImPlot.createContext();
     }
+    static float[] color = {
+            1.0f, 1.0f, 1.0f, 1.0f
+    };
 
-    public static void show(ImBoolean showImPlotWindow, float posX, float posY) {
+    public static void show(float posX, float posY) {
         ImGui.setNextWindowSize(500, 400, ImGuiCond.Once);
         ImGui.setNextWindowPos(ImGui.getMainViewport().getPosX() + posX, ImGui.getMainViewport().getPosY() + posY, ImGuiCond.Once);
-        if (ImGui.begin("ImPlot Demo", showImPlotWindow)) {
+        if (ImGui.begin("ImPlot Demo")) {
             ImGui.text("This a demo for ImPlot");
 
+            if (ImGui.colorPicker3("Color Picker", color)) {
+            }
             ImGui.checkbox("Show ImPlot Built-In Demo", showDemo);
 
             if (ImPlot.beginPlot("Example Plot")) {
@@ -41,6 +46,9 @@ public class ExampleImPlot {
             if (showDemo.get()) {
                 ImPlot.showDemoWindow(showDemo);
             }
+
+
+
         }
 
         ImGui.end();
