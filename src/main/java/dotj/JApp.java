@@ -1,5 +1,6 @@
 package dotj;
 
+import dotj.UI.ImGui.*;
 import dotj.UI.Nano.vg.NanoVGRenderer;
 import dotj.example.ReflectionExample;
 import dotj.input.GLFWKey;
@@ -7,6 +8,10 @@ import dotj.input.Input;
 import dotj.levels.Level;
 import dotj.levels.TestLevel;
 import dotj.physics.PhysicsWorld;
+import imgui.ImGui;
+import imgui.flag.ImGuiInputTextFlags;
+import imgui.type.ImBoolean;
+import imgui.type.ImString;
 import org.joml.Random;
 import org.joml.Vector3f;
 
@@ -41,6 +46,14 @@ public class JApp extends App {
 
     private ReflectionExample reflectionExample;
 
+    // Im Gui
+    private ImGuiApp guiApp;
+    private Graph graph = new Graph();
+    private final ImBoolean imBoolean = new ImBoolean();
+    private final ImString str = new ImString(5);
+    private final float[] flt = new float[1];
+
+
     public JApp(){
         init();
         update();
@@ -69,7 +82,7 @@ public class JApp extends App {
 
         physicsWorld = new PhysicsWorld();
 
-        window = new GLFWWindow(800, 600, "GLFW Window");
+        window = new GLFWWindow(1920, 1080, "GLFW Window");
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_STENCIL_TEST);
 
@@ -87,11 +100,13 @@ public class JApp extends App {
 
         this.vgRenderer = new NanoVGRenderer(window);
 
-        frameBuffer = new FrameBuffer();
+        frameBuffer = new FrameBuffer(window.getWidth(), window.getHeight());
         cubeMap = new SkyBox("https://i.pinimg.com/originals/92/33/f4/9233f460aa6b43e937a46dff3857c812.png");
 //        cubeMap = new SkyBox("skybox.png");
 
         reflectionExample = new ReflectionExample();
+
+        guiApp = new ImGuiApp(window);
     }
 
     @Override
@@ -133,6 +148,10 @@ public class JApp extends App {
             cubeMap.update(camera);
             frameBuffer.disable();
             //update UI
+            guiApp.begin();
+            ExampleImGuiNodeEditor.show(imBoolean, graph, 1420, 250);
+            ExampleImPlot.show(imBoolean, 0, 400);
+            guiApp.end();
             vgRenderer.update();
 
 
@@ -209,6 +228,7 @@ public class JApp extends App {
             mesh.cleanup();
         }
 
+        guiApp.cleanup();
         cubeMap.cleanup();
         frameBuffer.cleanup();
         reflectionExample.cleanup();

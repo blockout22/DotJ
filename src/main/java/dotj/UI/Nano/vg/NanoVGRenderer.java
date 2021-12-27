@@ -4,11 +4,15 @@ import dotj.GLFWWindow;
 import dotj.Global;
 import dotj.Utilities;
 import org.joml.Vector3f;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.nanovg.NVGColor;
 import org.lwjgl.system.MemoryUtil;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static org.lwjgl.nanovg.NanoVG.*;
 import static org.lwjgl.nanovg.NanoVGGL3.*;
@@ -36,7 +40,15 @@ public class NanoVGRenderer {
         }
 
         try {
-            font = Utilities.loadResource("OpenSans-Regular.ttf", 150 * 1024);
+//            font = Utilities.loadResource("OpenSans-Regular.ttf", 150 * 1024);
+            byte[] f = Files.readAllBytes(Paths.get(new File(Utilities.getAssetDir() + "OpenSans-Regular.ttf").toURI()));
+            font = BufferUtils.createByteBuffer(f.length);
+            for(byte b : f){
+                font.put(b);
+            }
+
+            //TODO check if flip is required!
+//            font.flip();
             int fontMem = nvgCreateFontMem(vg, "sans", font, 0);
         } catch (IOException e) {
             e.printStackTrace();

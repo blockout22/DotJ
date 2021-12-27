@@ -32,7 +32,7 @@ public class FrameBuffer {
 
     private FrameBufferShader shader;
 
-    public FrameBuffer() {
+    public FrameBuffer(int width, int height) {
         vao = glGenVertexArrays();
         vbo = glGenBuffers();
         frameBuffer = glGenFramebuffers();
@@ -53,10 +53,10 @@ public class FrameBuffer {
         //Create texture
         textureColorbuffer = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-        int[] pixels = new int[800 * 600];
-        ByteBuffer buffer = ByteBuffer.allocateDirect(800 * 600 * 4);
-        for (int h = 0; h < 600; h++) {
-            for (int w = 0; w < 800; w++) {
+        int[] pixels = new int[width * height];
+        ByteBuffer buffer = ByteBuffer.allocateDirect(width * height * 4);
+        for (int h = 0; h < height; h++) {
+            for (int w = 0; w < width; w++) {
                 int pixel = 0;
 
                 buffer.put((byte) ((pixel >> 16) & 0xFF));
@@ -66,7 +66,7 @@ public class FrameBuffer {
             }
         }
         buffer.flip();
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glBindTexture(GL_TEXTURE_2D, 0);
@@ -76,7 +76,7 @@ public class FrameBuffer {
 
         //Create Render Buffer
         glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 600);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
 
         //check if Frame buffer successfully completed
