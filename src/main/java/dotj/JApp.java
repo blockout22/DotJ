@@ -43,7 +43,8 @@ public class JApp extends App {
 
     // Im Gui
     private ImGuiApp guiApp;
-    private Graph graph;
+    private Graph nodeEditorGraph;
+    private BPGraph blueprintGraph;
     private final ImString str = new ImString(5);
     private final float[] flt = new float[1];
 
@@ -100,10 +101,28 @@ public class JApp extends App {
         reflectionExample = new ReflectionExample();
 
         guiApp = new ImGuiApp(window);
-        graph = new Graph();
+        nodeEditorGraph = new Graph();
+        blueprintGraph = new BPGraph();
+
+        addRandomNode(blueprintGraph);
+        addRandomNode(blueprintGraph);
+
+//        blueprintGraph.createGraphNode("BP Node");
     }
 
-    @Override
+    private void addRandomNode(BPGraph graph) {
+        java.util.Random r = new java.util.Random();
+        final BPNode node = graph.addNode("new Node" + r.nextFloat());
+        node.setName("Some Name");
+
+        final BPPin pin = node.addPin(BPPin.DataType.Flow, BPPin.PinType.Input);
+        pin.setName("In");
+
+        final BPPin outPin = node.addPin(BPPin.DataType.Flow, BPPin.PinType.Output);
+    }
+
+
+        @Override
     public void update() {
         while(!window.shouldClose() && !Global.shouldClose){
 
@@ -144,8 +163,8 @@ public class JApp extends App {
             //update UI
             guiApp.begin();
 //            ImGui.showDemoWindow();
-//            ImBlueprint.show(graph);
-//            ExampleImGuiNodeEditor.show(imBoolean, graph, 1420, 250);
+            ImBlueprint.show(blueprintGraph);
+            ExampleImGuiNodeEditor.show(nodeEditorGraph, 1420, 250);
             ExampleImPlot.show(0, 400);
             guiApp.end();
             vgRenderer.update();

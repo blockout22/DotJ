@@ -6,6 +6,7 @@ import imgui.ImFontConfig;
 import imgui.ImFontGlyphRangesBuilder;
 import imgui.ImGui;
 import imgui.ImGuiIO;
+import imgui.extension.imnodes.ImNodes;
 import imgui.flag.ImGuiConfigFlags;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
@@ -20,6 +21,10 @@ public class ImGuiApp {
 
     private final ImGuiImplGlfw imGuiGLFW = new ImGuiImplGlfw();
     private final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
+
+    static {
+        ImNodes.createContext();
+    }
 
     public ImGuiApp(GLFWWindow window){
         init();

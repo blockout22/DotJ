@@ -1,13 +1,11 @@
 package dotj.UI.ImGui;
 
 import imgui.ImGui;
-import imgui.ImGuiStyle;
 import imgui.extension.nodeditor.NodeEditor;
 import imgui.extension.nodeditor.NodeEditorConfig;
 import imgui.extension.nodeditor.NodeEditorContext;
 import imgui.extension.nodeditor.flag.NodeEditorPinKind;
 import imgui.flag.ImGuiCond;
-import imgui.type.ImBoolean;
 import imgui.type.ImLong;
 
 public class ExampleImGuiNodeEditor {
@@ -20,10 +18,10 @@ public class ExampleImGuiNodeEditor {
         CONTEXT = new NodeEditorContext(config);
     }
 
-    public static void show(final ImBoolean showImNodeEditorWindow, final Graph graph, float posX, float posY) {
+    public static void show(final Graph graph, float posX, float posY) {
         ImGui.setNextWindowSize(500, 400, ImGuiCond.Once);
         ImGui.setNextWindowPos(ImGui.getMainViewport().getPosX() + posX, ImGui.getMainViewport().getPosY() + posY, ImGuiCond.Once);
-        if (ImGui.begin("imgui-node-editor Demo", showImNodeEditorWindow)) {
+        if (ImGui.begin("imgui-node-editor Demo")) {
             ImGui.text("This a demo graph editor for imgui-node-editor");
 
             ImGui.alignTextToFramePadding();

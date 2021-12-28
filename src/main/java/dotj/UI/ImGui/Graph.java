@@ -18,7 +18,11 @@ public final class Graph {
     }
 
     public GraphNode createGraphNode() {
-        final GraphNode node = new GraphNode(nextNodeId++, nextPinId++, nextPinId++);
+       return createGraphNode("My New Node");
+    }
+
+    public GraphNode createGraphNode(String title){
+        final GraphNode node = new GraphNode(title, nextNodeId++, nextPinId++, nextPinId++);
         this.nodes.put(node.nodeId, node);
         return node;
     }
@@ -42,13 +46,15 @@ public final class Graph {
     }
 
     public static final class GraphNode {
+        public final String name;
         public final int nodeId;
         public final int inputPinId;
         public final int outputPinId;
 
         public int outputNodeId = -1;
 
-        public GraphNode(final int nodeId, final int inputPinId, final int outputPintId) {
+        public GraphNode(final String name, final int nodeId, final int inputPinId, final int outputPintId) {
+            this.name = name;
             this.nodeId = nodeId;
             this.inputPinId = inputPinId;
             this.outputPinId = outputPintId;
@@ -63,7 +69,8 @@ public final class Graph {
         }
 
         public String getName() {
-            return "Node " + (char) (64 + nodeId);
+            return name;
+//            return "Node " + (char) (64 + nodeId);
         }
     }
 }
