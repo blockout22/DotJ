@@ -4,23 +4,25 @@ import dotj.UI.ImGui.BPGraph;
 import dotj.UI.ImGui.BPNode;
 import dotj.UI.ImGui.BPPin;
 
-public class Node_Boolean {
+public class Node_Boolean extends BPNode{
 
-    public static void create(BPGraph graph){
-        BPNode node = graph.addNode("Boolean");
-        if(node == null){
-            return;
-        }
+    public Node_Boolean(BPGraph graph){
+        super(graph);
+        graph.addNode("Boolean", this);
 
-        BPPin execIn = node.addInputPin(BPPin.DataType.Flow);
+        BPPin execIn = addInputPin(BPPin.DataType.Flow);
         execIn.setName("Exec");
-        BPPin boolIn = node.addInputPin(BPPin.DataType.Bool);
+        BPPin boolIn = addInputPin(BPPin.DataType.Bool);
         boolIn.setName("Boolean");
 
-        BPPin execTrueOut = node.addOutputPin(BPPin.DataType.Flow);
+        BPPin execTrueOut = addOutputPin(BPPin.DataType.Flow);
         execTrueOut.setName("TRUE");
-        BPPin execFalseOut = node.addOutputPin(BPPin.DataType.Flow);
+        BPPin execFalseOut = addOutputPin(BPPin.DataType.Flow);
         execFalseOut.setName("FALSE");
 
+    }
+
+    @Override
+    public void execute() {
     }
 }

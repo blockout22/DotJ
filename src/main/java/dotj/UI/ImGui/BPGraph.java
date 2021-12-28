@@ -12,18 +12,31 @@ public class BPGraph {
     private int nextNodeID = 1;
     private int nextPinID = 100;
 
-    public BPNode addNode(String name){
-        if(!validateName(name)){
-            return null;
-        }
-        BPNode node = new BPNode(this, nextNodeID++);
-        node.setName(name);
-        nodes.put(node.getID(), node);
-        return node;
-    }
+//    public BPNode addNode(String name){
+//        if(!validateName(name)){
+//            return null;
+//        }
+//        BPNode node = new BPNode(this, nextNodeID++);
+//        node.setName(name);
+//        nodes.put(node.getID(), node);
+//        return node;
+//    }
 
     public void update(){
         for(Integer q : queuedForRemoval){
+            BPNode n = nodes.get(q);
+            for(BPPin pin : n.outputPins){
+                if (pin.connectedTo != -1) {
+                    BPPin oldPin = findPinById(pin.connectedTo);
+                    oldPin.connectedTo = -1;
+                }
+            }
+            for(BPPin pin : n.inputPins){
+                if (pin.connectedTo != -1) {
+                    BPPin oldPin = findPinById(pin.connectedTo);
+                    oldPin.connectedTo = -1;
+                }
+            }
             nodes.remove(q);
         }
         queuedForRemoval.clear();

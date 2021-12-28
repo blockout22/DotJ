@@ -6,10 +6,16 @@ import dotj.UI.ImGui.BPPin;
 
 import java.util.Random;
 
-public class Node_Function {
+public class Node_Function extends BPNode{
 
-    public static void create(BPGraph graph){
-        BPNode node = graph.addNode("function" + new Random().nextFloat());
-        BPPin pin = node.addOutputPin(BPPin.DataType.Flow);
+    public Node_Function(BPGraph graph){
+        super(graph);
+        graph.addNode("function" + new Random().nextFloat(), this);
+        BPPin pin = addOutputPin(BPPin.DataType.Flow);
+    }
+
+    @Override
+    public void execute() {
+
     }
 }

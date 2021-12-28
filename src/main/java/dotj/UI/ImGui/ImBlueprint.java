@@ -10,6 +10,7 @@ import imgui.flag.ImGuiCond;
 import imgui.flag.ImGuiMouseButton;
 import imgui.internal.ImRect;
 import imgui.type.ImInt;
+import imgui.type.ImString;
 
 import java.util.ArrayList;
 import java.util.Vector;
@@ -62,6 +63,7 @@ public class ImBlueprint {
     }
 
     public static void show(final BPGraph graph){
+        updateNodes(graph);
         graph.update();
         setNextWindowSize(1000, 800, ImGuiCond.Once);
         setNextWindowPos(getMainViewport().getPosX() + 500, getMainViewport().getPosY() + 100, ImGuiCond.Once);
@@ -100,7 +102,7 @@ public class ImBlueprint {
                             addPin(inPin);
                         }
 
-                        dummy(250, 0);
+                        dummy(150, 0);
 
                         if(g.outputPins.size() > i){
                             BPPin outPin = g.outputPins.get(i);
@@ -137,22 +139,28 @@ public class ImBlueprint {
                 final BPPin sourcePin = graph.findPinById(LINK_A.get());
                 final  BPPin targetPin = graph.findPinById(LINK_B.get());
 
-                //disconnect old pins
-                if(sourcePin.connectedTo != -1){
-                    BPPin oldPin = graph.findPinById(sourcePin.connectedTo);
-                    oldPin.connectedTo = -1;
-                }
+                //check if the pins are of the same type
+                if(!(sourcePin.getDataType() == targetPin.getDataType())){
+                    System.out.println("Types are not the same");
+                }else {
 
-                if(targetPin.connectedTo != -1){
-                    BPPin oldPin = graph.findPinById(targetPin.connectedTo);
-                    oldPin.connectedTo = -1;
-                }
+                    //disconnect old pins
+                    if (sourcePin.connectedTo != -1) {
+                        BPPin oldPin = graph.findPinById(sourcePin.connectedTo);
+                        oldPin.connectedTo = -1;
+                    }
 
-                if(sourcePin != null && targetPin != null){
-                    //TODO do a check here to limit the number connections to the pins
-                    if(sourcePin.connectedTo != targetPin.connectedTo || (targetPin.connectedTo == -1 || sourcePin.connectedTo == -1)){
-                        sourcePin.connectedTo = targetPin.getID();
-                        targetPin.connectedTo = sourcePin.getID();
+                    if (targetPin.connectedTo != -1) {
+                        BPPin oldPin = graph.findPinById(targetPin.connectedTo);
+                        oldPin.connectedTo = -1;
+                    }
+
+                    if (sourcePin != null && targetPin != null) {
+                        //TODO do a check here to limit the number connections to the pins
+                        if (sourcePin.connectedTo != targetPin.connectedTo || (targetPin.connectedTo == -1 || sourcePin.connectedTo == -1)) {
+                            sourcePin.connectedTo = targetPin.getID();
+                            targetPin.connectedTo = sourcePin.getID();
+                        }
                     }
                 }
             }
@@ -213,27 +221,31 @@ public class ImBlueprint {
 
                     //Add <name> Should only be a variable type and be in another list, this menu should only add functions such as adding 2 numbers together
                     if (menuItem("Add Flow")) {
-                        Node_Function.create(graph);
+//                        Node_Function.create(graph);
+                        Node_Function func = new Node_Function(graph);
                         closeCurrentPopup();
                     }
 
                     if (menuItem("Bool Check")) {
-                        Node_Boolean.create(graph);
+                        Node_Boolean bool = new Node_Boolean(graph);
+//                        Node_Boolean.create(graph);
                         closeCurrentPopup();
                     }
 
                     if (menuItem("Add")) {
-                        Node_Add.create(graph);
+                        Node_Add node = new Node_Add(graph);
                         closeCurrentPopup();
                     }
 
                     if(menuItem("Print")){
-                        Node_PrintConsole.create(graph);
+//                        Node_PrintConsole.create(graph);
+                        Node_PrintConsole console = new Node_PrintConsole(graph);
                         closeCurrentPopup();
                     }
 
-                    if(menuItem("TestNode")){
-                        TestNode node = new TestNode(graph);
+                    if(menuItem("Int To String")){
+                        Node_IntToString intToString = new Node_IntToString(graph);
+                        closeCurrentPopup();
                     }
                     endPopup();
                 }
@@ -254,26 +266,31 @@ public class ImBlueprint {
 
         }
         end();
+    }
 
-
+    private static void updateNodes(BPGraph graph){
         for(BPNode nodes : graph.getNodes().values()){
             for (int i = 0; i < nodes.outputPins.size(); i++) {
                 BPPin pin = nodes.outputPins.get(i);
 //                System.out.println(pin.connectedTo);
                 if(pin.connectedTo != -1){
+                    BPPin output = graph.findPinById(pin.connectedTo);
+//                    if(Utilities.notNull(outData, pin.getData())) {
                     switch (pin.getDataType()){
                         case Int:
-                            BPPin output = graph.findPinById(pin.connectedTo);
-                            NodeData<ImInt> outData = output.getData();
-
-                            if(Utilities.notNull(outData, pin.getData())) {
 //                                pin.getData().value = outData.value;
-                                NodeData<ImInt> inputValue = pin.getData();
-                                outData.getValue().set(inputValue.value.get());
+                            NodeData<ImInt> intOutData = output.getData();
+                            NodeData<ImInt> intInputValue = pin.getData();
+                            intOutData.getValue().set(intInputValue.value.get());
 //                                outData.setValue();
-                            }
-
+                            break;
+                        case String:
+                            NodeData<ImString> stringOutData = output.getData();
+                            NodeData<ImString> stringInputValue = pin.getData();
+                            stringOutData.getValue().set(stringInputValue.value.get());
+                            break;
                     }
+//                    }
                 }
 
             }
@@ -339,6 +356,12 @@ public class ImBlueprint {
             case Float:
                 break;
             case String:
+                pushItemWidth(50);
+                NodeData<ImString> stringData = pin.getData();
+                if(inputText(pin.getName(), stringData.value)){
+
+                }
+                popItemWidth();
                 break;
             case Object:
                 break;

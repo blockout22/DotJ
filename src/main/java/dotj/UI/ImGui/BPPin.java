@@ -46,6 +46,34 @@ public class BPPin {
         this.dataType = dataType;
         this.pinType = pinType;
         data = new NodeData();
+        setupData();
+    }
+
+    private void setupData(){
+        switch (dataType){
+            case Flow:
+                break;
+            case Bool:
+                data.setValue(Boolean);
+                break;
+            case Int:
+                data.setValue(Int);
+                break;
+            case Float:
+                data.setValue(Float);
+                break;
+            case Double:
+                data.setValue(Double);
+                break;
+            case String:
+                data.setValue(String);
+                break;
+            case Object:
+//                data.setValue();
+                break;
+            case Function:
+                break;
+        }
     }
 
     public int getID(){

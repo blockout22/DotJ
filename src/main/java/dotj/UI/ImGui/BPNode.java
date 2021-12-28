@@ -2,7 +2,7 @@ package dotj.UI.ImGui;
 
 import java.util.ArrayList;
 
-public class BPNode {
+public abstract class BPNode {
 
     private final BPGraph graph;
     private int ID;
@@ -14,17 +14,16 @@ public class BPNode {
     public ArrayList<BPPin> inputPins = new ArrayList<>();
 
 
+    public BPNode(BPGraph graph){
+        this.graph = graph;
+    }
+
     public BPNode(BPGraph graph, int id){
         this.graph = graph;
         this.ID = id;
     }
 
-    public BPNode(BPGraph graph){
-        this.graph = graph;
-    }
-
-    public void execute(){
-    }
+    public abstract void execute();
 
     protected void setID(int id){
         this.ID = id;
