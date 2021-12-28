@@ -8,10 +8,13 @@ import dotj.input.Input;
 import dotj.levels.Level;
 import dotj.levels.TestLevel;
 import dotj.physics.PhysicsWorld;
+import imgui.flag.ImGuiCond;
 import imgui.type.ImString;
 import org.joml.Random;
 import org.joml.Vector3f;
 
+import static imgui.ImGui.*;
+import static imgui.flag.ImGuiWindowFlags.*;
 import static org.lwjgl.opengl.GL32.*;
 
 public class JApp extends App {
@@ -160,12 +163,23 @@ public class JApp extends App {
 
             cubeMap.update(camera);
             frameBuffer.disable();
+
             //update UI
+            //ImGui framework which can be used for development mode
             guiApp.begin();
 //            ImGui.showDemoWindow();
+            setNextWindowSize(window.getWidth(), window.getHeight(), ImGuiCond.Always);
+            setNextWindowPos(getMainViewport().getPosX() + 0, getMainViewport().getPosY() + 0, ImGuiCond.Once);
+            if(begin("Hello Viewport", NoTitleBar | NoMove | NoResize | NoScrollbar | NoCollapse | NoBringToFrontOnFocus)){
+                image(frameBuffer.getFrameBufferTexture(), getWindowSizeX(), getWindowSizeY(), 0, 1, 1, 0);
+
             ImBlueprint.show(blueprintGraph);
             ExampleImGuiNodeEditor.show(nodeEditorGraph, 1420, 250);
             ExampleImPlot.show(0, 400);
+
+            }
+            end();
+
             guiApp.end();
             vgRenderer.update();
 

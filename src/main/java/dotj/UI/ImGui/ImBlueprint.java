@@ -137,12 +137,22 @@ public class ImBlueprint {
                 final BPPin sourcePin = graph.findPinById(LINK_A.get());
                 final  BPPin targetPin = graph.findPinById(LINK_B.get());
 
+                //disconnect old pins
+                if(sourcePin.connectedTo != -1){
+                    BPPin oldPin = graph.findPinById(sourcePin.connectedTo);
+                    oldPin.connectedTo = -1;
+                }
+
+                if(targetPin.connectedTo != -1){
+                    BPPin oldPin = graph.findPinById(targetPin.connectedTo);
+                    oldPin.connectedTo = -1;
+                }
+
                 if(sourcePin != null && targetPin != null){
                     //TODO do a check here to limit the number connections to the pins
                     if(sourcePin.connectedTo != targetPin.connectedTo || (targetPin.connectedTo == -1 || sourcePin.connectedTo == -1)){
                         sourcePin.connectedTo = targetPin.getID();
                         targetPin.connectedTo = sourcePin.getID();
-
                     }
                 }
             }
@@ -245,6 +255,7 @@ public class ImBlueprint {
         }
         end();
 
+
         for(BPNode nodes : graph.getNodes().values()){
             for (int i = 0; i < nodes.outputPins.size(); i++) {
                 BPPin pin = nodes.outputPins.get(i);
@@ -258,13 +269,11 @@ public class ImBlueprint {
                             if(Utilities.notNull(outData, pin.getData())) {
 //                                pin.getData().value = outData.value;
                                 NodeData<ImInt> inputValue = pin.getData();
-                                outData.setValue(inputValue.value);
-
+                                outData.getValue().set(inputValue.value.get());
+//                                outData.setValue();
                             }
 
                     }
-                }else{
-//                    System.out.println(pin.getID() + " Not conencted");
                 }
 
             }

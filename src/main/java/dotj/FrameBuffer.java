@@ -111,6 +111,10 @@ public class FrameBuffer {
         glDrawArrays(GL_TRIANGLES, 0, 6);
     }
 
+    public int getFrameBufferTexture(){
+        return textureColorbuffer;
+    }
+
     public void cleanup()
     {
         glDeleteBuffers(vbo);
