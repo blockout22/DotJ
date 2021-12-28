@@ -104,21 +104,21 @@ public class JApp extends App {
         nodeEditorGraph = new Graph();
         blueprintGraph = new BPGraph();
 
-        addRandomNode(blueprintGraph);
-        addRandomNode(blueprintGraph);
+//        addRandomNode(blueprintGraph);
+//        addRandomNode(blueprintGraph);
 
 //        blueprintGraph.createGraphNode("BP Node");
     }
 
     private void addRandomNode(BPGraph graph) {
-        java.util.Random r = new java.util.Random();
-        final BPNode node = graph.addNode("new Node" + r.nextFloat());
-        node.setName("Some Name");
-
-        final BPPin pin = node.addPin(BPPin.DataType.Flow, BPPin.PinType.Input);
-        pin.setName("In");
-
-        final BPPin outPin = node.addPin(BPPin.DataType.Flow, BPPin.PinType.Output);
+//        java.util.Random r = new java.util.Random();
+//        final BPNode node = graph.addNode("new Node" + r.nextFloat());
+//        node.setName("Some Name");
+//
+//        final BPPin pin = node.addPin(BPPin.DataType.Flow, BPPin.PinType.Input);
+//        pin.setName("In");
+//
+//        final BPPin outPin = node.addPin(BPPin.DataType.Flow, BPPin.PinType.Output);
     }
 
 

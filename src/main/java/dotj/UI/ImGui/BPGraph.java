@@ -7,7 +7,7 @@ public class BPGraph {
 
     public final Map<Integer, BPNode> nodes = new HashMap<>();
     private int nextNodeID = 1;
-    private int nextPinID = 1;
+    private int nextPinID = 100;
 
     public BPNode addNode(String name){
         if(!validateName(name)){
@@ -15,7 +15,7 @@ public class BPGraph {
         }
         final BPNode node = new BPNode(this, nextNodeID++);
         node.setName(name);
-        nodes.put(node.ID, node);
+        nodes.put(node.getID(), node);
         return node;
     }
 
@@ -34,9 +34,21 @@ public class BPGraph {
 
     public BPPin findByID(final int ID){
         for(BPNode node : nodes.values()){
-            for(BPPin pin : node.getPins()){
-                if(pin.getID() == ID){
-                    return pin;
+//            for(BPPin pin : node.getPins()){
+//                if(pin.getID() == ID){
+//                    return pin;
+//                }
+//            }
+
+            for(BPPin p : node.inputPins){
+                if(p.getID() == ID){
+                    return p;
+                }
+            }
+
+            for(BPPin p : node.outputPins){
+                if(p.getID() == ID){
+                    return p;
                 }
             }
         }

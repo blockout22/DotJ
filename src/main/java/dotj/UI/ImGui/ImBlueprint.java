@@ -1,5 +1,6 @@
 package dotj.UI.ImGui;
 
+import dotj.UI.ImGui.nodes.*;
 import dotj.input.GLFWKey;
 import imgui.extension.imnodes.ImNodesContext;
 import imgui.extension.imnodes.flag.ImNodesMiniMapLocation;
@@ -9,7 +10,6 @@ import imgui.flag.ImGuiMouseButton;
 import imgui.internal.ImRect;
 import imgui.type.ImInt;
 
-import java.util.Random;
 import java.util.Vector;
 
 import static imgui.ImGui.*;
@@ -38,58 +38,88 @@ public class ImBlueprint {
     private static final ImInt LINK_A = new ImInt();
     private static final ImInt LINK_B = new ImInt();
 
+    private static float curNodeSize;
 
+    /**
+     * used to update all nodes and values
+     */
+    private static void executeFlow(BPGraph graph, BPNode executeNode){
+        BPPin executePin = null;
+        for(BPPin curPin : executeNode.outputPins){
+            if(curPin.getDataType() == BPPin.DataType.Flow){
+                executePin = curPin;
+                break;
+            }
+        }
 
-    private static void addRandomNode(BPGraph graph){
-        Random r = new Random();
-        final BPNode node = graph.addNode("new Node" + r.nextFloat());
-        node.setName("Some Name");
-
-        final BPPin pin = node.addPin(BPPin.DataType.Flow, BPPin.PinType.Input);
-        pin.setName("In");
-
-        final BPPin outPin = node.addPin(BPPin.DataType.Flow, BPPin.PinType.Output);
-        outPin.setName("Out");
+        if(executePin != null){
+            BPPin connectedPin = graph.findByID(executePin.connectedTo);
+            System.out.println(connectedPin);
+        }
     }
 
     public static void show(final BPGraph graph){
-        setNextWindowSize(500, 500, ImGuiCond.Once);
-        setNextWindowPos(getMainViewport().getPosX() + 800, getMainViewport().getPosY() + 100, ImGuiCond.Once);
+        setNextWindowSize(1000, 800, ImGuiCond.Once);
+        setNextWindowPos(getMainViewport().getPosX() + 500, getMainViewport().getPosY() + 100, ImGuiCond.Once);
 
         if(begin("Blueprints")){
 
             text("Blueprint Editor");
 
-            if(button("AddNode")){
-                addRandomNode(graph);
-            }
-
             beginNodeEditor();
 
+
+            //Render Nodes and Pins
             for(BPNode g : graph.nodes.values()){
-                beginNode(g.ID);
+                beginNode(g.getID());
                 {
                     beginNodeTitleBar();
                     text(g.getName());
                     endNodeTitleBar();
 
-
-                    for(BPPin pin : g.getPins())
-                    {
-                        addPin(pin.getID(), pin.getName(), pin.getDataType(), pin.getPinType());
+                    //TODO temporary code, this is just to test the node ... When it's implemented
+                    if(g.getName().startsWith("function")) {
+                        if (button("Execute")) {
+                            executeFlow(graph, g);
+                        }
                     }
+//                    curNodeSize = getItemRectSizeX();
+
+                    int max = Math.max(g.outputPins.size(), g.inputPins.size());
+
+                    for (int i = 0; i < max; i++) {
+
+                        if(g.inputPins.size() > i){
+                            BPPin inPin = g.inputPins.get(i);
+//                            addPin(inPin.getID(), inPin.getName(), inPin.getDataType(), inPin.getPinType());
+                            addPin(inPin);
+                        }
+
+                        dummy(250, 0);
+
+                        if(g.outputPins.size() > i){
+                            BPPin outPin = g.outputPins.get(i);
+//                            addPin(outPin.getID(), outPin.getName(), outPin.getDataType(), outPin.getPinType());
+                            addPin(outPin);
+                        }
+                        newLine();
+                    }
+
+
+//                    for(BPPin pin : g.getPins())
+//                    {
+//                        System.out.println("Pin: " + pin.getID() + " : " + g.ID);
+//                        addPin(pin.getID(), pin.getName(), pin.getDataType(), pin.getPinType());
+//                    }
                 }
                 endNode();
             }
 
             int uniqueLinkId = 1;
             for(BPNode g : graph.nodes.values()){
-                for(BPPin pin : g.getPins()){
-                    if(pin.connectedTo != -1) {
-                        if (pin.getPinType() == BPPin.PinType.Output) {
-                            link(uniqueLinkId++, pin.getID(), pin.connectedTo);
-//                            System.out.println("linked: " + pin.getID() + ", " + graph.findByID(pin.connectedID).connectedID);
-                        }
+                for(BPPin pin : g.outputPins){
+                    if(pin.connectedTo != -1){
+                        link(uniqueLinkId++, pin.getID(), pin.connectedTo);
                     }
                 }
             }
@@ -107,8 +137,6 @@ public class ImBlueprint {
                     if(sourcePin.connectedTo != targetPin.connectedTo || (targetPin.connectedTo == -1 || sourcePin.connectedTo == -1)){
                         sourcePin.connectedTo = targetPin.getID();
                         targetPin.connectedTo = sourcePin.getID();
-
-                        System.out.println(sourcePin.connectedTo + " : " + targetPin.connectedTo);
 
                     }
                 }
@@ -135,6 +163,9 @@ public class ImBlueprint {
                     openPopup("node_menu");
                     //stores the ID of the node that was Right clicked
                     getStateStorage().setInt(getID("delete_node_id"), hoveredNode);
+                }else{
+                    openPopup("context_menu");
+//                    getStateStorage().setInt(getID("context_menu"), 0);
                 }
             }
 
@@ -147,6 +178,34 @@ public class ImBlueprint {
                 if(beginPopup("node_menu")){
                     if(button("Delete " + graph.nodes.get(targetNode).getName())) {
                         graph.nodes.remove(targetNode);
+                        closeCurrentPopup();
+                    }
+                    endPopup();
+                }
+            }
+
+            //Opens Graph Right click menu
+            if(isPopupOpen("context_menu")) {
+                if (beginPopup("context_menu")) {
+
+                    //Add <name> Should only be a variable type and be in another list, this menu should only add functions such as adding 2 numbers together
+                    if (menuItem("Add Flow")) {
+                        Node_Function.create(graph);
+                        closeCurrentPopup();
+                    }
+
+                    if (menuItem("Bool Check")) {
+                        Node_Boolean.create(graph);
+                        closeCurrentPopup();
+                    }
+
+                    if (menuItem("Add")) {
+                        Node_Add.create(graph);
+                        closeCurrentPopup();
+                    }
+
+                    if(menuItem("Print")){
+                        Node_PrintConsole.create(graph);
                         closeCurrentPopup();
                     }
                     endPopup();
@@ -169,47 +228,65 @@ public class ImBlueprint {
         end();
     }
 
-    private static void addPin(int pinID, String vName, BPPin.DataType dataType, BPPin.PinType kind){
-        switch (kind){
+    private static void addPin(BPPin pin){
+        switch (pin.getPinType()){
             case Input:
-                beginInputAttribute(pinID, ImNodesPinShape.Triangle);
-//                setPinColor(vName, dataType);
-                text(vName);
+                switch (pin.getDataType()){
+                    case Flow:
+                        beginInputAttribute(pin.getID(), ImNodesPinShape.Triangle);
+                        break;
+                    default:
+                        beginInputAttribute(pin.getID(), ImNodesPinShape.CircleFilled);
+                }
+                configurePinType(pin);
                 endOutputAttribute();
                 sameLine();
                 break;
             case Output:
-                beginOutputAttribute(pinID, ImNodesPinShape.Triangle);
-//                setPinColor(vName, dataType);
-                text(vName);
+                switch (pin.getDataType()){
+                    case Flow:
+                        beginOutputAttribute(pin.getID(), ImNodesPinShape.Triangle);
+                        break;
+                    default:
+                        beginOutputAttribute(pin.getID(), ImNodesPinShape.CircleFilled);
+                }
+                sameLine(curNodeSize / 2);
+//                configurePinType(pin);
+                text(pin.getName());
                 endOutputAttribute();
                 sameLine();
                 break;
         }
     }
 
-    private static void setPinColor(String text, BPPin.DataType type){
-        switch (type){
+    private static void configurePinType(BPPin pin){
+        switch (pin.getDataType()){
             case Flow:
-                textColored(1, 1, 1, 1,  text);
                 break;
             case Bool:
-                textColored(1, 0, 0, 1,  text);
+                if(pin.connectedTo == -1){
+                    if(checkbox(pin.getName(), pin.getBoolean()))
+                    {
+
+                    }
+                }
                 break;
             case Int:
-                textColored(0, 1, 0, 1,  text);
+                if(pin.connectedTo == -1) {
+                    pushItemWidth(100);
+                    if (inputInt(pin.getName(), pin.getInt())) {
+
+                    }
+                    popItemWidth();
+                }
                 break;
             case Float:
-                textColored(0, 1, .5f, 1,  text);
                 break;
             case String:
-                textColored(1, 1, 0, 1,  text);
                 break;
             case Object:
-                textColored(0, 1, 1, 1,  text);
                 break;
             case Function:
-                textColored(1, .5f, 0, 1,  text);
                 break;
 
         }

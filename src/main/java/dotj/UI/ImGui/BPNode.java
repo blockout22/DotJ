@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 public class BPNode {
 
-    public final BPGraph graph;
-    public final int ID;
+    private final BPGraph graph;
+    private final int ID;
     private String name = "";
     private int linkID = 0;
 
-    private ArrayList<BPPin> pins = new ArrayList<BPPin>();
+//    private ArrayList<BPPin> pins = new ArrayList<BPPin>();
+    public ArrayList<BPPin> outputPins = new ArrayList<>();
+    public ArrayList<BPPin> inputPins = new ArrayList<>();
 
 
     public BPNode(BPGraph graph, int id){
@@ -17,10 +19,17 @@ public class BPNode {
         this.ID = id;
     }
 
-    public BPPin addPin(BPPin.DataType dataType, BPPin.PinType pinType){
+    public BPPin addOutputPin(BPPin.DataType dataType){
         int id = graph.getNextAvailablePinID();
-        BPPin pin = new BPPin(id, dataType, pinType, linkID++);
-        pins.add(pin);
+        BPPin pin = new BPPin(id, dataType, BPPin.PinType.Output, linkID++);
+        outputPins.add(pin);
+        return pin;
+    }
+
+    public BPPin addInputPin(BPPin.DataType dataType){
+        int id = graph.getNextAvailablePinID();
+        BPPin pin = new BPPin(id, dataType, BPPin.PinType.Input, linkID++);
+        inputPins.add(pin);
         return pin;
     }
 
@@ -39,9 +48,14 @@ public class BPNode {
         return name;
     }
 
-    public ArrayList<BPPin> getPins()
+    public int getID()
     {
-        return pins;
+        return ID;
     }
+
+//    public ArrayList<BPPin> getPins()
+//    {
+//        return pins;
+//    }
 
 }
