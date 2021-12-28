@@ -1,5 +1,6 @@
 package dotj.UI.ImGui;
 
+import dotj.UI.ImGui.nodes.NodeData;
 import imgui.type.*;
 
 public class BPPin {
@@ -38,10 +39,13 @@ public class BPPin {
     //this doesn't exist but possibly a Object<T> kind of class might work
 //    private ImObject Object = new ImObject()
 
+    private NodeData data;
+
     public BPPin(int ID, DataType dataType, PinType pinType, int linkID){
         this.ID = ID;
         this.dataType = dataType;
         this.pinType = pinType;
+        data = new NodeData();
     }
 
     public int getID(){
@@ -89,5 +93,13 @@ public class BPPin {
 
     public ImDouble getDouble() {
         return Double;
+    }
+
+    public NodeData getData() {
+        return data;
+    }
+
+    public void setData(NodeData data) {
+        this.data = data;
     }
 }

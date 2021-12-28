@@ -431,4 +431,12 @@ public class Utilities {
     public static boolean nearlyEqual(double value, double equalTo, double tolerance){
         return((value < equalTo + tolerance && value > equalTo - tolerance) || value == equalTo);
     }
+
+    public static boolean notNull(Object... objs){
+        for(Object obj : objs){
+            if(obj == null)
+                return false;
+        }
+        return true;
+    }
 }

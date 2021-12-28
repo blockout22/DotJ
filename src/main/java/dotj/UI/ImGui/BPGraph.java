@@ -1,11 +1,14 @@
 package dotj.UI.ImGui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class BPGraph {
 
-    public final Map<Integer, BPNode> nodes = new HashMap<>();
+    private final Map<Integer, BPNode> nodes = new HashMap<>();
+//    private final Map<Integer, BPNode> queuedForRemoval = new HashMap<>();
+    private ArrayList<Integer> queuedForRemoval = new ArrayList<>();
     private int nextNodeID = 1;
     private int nextPinID = 100;
 
@@ -13,10 +16,38 @@ public class BPGraph {
         if(!validateName(name)){
             return null;
         }
-        final BPNode node = new BPNode(this, nextNodeID++);
+        BPNode node = new BPNode(this, nextNodeID++);
         node.setName(name);
         nodes.put(node.getID(), node);
         return node;
+    }
+
+    public void update(){
+        for(Integer q : queuedForRemoval){
+            nodes.remove(q);
+        }
+        queuedForRemoval.clear();
+    }
+
+    public boolean addNode(String name, BPNode node){
+        if(!validateName(name)){
+            return false;
+        }
+
+
+        node.setID(nextNodeID++);
+        node.setName(name);
+        nodes.put(node.getID(), node);
+        return true;
+    }
+
+    public void removeNode(int node){
+        queuedForRemoval.add(node);
+    }
+
+    public Map<Integer, BPNode> getNodes()
+    {
+        return nodes;
     }
 
     public boolean validateName(String name){
@@ -32,7 +63,7 @@ public class BPGraph {
         return true;
     }
 
-    public BPPin findByID(final int ID){
+    public BPPin findPinById(final int ID){
         for(BPNode node : nodes.values()){
 //            for(BPPin pin : node.getPins()){
 //                if(pin.getID() == ID){

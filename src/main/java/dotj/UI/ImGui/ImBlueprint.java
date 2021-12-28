@@ -1,6 +1,7 @@
 package dotj.UI.ImGui;
 
 import dotj.UI.ImGui.nodes.*;
+import dotj.Utilities;
 import dotj.input.GLFWKey;
 import imgui.extension.imnodes.ImNodesContext;
 import imgui.extension.imnodes.flag.ImNodesMiniMapLocation;
@@ -10,9 +11,11 @@ import imgui.flag.ImGuiMouseButton;
 import imgui.internal.ImRect;
 import imgui.type.ImInt;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 import static imgui.ImGui.*;
+import static imgui.ImGui.beginPopup;
 import static imgui.extension.imnodes.ImNodes.*;
 
 public class ImBlueprint {
@@ -53,12 +56,13 @@ public class ImBlueprint {
         }
 
         if(executePin != null){
-            BPPin connectedPin = graph.findByID(executePin.connectedTo);
+            BPPin connectedPin = graph.findPinById(executePin.connectedTo);
             System.out.println(connectedPin);
         }
     }
 
     public static void show(final BPGraph graph){
+        graph.update();
         setNextWindowSize(1000, 800, ImGuiCond.Once);
         setNextWindowPos(getMainViewport().getPosX() + 500, getMainViewport().getPosY() + 100, ImGuiCond.Once);
 
@@ -70,7 +74,7 @@ public class ImBlueprint {
 
 
             //Render Nodes and Pins
-            for(BPNode g : graph.nodes.values()){
+            for(BPNode g : graph.getNodes().values()){
                 beginNode(g.getID());
                 {
                     beginNodeTitleBar();
@@ -83,6 +87,7 @@ public class ImBlueprint {
                             executeFlow(graph, g);
                         }
                     }
+
 //                    curNodeSize = getItemRectSizeX();
 
                     int max = Math.max(g.outputPins.size(), g.inputPins.size());
@@ -116,7 +121,7 @@ public class ImBlueprint {
             }
 
             int uniqueLinkId = 1;
-            for(BPNode g : graph.nodes.values()){
+            for(BPNode g : graph.getNodes().values()){
                 for(BPPin pin : g.outputPins){
                     if(pin.connectedTo != -1){
                         link(uniqueLinkId++, pin.getID(), pin.connectedTo);
@@ -129,8 +134,8 @@ public class ImBlueprint {
 
             //check if a link was attempted while dragging from a pin
             if(isLinkCreated(LINK_A, LINK_B)){
-                final BPPin sourcePin = graph.findByID(LINK_A.get());
-                final  BPPin targetPin = graph.findByID(LINK_B.get());
+                final BPPin sourcePin = graph.findPinById(LINK_A.get());
+                final  BPPin targetPin = graph.findPinById(LINK_B.get());
 
                 if(sourcePin != null && targetPin != null){
                     //TODO do a check here to limit the number connections to the pins
@@ -144,9 +149,9 @@ public class ImBlueprint {
 
             if(isLinkDropped(LINK_A, false)) {
 
-                BPPin pin1 = graph.findByID(LINK_A.get());
+                BPPin pin1 = graph.findPinById(LINK_A.get());
                 if (pin1.connectedTo != -1) {
-                    BPPin pin2 = graph.findByID(pin1.connectedTo);
+                    BPPin pin2 = graph.findPinById(pin1.connectedTo);
                     System.out.println("Dropped: " + pin1.connectedTo + " : " + pin2.connectedTo);
 
                     pin1.connectedTo = -1;
@@ -176,9 +181,17 @@ public class ImBlueprint {
 
                 //visualizes open popup Popup
                 if(beginPopup("node_menu")){
-                    if(button("Delete " + graph.nodes.get(targetNode).getName())) {
-                        graph.nodes.remove(targetNode);
+                    if(button("Delete " + graph.getNodes().get(targetNode).getName())) {
+//                        graph.nodes.remove(targetNode);
+                        graph.removeNode(targetNode);
                         closeCurrentPopup();
+                    }
+                    ArrayList<BPPin> pinList = graph.getNodes().get(targetNode).outputPins;
+                    for(BPPin out : pinList){
+                        if(button("Pin: " + out.getName())) {
+                            NodeData<Integer> d = out.getData();
+                            closeCurrentPopup();
+                        }
                     }
                     endPopup();
                 }
@@ -208,6 +221,10 @@ public class ImBlueprint {
                         Node_PrintConsole.create(graph);
                         closeCurrentPopup();
                     }
+
+                    if(menuItem("TestNode")){
+                        TestNode node = new TestNode(graph);
+                    }
                     endPopup();
                 }
             }
@@ -220,12 +237,39 @@ public class ImBlueprint {
                 int[] selectedNodes = new int[numSelectedNodes()];
                 getSelectedNodes(selectedNodes);
                 for(int i = 0; i < selectedNodes.length; i++){
-                    graph.nodes.remove(selectedNodes[i]);
+//                    graph.nodes.remove(selectedNodes[i]);
+                    graph.removeNode(selectedNodes[i]);
                 }
             }
 
         }
         end();
+
+        for(BPNode nodes : graph.getNodes().values()){
+            for (int i = 0; i < nodes.outputPins.size(); i++) {
+                BPPin pin = nodes.outputPins.get(i);
+//                System.out.println(pin.connectedTo);
+                if(pin.connectedTo != -1){
+                    switch (pin.getDataType()){
+                        case Int:
+                            BPPin output = graph.findPinById(pin.connectedTo);
+                            NodeData<ImInt> outData = output.getData();
+
+                            if(Utilities.notNull(outData, pin.getData())) {
+//                                pin.getData().value = outData.value;
+                                NodeData<ImInt> inputValue = pin.getData();
+                                outData.setValue(inputValue.value);
+
+                            }
+
+                    }
+                }else{
+//                    System.out.println(pin.getID() + " Not conencted");
+                }
+
+            }
+            nodes.execute();
+        }
     }
 
     private static void addPin(BPPin pin){
@@ -272,13 +316,16 @@ public class ImBlueprint {
                 }
                 break;
             case Int:
-                if(pin.connectedTo == -1) {
+//                if(pin.connectedTo == -1) {
                     pushItemWidth(100);
-                    if (inputInt(pin.getName(), pin.getInt())) {
+                    NodeData<ImInt> data = pin.getData();
+                    if(Utilities.notNull(data)) {
+                        if (inputInt(pin.getName(), data.value)) {
 
+                        }
                     }
                     popItemWidth();
-                }
+//                }
                 break;
             case Float:
                 break;

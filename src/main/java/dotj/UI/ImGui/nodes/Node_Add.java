@@ -5,6 +5,7 @@ import dotj.UI.ImGui.BPNode;
 import dotj.UI.ImGui.BPPin;
 
 import java.util.Random;
+import java.util.Vector;
 
 public class Node_Add {
 
@@ -21,5 +22,9 @@ public class Node_Add {
         in2Pin.setName("Input 2");
 
         BPPin output = node.addOutputPin(BPPin.DataType.Int);
+
+        NodeData<Integer> data = new NodeData<>();
+        output.setData(data);
+        data.setValue(15);
     }
 }

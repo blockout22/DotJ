@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class BPNode {
 
     private final BPGraph graph;
-    private final int ID;
+    private int ID;
     private String name = "";
     private int linkID = 0;
 
@@ -16,6 +16,17 @@ public class BPNode {
 
     public BPNode(BPGraph graph, int id){
         this.graph = graph;
+        this.ID = id;
+    }
+
+    public BPNode(BPGraph graph){
+        this.graph = graph;
+    }
+
+    public void execute(){
+    }
+
+    protected void setID(int id){
         this.ID = id;
     }
 
