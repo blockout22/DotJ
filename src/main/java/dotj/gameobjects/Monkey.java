@@ -7,7 +7,9 @@ import dotj.shaders.WorldInstancedShader;
 import dotj.shaders.WorldShader;
 import org.joml.Vector3f;
 
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.Vector;
 
 public class Monkey extends GameObject{
 
@@ -16,7 +18,8 @@ public class Monkey extends GameObject{
     private MeshInstanced mesh;
     //100,000 non instance (13 FPS)
     // 100,000 instanced (40 FPS)
-    private int total = 10000;
+//    private int total = 10000;
+    private int total;
 
     public Monkey(PerspectiveCamera camera, Shader shader) {
         this.camera = camera;
@@ -29,20 +32,39 @@ public class Monkey extends GameObject{
         mesh = new MeshInstanced(model);
 
         Random r = new Random();
+        System.out.println("Init Monkey");
 
-        Vector3f[] list = new Vector3f[total];
-        for(int i = 0; i < total; i++){
-            Vector3f rotation = new Vector3f(r.nextFloat() * 360f, r.nextFloat() * 360f, r.nextFloat() * 360f);
-            float distance = 1000;
-            MeshInstance instance = new MeshInstance(this,mesh, new Vector3f(r.nextFloat() * distance, r.nextFloat() * distance, r.nextFloat() * distance), rotation, new Vector3f(1f, 1f, 1f));
-            instance.setScale(.2f);
-            instance.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
+        int totalX = 5;
+        int totalY = 5;
+        int totalZ = 5;
+//        Vector3f[] list = new Vector3f[totalX * totalY * totalZ];
+        ArrayList<Vector3f> list = new ArrayList<>();
+        float spacing = 25;
+        for(int x = 0; x < totalX; x++){
+            for(int y = 0; y < totalY; y++){
+                for(int z = 0; z < totalZ; z++){
+                    Vector3f rotation = new Vector3f(r.nextFloat() * 360f, r.nextFloat() * 360f, r.nextFloat() * 360f);
+                    float distance = 1000;
+                    MeshInstance instance = new MeshInstance(this,mesh, new Vector3f(x * spacing, y * spacing, z * spacing), rotation, new Vector3f(1f, 1f, 1f));
+                    instance.setScale(.2f);
+                    instance.setColor(new Vector3f(r.nextFloat(), r.nextFloat(), r.nextFloat()));
 //            instance.setShader(shader);
-            addComponent(instance);
-            list[i] = instance.getWorldTransform().getPosition();
+                    addComponent(instance);
+//                    System.out.println(total + " : " + list.length);
+//                    list[total++] = instance.getWorldTransform().getPosition();
+                    list.add(instance.getWorldTransform().getPosition());
+                    total++;
+                }
+            }
         }
 
-        mesh.add(list);
+        System.out.println("Total: " + total);
+        for(int i = 0; i < total; i++){
+
+        }
+
+        Vector3f[] posList = Utilities.toVectorArray(list);
+        mesh.add(posList);
     }
 
     @Override

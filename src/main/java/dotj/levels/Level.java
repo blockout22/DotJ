@@ -64,13 +64,13 @@ public abstract class Level {
     }
 
     private void continueLoading(){
-        for(GameObject i : GameObjectsInstanced){
-            i.init();
-        }
         if(count >= GameObjects.size() - 1)
         {
             if(onFinishedListener != null){
                 onFinishedListener.finished();
+            }
+            for(GameObject i : GameObjectsInstanced){
+                i.init();
             }
             isLoading = false;
         }

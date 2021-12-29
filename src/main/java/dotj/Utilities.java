@@ -22,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Vector;
 
 import static org.joml.Math.*;
 import static org.lwjgl.BufferUtils.createByteBuffer;
@@ -108,6 +109,16 @@ public class Utilities {
         }
 
         return arr;
+    }
+
+    public static Vector3f[] toVectorArray(List<Vector3f> arr) {
+        Vector3f[] vecArr = new Vector3f[arr.size()];
+
+        for (int i = 0; i < vecArr.length; i++) {
+            vecArr[i] = arr.get(i);
+        }
+
+        return vecArr;
     }
 
     public static BufferedImage loadImage(String fileName) throws IOException {
