@@ -1,55 +1,61 @@
 Manifest-Version: 1.0
 Main-Class: dotj.MainEntry
-Class-Path: lwjgl-tinyexr-3.3.1-20211225.001731-2.jar lwjgl-tootle-3.3.1
- -20211225.001731-2-natives-windows.jar lwjgl-openal-3.3.1-20211225.0017
- 31-2.jar lwjgl-jemalloc-3.3.1-20211225.001731-2-natives-windows.jar lwj
- gl-sse-3.3.1-20211225.001731-2-natives-windows.jar lwjgl-opengles-3.3.1
- -20211225.001731-2.jar lwjgl-tootle-3.3.1-20211225.001731-2.jar lwjgl-t
- inyfd-3.3.1-20211225.001731-2.jar lwjgl-remotery-3.3.1-20211225.001731-
- 2.jar lwjgl-openal-3.3.1-20211225.001731-2-natives-windows.jar lwjgl-ja
- wt-3.3.1-20211225.001731-2.jar lwjgl-yoga-3.3.1-20211225.001731-2-nativ
- es-windows.jar lwjgl-spvc-3.3.1-20211225.001731-2.jar lwjgl-vulkan-3.3.
- 1-20211225.001731-2.jar lwjgl-bgfx-3.3.1-20211225.001731-2-natives-wind
- ows.jar lwjgl-egl-3.3.1-20211225.001731-2.jar lwjgl-tinyfd-3.3.1-202112
- 25.001731-2-natives-windows.jar lwjgl-nfd-3.3.1-20211225.001731-2-nativ
- es-windows.jar imgui-java-natives-windows-1.85.1.jar lwjgl-par-3.3.1-20
- 211225.001731-2.jar lwjgl-sse-3.3.1-20211225.001731-2.jar lwjgl-nuklear
- -3.3.1-20211225.001731-2.jar lwjgl-lmdb-3.3.1-20211225.001731-2-natives
- -windows.jar lwjgl-openvr-3.3.1-20211225.001731-2.jar lwjgl-opus-3.3.1-
- 20211225.001731-2.jar lwjgl-odbc-3.3.1-20211225.001731-2.jar lwjgl-vma-
- 3.3.1-20211225.001731-2.jar lwjgl-llvm-3.3.1-20211225.001731-2.jar lwjg
- l-lmdb-3.3.1-20211225.001731-2.jar lwjgl-libdivide-3.3.1-20211225.00173
- 1-2.jar lwjgl-meow-3.3.1-20211225.001731-2.jar lwjgl-3.3.1-20211225.001
- 731-2-natives-windows.jar lwjgl-bgfx-3.3.1-20211225.001731-2.jar lwjgl-
- yoga-3.3.1-20211225.001731-2.jar lwjgl-opengl-3.3.1-20211225.001731-2-n
- atives-windows.jar lwjgl-meow-3.3.1-20211225.001731-2-natives-windows.j
- ar lwjgl-opengles-3.3.1-20211225.001731-2-natives-windows.jar lwjgl-nan
- ovg-3.3.1-20211225.001731-2-natives-windows.jar imgui-java-lwjgl3-1.85.
- 1.jar lwjgl-glfw-3.3.1-20211225.001731-2-natives-windows.jar lwjgl-ovr-
- 3.3.1-20211225.001731-2.jar lwjgl-assimp-3.3.1-20211225.001731-2.jar lw
- jgl-3.3.1-20211225.001731-2.jar lwjgl-nfd-3.3.1-20211225.001731-2.jar l
- wjgl-ovr-3.3.1-20211225.001731-2-natives-windows.jar lwjgl-spvc-3.3.1-2
- 0211225.001731-2-natives-windows.jar lwjgl-zstd-3.3.1-20211225.001731-2
- .jar lwjgl-libdivide-3.3.1-20211225.001731-2-natives-windows.jar lwjgl-
- shaderc-3.3.1-20211225.001731-2.jar lwjgl-rpmalloc-3.3.1-20211225.00173
- 1-2-natives-windows.jar lwjgl-xxhash-3.3.1-20211225.001731-2-natives-wi
- ndows.jar lwjgl-opus-3.3.1-20211225.001731-2-natives-windows.jar lwjgl-
- tinyexr-3.3.1-20211225.001731-2-natives-windows.jar lwjgl-meshoptimizer
- -3.3.1-20211225.001731-2.jar lwjgl-jemalloc-3.3.1-20211225.001731-2.jar
-  lwjgl-par-3.3.1-20211225.001731-2-natives-windows.jar lwjgl-openvr-3.3
- .1-20211225.001731-2-natives-windows.jar joml-1.10.2.jar lwjgl-rpmalloc
- -3.3.1-20211225.001731-2.jar lwjgl-assimp-3.3.1-20211225.001731-2-nativ
- es-windows.jar lwjgl-remotery-3.3.1-20211225.001731-2-natives-windows.j
- ar Libbulletjme-12.6.0.jar lwjgl-glfw-3.3.1-20211225.001731-2.jar lwjgl
- -stb-3.3.1-20211225.001731-2-natives-windows.jar lwjgl-opengl-3.3.1-202
- 11225.001731-2.jar lwjgl-meshoptimizer-3.3.1-20211225.001731-2-natives-
- windows.jar lwjgl-lz4-3.3.1-20211225.001731-2.jar lwjgl-zstd-3.3.1-2021
- 1225.001731-2-natives-windows.jar imgui-java-binding-1.85.1.jar lwjgl-s
- haderc-3.3.1-20211225.001731-2-natives-windows.jar lwjgl-llvm-3.3.1-202
- 11225.001731-2-natives-windows.jar lwjgl-lz4-3.3.1-20211225.001731-2-na
- tives-windows.jar lwjgl-nanovg-3.3.1-20211225.001731-2.jar lwjgl-nuklea
- r-3.3.1-20211225.001731-2-natives-windows.jar lwjgl-xxhash-3.3.1-202112
- 25.001731-2.jar lwjgl-opencl-3.3.1-20211225.001731-2.jar lwjgl-vma-3.3.
- 1-20211225.001731-2-natives-windows.jar lwjgl-cuda-3.3.1-20211225.00173
- 1-2.jar lwjgl-stb-3.3.1-20211225.001731-2.jar
+Class-Path: Libs/lwjgl-tinyexr-3.3.1-20211225.001731-2.jar Libs/lwjgl-to
+ otle-3.3.1-20211225.001731-2-natives-windows.jar Libs/lwjgl-openal-3.3.
+ 1-20211225.001731-2.jar Libs/lwjgl-jemalloc-3.3.1-20211225.001731-2-nat
+ ives-windows.jar Libs/lwjgl-sse-3.3.1-20211225.001731-2-natives-windows
+ .jar Libs/lwjgl-opengles-3.3.1-20211225.001731-2.jar Libs/lwjgl-tootle-
+ 3.3.1-20211225.001731-2.jar Libs/lwjgl-tinyfd-3.3.1-20211225.001731-2.j
+ ar Libs/lwjgl-remotery-3.3.1-20211225.001731-2.jar Libs/lwjgl-openal-3.
+ 3.1-20211225.001731-2-natives-windows.jar Libs/lwjgl-jawt-3.3.1-2021122
+ 5.001731-2.jar Libs/lwjgl-yoga-3.3.1-20211225.001731-2-natives-windows.
+ jar Libs/lwjgl-spvc-3.3.1-20211225.001731-2.jar Libs/lwjgl-vulkan-3.3.1
+ -20211225.001731-2.jar Libs/lwjgl-bgfx-3.3.1-20211225.001731-2-natives-
+ windows.jar Libs/lwjgl-egl-3.3.1-20211225.001731-2.jar Libs/lwjgl-tinyf
+ d-3.3.1-20211225.001731-2-natives-windows.jar Libs/lwjgl-nfd-3.3.1-2021
+ 1225.001731-2-natives-windows.jar Libs/imgui-java-natives-windows-1.85.
+ 1.jar Libs/lwjgl-par-3.3.1-20211225.001731-2.jar Libs/lwjgl-sse-3.3.1-2
+ 0211225.001731-2.jar Libs/lwjgl-nuklear-3.3.1-20211225.001731-2.jar Lib
+ s/lwjgl-lmdb-3.3.1-20211225.001731-2-natives-windows.jar Libs/lwjgl-ope
+ nvr-3.3.1-20211225.001731-2.jar Libs/lwjgl-opus-3.3.1-20211225.001731-2
+ .jar Libs/lwjgl-odbc-3.3.1-20211225.001731-2.jar Libs/lwjgl-vma-3.3.1-2
+ 0211225.001731-2.jar Libs/lwjgl-llvm-3.3.1-20211225.001731-2.jar Libs/l
+ wjgl-lmdb-3.3.1-20211225.001731-2.jar Libs/lwjgl-libdivide-3.3.1-202112
+ 25.001731-2.jar Libs/lwjgl-meow-3.3.1-20211225.001731-2.jar Libs/lwjgl-
+ 3.3.1-20211225.001731-2-natives-windows.jar Libs/lwjgl-bgfx-3.3.1-20211
+ 225.001731-2.jar Libs/lwjgl-yoga-3.3.1-20211225.001731-2.jar Libs/lwjgl
+ -opengl-3.3.1-20211225.001731-2-natives-windows.jar Libs/lwjgl-meow-3.3
+ .1-20211225.001731-2-natives-windows.jar Libs/lwjgl-opengles-3.3.1-2021
+ 1225.001731-2-natives-windows.jar Libs/lwjgl-nanovg-3.3.1-20211225.0017
+ 31-2-natives-windows.jar Libs/imgui-java-lwjgl3-1.85.1.jar Libs/lwjgl-g
+ lfw-3.3.1-20211225.001731-2-natives-windows.jar Libs/lwjgl-ovr-3.3.1-20
+ 211225.001731-2.jar Libs/lwjgl-assimp-3.3.1-20211225.001731-2.jar Libs/
+ lwjgl-3.3.1-20211225.001731-2.jar Libs/lwjgl-nfd-3.3.1-20211225.001731-
+ 2.jar Libs/lwjgl-ovr-3.3.1-20211225.001731-2-natives-windows.jar Libs/l
+ wjgl-spvc-3.3.1-20211225.001731-2-natives-windows.jar Libs/lwjgl-zstd-3
+ .3.1-20211225.001731-2.jar Libs/lwjgl-libdivide-3.3.1-20211225.001731-2
+ -natives-windows.jar Libs/lwjgl-shaderc-3.3.1-20211225.001731-2.jar Lib
+ s/lwjgl-rpmalloc-3.3.1-20211225.001731-2-natives-windows.jar Libs/lwjgl
+ -xxhash-3.3.1-20211225.001731-2-natives-windows.jar Libs/lwjgl-opus-3.3
+ .1-20211225.001731-2-natives-windows.jar Libs/lwjgl-tinyexr-3.3.1-20211
+ 225.001731-2-natives-windows.jar Libs/lwjgl-meshoptimizer-3.3.1-2021122
+ 5.001731-2.jar Libs/lwjgl-jemalloc-3.3.1-20211225.001731-2.jar Libs/lwj
+ gl-par-3.3.1-20211225.001731-2-natives-windows.jar Libs/lwjgl-openvr-3.
+ 3.1-20211225.001731-2-natives-windows.jar Libs/joml-1.10.2.jar Libs/lwj
+ gl-rpmalloc-3.3.1-20211225.001731-2.jar Libs/lwjgl-assimp-3.3.1-2021122
+ 5.001731-2-natives-windows.jar Libs/lwjgl-remotery-3.3.1-20211225.00173
+ 1-2-natives-windows.jar Libs/Libbulletjme-12.6.0.jar Libs/lwjgl-glfw-3.
+ 3.1-20211225.001731-2.jar Libs/lwjgl-stb-3.3.1-20211225.001731-2-native
+ s-windows.jar Libs/lwjgl-opengl-3.3.1-20211225.001731-2.jar Libs/lwjgl-
+ meshoptimizer-3.3.1-20211225.001731-2-natives-windows.jar Libs/lwjgl-lz
+ 4-3.3.1-20211225.001731-2.jar Libs/lwjgl-zstd-3.3.1-20211225.001731-2-n
+ atives-windows.jar Libs/imgui-java-binding-1.85.1.jar Libs/lwjgl-shader
+ c-3.3.1-20211225.001731-2-natives-windows.jar Libs/lwjgl-llvm-3.3.1-202
+ 11225.001731-2-natives-windows.jar Libs/lwjgl-lz4-3.3.1-20211225.001731
+ -2-natives-windows.jar Libs/lwjgl-nanovg-3.3.1-20211225.001731-2.jar Li
+ bs/lwjgl-nuklear-3.3.1-20211225.001731-2-natives-windows.jar Libs/lwjgl
+ -xxhash-3.3.1-20211225.001731-2.jar Libs/lwjgl-opencl-3.3.1-20211225.00
+ 1731-2.jar Libs/lwjgl-vma-3.3.1-20211225.001731-2-natives-windows.jar L
+ ibs/lwjgl-cuda-3.3.1-20211225.001731-2.jar Libs/lwjgl-stb-3.3.1-2021122
+ 5.001731-2.jar
 
