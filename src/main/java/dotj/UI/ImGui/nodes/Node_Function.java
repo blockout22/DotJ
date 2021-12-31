@@ -22,6 +22,6 @@ public class Node_Function extends BPNode{
 
     @Override
     public String printSource(PrintWriter pw) {
-        return null;
+        return "";
     }
 }

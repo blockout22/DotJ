@@ -44,7 +44,7 @@ public class Node_IntToString extends BPNode {
 
         //this is the variable to set to store the above variable
         //variable should be randomized
-        String outputvar = "intToString" + getGraph().getNextAvailablePinID();
+        String outputvar = "intToString" + getGraph().getNextLocalVariableID();
         pw.write("String "+ outputvar +" = String.valueOf(" + variable + ");\n");
         return outputvar;
     }

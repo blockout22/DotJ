@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class BPGraph {
 
+    private static int localeVariableID = 0;
     private final Map<Integer, BPNode> nodes = new HashMap<>();
 //    private final Map<Integer, BPNode> queuedForRemoval = new HashMap<>();
     private ArrayList<Integer> queuedForRemoval = new ArrayList<>();
@@ -97,6 +98,13 @@ public class BPGraph {
             }
         }
         return null;
+    }
+
+    /**
+     * A unique ID for variables that are inside Functions that have been created without user input or a variable node
+     */
+    public static int getNextLocalVariableID(){
+        return localeVariableID++;
     }
 
     public int getNextAvailablePinID(){

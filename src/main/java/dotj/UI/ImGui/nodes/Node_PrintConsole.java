@@ -50,6 +50,6 @@ public class Node_PrintConsole extends BPNode{
 
         pw.write("System.out.println(" + strOutput + ");\n");
 
-        return null;
+        return "";
     }
 }

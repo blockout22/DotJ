@@ -60,7 +60,7 @@ public class Node_Add extends BPNode {
             input2 = pin.getNode().printSource(pw);
         }
 
-        String outputvar = "intAdd" + getGraph().getNextAvailablePinID();
+        String outputvar = "intAdd" + getGraph().getNextLocalVariableID();
         pw.write("int " + outputvar + " = " + input1 + " + " + input2 + ";\n");
         return outputvar;
     }

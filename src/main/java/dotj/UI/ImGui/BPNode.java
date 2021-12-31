@@ -5,8 +5,6 @@ import java.util.ArrayList;
 
 public abstract class BPNode {
 
-    private static int localeVariableID = 0;
-
     private final BPGraph graph;
     private int ID;
     private String name = "";
@@ -75,13 +73,6 @@ public abstract class BPNode {
      * should return Variable name
      */
     public abstract String printSource(PrintWriter pw);
-
-    /**
-     * A unique ID for variables that are inside Functions that have been created without user input or a variable node
-     */
-    public static int getNextLocalVariableID(){
-        return localeVariableID++;
-    }
 
 //    public ArrayList<BPPin> getPins()
 //    {

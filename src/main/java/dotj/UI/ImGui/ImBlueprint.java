@@ -241,6 +241,11 @@ public class ImBlueprint {
                         closeCurrentPopup();
                     }
 
+                    if(menuItem("Call Function")){
+                        Node_CallFunction callFunc = new Node_CallFunction(graph);
+                        closeCurrentPopup();
+                    }
+
                     if (menuItem("Bool Check")) {
                         Node_Boolean bool = new Node_Boolean(graph);
 //                        Node_Boolean.create(graph);
@@ -283,6 +288,27 @@ public class ImBlueprint {
         end();
     }
 
+    private static void handleNode(BPGraph graph, BPNode curNode, PrintWriter pw){
+
+
+                handleFlowPins(curNode, graph, pw);
+
+                for(BPPin outputPin : curNode.outputPins){
+                    if(outputPin.getDataType() == BPPin.DataType.Flow){
+                        if(outputPin.connectedTo != -1) {
+                            BPNode node = graph.findPinById(outputPin.connectedTo).getNode();
+                            System.out.println("Flow: " + node.getName() + " : " + outputPin.connectedTo);
+                            handleNode(graph, node, pw);
+                        }
+                    }
+                }
+
+
+
+
+
+    }
+
     private static void createSource(BPGraph graph, String title) throws IOException {
         File file = new File("GraphOutput/" + title + ".java");
 
@@ -294,19 +320,16 @@ public class ImBlueprint {
         writeLine(pw, "public class " + title);
         writeLine(pw, "{");
 
-
-        for(BPNode nodes : graph.getNodes().values()){
+        for(BPNode curNode : graph.getNodes().values()){
+            //Start of function
             //Find functions
-            if(nodes instanceof Node_Function){
+            if(curNode instanceof Node_Function){
                 writeLine(pw, "");
-                writeLine(pw, "private void " + nodes.getName() + "()");
+                writeLine(pw, "private void " + curNode.getName() + "()");
                 writeLine(pw, "{");
-
-                handleFlowPins(nodes, graph, pw);
-
+                handleNode(graph, curNode, pw);
                 writeLine(pw, "}");
                 writeLine(pw, "");
-
             }
         }
 
