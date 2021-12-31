@@ -1,8 +1,11 @@
 package dotj.UI.ImGui;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public abstract class BPNode {
+
+    private static int localeVariableID = 0;
 
     private final BPGraph graph;
     private int ID;
@@ -29,16 +32,16 @@ public abstract class BPNode {
         this.ID = id;
     }
 
-    public BPPin addOutputPin(BPPin.DataType dataType){
+    public BPPin addOutputPin(BPPin.DataType dataType, BPNode node){
         int id = graph.getNextAvailablePinID();
-        BPPin pin = new BPPin(id, dataType, BPPin.PinType.Output, linkID++);
+        BPPin pin = new BPPin(node, id, dataType, BPPin.PinType.Output, linkID++);
         outputPins.add(pin);
         return pin;
     }
 
-    public BPPin addInputPin(BPPin.DataType dataType){
+    public BPPin addInputPin(BPPin.DataType dataType, BPNode node){
         int id = graph.getNextAvailablePinID();
-        BPPin pin = new BPPin(id, dataType, BPPin.PinType.Input, linkID++);
+        BPPin pin = new BPPin(node, id, dataType, BPPin.PinType.Input, linkID++);
         inputPins.add(pin);
         return pin;
     }
@@ -61,6 +64,23 @@ public abstract class BPNode {
     public int getID()
     {
         return ID;
+    }
+
+    public BPGraph getGraph()
+    {
+        return graph;
+    }
+
+    /**
+     * should return Variable name
+     */
+    public abstract String printSource(PrintWriter pw);
+
+    /**
+     * A unique ID for variables that are inside Functions that have been created without user input or a variable node
+     */
+    public static int getNextLocalVariableID(){
+        return localeVariableID++;
     }
 
 //    public ArrayList<BPPin> getPins()

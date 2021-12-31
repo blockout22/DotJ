@@ -6,16 +6,19 @@ import dotj.UI.ImGui.BPPin;
 import imgui.type.ImInt;
 import imgui.type.ImString;
 
+import java.io.PrintWriter;
+import java.util.Random;
+
 public class Node_IntToString extends BPNode {
 
     private BPPin input, output;
 
     public Node_IntToString(BPGraph graph) {
         super(graph);
-        graph.addNode("Int To String", this);
+        graph.addNode("Int To String " + new Random().nextInt(1000), this);
 
-        input = addInputPin(BPPin.DataType.Int);
-        output = addOutputPin(BPPin.DataType.String);
+        input = addInputPin(BPPin.DataType.Int, this);
+        output = addOutputPin(BPPin.DataType.String, this);
     }
 
     @Override
@@ -25,5 +28,24 @@ public class Node_IntToString extends BPNode {
 
         out.getValue().set(String.valueOf(in.getValue().get()));
         output.setName(out.value.get());
+    }
+
+    @Override
+    public String printSource(PrintWriter pw) {
+        //this is the variable as the value to use if pin is connected
+        String variable = null;
+        if(input.connectedTo != -1){
+            BPPin pin = getGraph().findPinById(input.connectedTo);
+            variable = pin.getNode().printSource(pw);
+        }else{
+            NodeData<ImInt> data = input.getData();
+            variable = String.valueOf(data.value.get());
+        }
+
+        //this is the variable to set to store the above variable
+        //variable should be randomized
+        String outputvar = "intToString" + getGraph().getNextAvailablePinID();
+        pw.write("String "+ outputvar +" = String.valueOf(" + variable + ");\n");
+        return outputvar;
     }
 }

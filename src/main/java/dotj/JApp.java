@@ -1,6 +1,9 @@
 package dotj;
 
 import dotj.UI.ImGui.*;
+import dotj.UI.ImGui.nodes.Node_Function;
+import dotj.UI.ImGui.nodes.Node_IntToString;
+import dotj.UI.ImGui.nodes.Node_PrintConsole;
 import dotj.UI.Nano.vg.NanoVGRenderer;
 import dotj.example.ReflectionExample;
 import dotj.input.GLFWKey;
@@ -106,6 +109,10 @@ public class JApp extends App {
         guiApp = new ImGuiApp(window);
         nodeEditorGraph = new Graph();
         blueprintGraph = new BPGraph();
+
+        new Node_Function(blueprintGraph);
+        new Node_PrintConsole(blueprintGraph);
+        new Node_IntToString(blueprintGraph);
 
 //        addRandomNode(blueprintGraph);
 //        addRandomNode(blueprintGraph);

@@ -25,6 +25,7 @@ public class BPPin {
         int iLinkID = 0;
     }
 
+    private BPNode node;
     private final int ID;
     private final PinType pinType;
     private final DataType dataType;
@@ -41,7 +42,8 @@ public class BPPin {
 
     private NodeData data;
 
-    public BPPin(int ID, DataType dataType, PinType pinType, int linkID){
+    public BPPin(BPNode node, int ID, DataType dataType, PinType pinType, int linkID){
+        this.node = node;
         this.ID = ID;
         this.dataType = dataType;
         this.pinType = pinType;
@@ -129,5 +131,9 @@ public class BPPin {
 
     public void setData(NodeData data) {
         this.data = data;
+    }
+
+    public BPNode getNode() {
+        return node;
     }
 }
