@@ -4,6 +4,7 @@ LWJGL3 Rendering Engine
 
 # Screenshot Timeline
 
+## In Game
 ### 23/12/2021
 ![img](Images/testScene-23.12.2021.png)
 
@@ -15,3 +16,9 @@ LWJGL3 Rendering Engine
 
 ### 15/12/2021
 ![img](Images/testScene-15.12.2021.png)
+
+## Visual Coding
+
+![img] (Images/VisualCode_image.png)
+
+![img] (Images/VisualCode_output.png)

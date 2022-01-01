@@ -9,10 +9,12 @@ import java.util.Random;
 
 public class Node_Function extends BPNode{
 
+    public BPPin flowPin;
+
     public Node_Function(BPGraph graph){
         super(graph);
         graph.addNode("function" + new Random().nextInt(10000), this);
-        BPPin pin = addOutputPin(BPPin.DataType.Flow, this);
+        flowPin = addOutputPin(BPPin.DataType.Flow, this);
     }
 
     @Override
@@ -22,6 +24,10 @@ public class Node_Function extends BPNode{
 
     @Override
     public String printSource(PrintWriter pw) {
+        if(flowPin.connectedTo != -1) {
+            BPPin pin = getGraph().findPinById(flowPin.connectedTo);
+            NodeCompiler.nextNode(getGraph(), pin.getNode(), pw);
+        }
         return "";
     }
 }

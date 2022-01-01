@@ -48,19 +48,13 @@ public class Node_Boolean extends BPNode{
         pw.write("boolean " + outputVar + " = " + input + ";\n");
         pw.write("if(" + outputVar + "){\n");
         if(execTrueOut.connectedTo != -1) {
-            BPPin pin = getGraph().findPinById(execFalseOut.connectedTo);
-            String outTrue = pin.getNode().printSource(pw);
-            if(outTrue != null) {
-                pw.write(outTrue + "\n");
-            }
+            BPPin pin = getGraph().findPinById(execTrueOut.connectedTo);
+            NodeCompiler.nextNode(getGraph(), pin.getNode(), pw);
         }
         pw.write("}else{\n");
         if(execFalseOut.connectedTo != -1) {
             BPPin pin = getGraph().findPinById(execFalseOut.connectedTo);
-            String outFalse = pin.getNode().printSource(pw);
-            if(outFalse != null) {
-                pw.write(outFalse + "\n");
-            }
+            NodeCompiler.nextNode(getGraph(), pin.getNode(), pw);
         }
         pw.write("}\n");
         return null;

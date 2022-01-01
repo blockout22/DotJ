@@ -6,6 +6,8 @@ import dotj.input.GLFWKey;
 import imgui.extension.imnodes.ImNodesContext;
 import imgui.extension.imnodes.flag.ImNodesMiniMapLocation;
 import imgui.extension.imnodes.flag.ImNodesPinShape;
+import imgui.extension.texteditor.TextEditor;
+import imgui.extension.texteditor.TextEditorLanguageDefinition;
 import imgui.flag.ImGuiCond;
 import imgui.flag.ImGuiMouseButton;
 import imgui.internal.ImRect;
@@ -21,6 +23,8 @@ import static imgui.ImGui.beginPopup;
 import static imgui.extension.imnodes.ImNodes.*;
 
 public class ImBlueprint {
+
+    private static TextEditor EDITOR = new TextEditor();
 
     public static ImRect getItemRect(){
         return new ImRect(getItemRectMin(), getItemRectMax());
@@ -82,46 +86,46 @@ public class ImBlueprint {
             }
 
             text("Graph");
-                if(beginTabBar("GraphTabBar")) {
-                    if (beginTabItem("Graph")) {
-                        beginNodeEditor();
-                        {
-                            //Render Nodes and Pins
-                            for (BPNode g : graph.getNodes().values()) {
-                                beginNode(g.getID());
-                                {
-                                    beginNodeTitleBar();
-                                    text(g.getName());
-                                    endNodeTitleBar();
+            if(beginTabBar("GraphTabBar")) {
+                if (beginTabItem("Graph")) {
+                    beginNodeEditor();
+                    {
+                        //Render Nodes and Pins
+                        for (BPNode g : graph.getNodes().values()) {
+                            beginNode(g.getID());
+                            {
+                                beginNodeTitleBar();
+                                text(g.getName());
+                                endNodeTitleBar();
 
-                                    //TODO temporary code, this is just to test the node ... When it's implemented
-                                    if (g.getName().startsWith("function")) {
-                                        if (button("Execute")) {
-                                            executeFlow(graph, g);
-                                        }
+                                //TODO temporary code, this is just to test the node ... When it's implemented
+                                if (g.getName().startsWith("function")) {
+                                    if (button("Execute")) {
+                                        executeFlow(graph, g);
                                     }
+                                }
 
 //                    curNodeSize = getItemRectSizeX();
 
-                                    int max = Math.max(g.outputPins.size(), g.inputPins.size());
+                                int max = Math.max(g.outputPins.size(), g.inputPins.size());
 
-                                    for (int i = 0; i < max; i++) {
+                                for (int i = 0; i < max; i++) {
 
-                                        if (g.inputPins.size() > i) {
-                                            BPPin inPin = g.inputPins.get(i);
+                                    if (g.inputPins.size() > i) {
+                                        BPPin inPin = g.inputPins.get(i);
 //                            addPin(inPin.getID(), inPin.getName(), inPin.getDataType(), inPin.getPinType());
-                                            addPin(inPin);
-                                        }
-
-                                        dummy(150, 0);
-
-                                        if (g.outputPins.size() > i) {
-                                            BPPin outPin = g.outputPins.get(i);
-//                            addPin(outPin.getID(), outPin.getName(), outPin.getDataType(), outPin.getPinType());
-                                            addPin(outPin);
-                                        }
-                                        newLine();
+                                        addPin(inPin);
                                     }
+
+                                    dummy(150, 0);
+
+                                    if (g.outputPins.size() > i) {
+                                        BPPin outPin = g.outputPins.get(i);
+//                            addPin(outPin.getID(), outPin.getName(), outPin.getDataType(), outPin.getPinType());
+                                        addPin(outPin);
+                                    }
+                                    newLine();
+                                }
 
 
 //                    for(BPPin pin : g.getPins())
@@ -129,25 +133,32 @@ public class ImBlueprint {
 //                        System.out.println("Pin: " + pin.getID() + " : " + g.ID);
 //                        addPin(pin.getID(), pin.getName(), pin.getDataType(), pin.getPinType());
 //                    }
-                                }
-                                endNode();
                             }
-
-                            int uniqueLinkId = 1;
-                            for (BPNode g : graph.getNodes().values()) {
-                                for (BPPin pin : g.outputPins) {
-                                    if (pin.connectedTo != -1) {
-                                        link(uniqueLinkId++, pin.getID(), pin.connectedTo);
-                                    }
-                                }
-                            }
-                            miniMap(0.2f, ImNodesMiniMapLocation.BottomRight);
+                            endNode();
                         }
-                        endNodeEditor();
-                        endTabItem();
+
+                        int uniqueLinkId = 1;
+                        for (BPNode g : graph.getNodes().values()) {
+                            for (BPPin pin : g.outputPins) {
+                                if (pin.connectedTo != -1) {
+                                    link(uniqueLinkId++, pin.getID(), pin.connectedTo);
+                                }
+                            }
+                        }
+                        miniMap(0.2f, ImNodesMiniMapLocation.BottomRight);
                     }
+                    endNodeEditor();
+                    endTabItem();
                 }
+
+                if(beginTabItem("Output")){
+                    EDITOR.render("Output");
+                    EDITOR.setReadOnly(true);
+                    endTabItem();
+                }
+            }
             endTabBar();
+            sameLine();
 
             //check if a link was attempted while dragging from a pin
             if(isLinkCreated(LINK_A, LINK_B)){
@@ -288,114 +299,116 @@ public class ImBlueprint {
         end();
     }
 
-    private static void handleNode(BPGraph graph, BPNode curNode, PrintWriter pw){
-
-
-                handleFlowPins(curNode, graph, pw);
-
-                for(BPPin outputPin : curNode.outputPins){
-                    if(outputPin.getDataType() == BPPin.DataType.Flow){
-                        if(outputPin.connectedTo != -1) {
-                            BPNode node = graph.findPinById(outputPin.connectedTo).getNode();
-                            System.out.println("Flow: " + node.getName() + " : " + outputPin.connectedTo);
-                            handleNode(graph, node, pw);
-                        }
-                    }
-                }
-
-
-
-
-
-    }
-
     private static void createSource(BPGraph graph, String title) throws IOException {
-        File file = new File("GraphOutput/" + title + ".java");
-
-        if(!file.exists()){
-            file.createNewFile();
-        }
-
-        PrintWriter pw = new PrintWriter(file);
-        writeLine(pw, "public class " + title);
-        writeLine(pw, "{");
-
-        for(BPNode curNode : graph.getNodes().values()){
-            //Start of function
-            //Find functions
-            if(curNode instanceof Node_Function){
-                writeLine(pw, "");
-                writeLine(pw, "private void " + curNode.getName() + "()");
-                writeLine(pw, "{");
-                handleNode(graph, curNode, pw);
-                writeLine(pw, "}");
-                writeLine(pw, "");
-            }
-        }
-
-        writeLine(pw, "}");
-        pw.flush();
-        pw.close();
-        
-        //make pretty
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        StringBuilder sb = new StringBuilder();
-        String line;
-        int tabCount = 0;
-        String previousLine = "";
-        while((line = br.readLine()) != null){
-            char previousChar = 0;
-            for(char c : previousLine.toCharArray()){
-                if(c == '{' && previousChar != '"'){
-                    tabCount++;
-                }
-            }
-
-            //may run into a bug here with previousChar... possible solution create a previousChar variable for toCharArray
-            for(char c : line.toCharArray()){
-                if(c == '}' && previousChar != '"'){
-                    tabCount --;
-                }
-                previousChar = c;
-            }
-
-            previousLine = line;
-
-            for(int i = 0; i < tabCount; i++){
-                sb.append("\t");
-            }
-            sb.append(line);
-            sb.append("\n");
-        }
-
-        PrintWriter formatedPw = new PrintWriter(file);
-        formatedPw.write(sb.toString());
-        formatedPw.flush();
-        formatedPw.close();
+        NodeCompiler.compile(title, graph);
+        EDITOR.setText(NodeCompiler.lastOutput.toString());
     }
 
-    /**
-     * runs down the line of flow pins creating everything required inside a function
-     */
-    public static void handleFlowPins(BPNode nodes, BPGraph graph, PrintWriter pw){
-        for(BPPin flowPin : nodes.outputPins){
-            if(flowPin.getDataType() == BPPin.DataType.Flow) {
-                //go down line and find all other nodes connected to the function
-                BPPin pin = graph.findPinById(flowPin.connectedTo);
-                if(pin != null){
-                    pin.getNode().printSource(pw);
-//                    writeLine(pw, pin.getNode().getCodeOutput());
-                }
-                break;
-            }
-        }
-    }
+    //Old code from visual coding
+    {
 
-    /**
-     * writes to the print writer and creates a new line
-     */
-    private static void writeLine(PrintWriter pw, String text){
-        pw.write(text + "\n");
+//    private static void handleNode(BPGraph graph, BPNode curNode, PrintWriter pw){
+//        handleFlowPins(curNode, graph, pw);
+//
+//        for(BPPin outputPin : curNode.outputPins){
+//            if(outputPin.getDataType() == BPPin.DataType.Flow){
+//                if(outputPin.connectedTo != -1) {
+//                    BPNode node = graph.findPinById(outputPin.connectedTo).getNode();
+//                    System.out.println("Flow: " + node.getName() + " : " + outputPin.connectedTo);
+//                    handleNode(graph, node, pw);
+//                }
+//            }
+//        }
+//    }
+
+        /**
+         * runs down the line of flow pins creating everything required inside a function
+         */
+//    public static void handleFlowPins(BPNode nodes, BPGraph graph, PrintWriter pw){
+//        for(BPPin flowPin : nodes.outputPins){
+//            if(flowPin.getDataType() == BPPin.DataType.Flow) {
+//                //go down line and find all other nodes connected to the function
+//                BPPin pin = graph.findPinById(flowPin.connectedTo);
+//                if(pin != null){
+//                    pin.getNode().printSource(pw);
+////                    writeLine(pw, pin.getNode().getCodeOutput());
+//                }
+//                break;
+//            }
+//        }
+//    }
+
+//    private static void oldCreate(BPGraph graph, String title) throws IOException{
+//        File file = new File("GraphOutput/" + title + ".java");
+//
+//        if(!file.exists()){
+//            file.createNewFile();
+//        }
+//
+//        PrintWriter pw = new PrintWriter(file);
+//        writeLine(pw, "public class " + title);
+//        writeLine(pw, "{");
+//
+//        for(BPNode curNode : graph.getNodes().values()){
+//            //Start of function
+//            //Find functions
+//            if(curNode instanceof Node_Function){
+//                writeLine(pw, "");
+//                writeLine(pw, "private void " + curNode.getName() + "()");
+//                writeLine(pw, "{");
+//                handleNode(graph, curNode, pw);
+//                writeLine(pw, "}");
+//                writeLine(pw, "");
+//            }
+//        }
+//
+//        writeLine(pw, "}");
+//        pw.flush();
+//        pw.close();
+//
+//        //make pretty
+//        BufferedReader br = new BufferedReader(new FileReader(file));
+//        StringBuilder sb = new StringBuilder();
+//        String line;
+//        int tabCount = 0;
+//        String previousLine = "";
+//        while((line = br.readLine()) != null){
+//            char previousChar = 0;
+//            for(char c : previousLine.toCharArray()){
+//                if(c == '{' && previousChar != '"'){
+//                    tabCount++;
+//                }
+//            }
+//
+//            //may run into a bug here with previousChar... possible solution create a previousChar variable for toCharArray
+//            for(char c : line.toCharArray()){
+//                if(c == '}' && previousChar != '"'){
+//                    tabCount --;
+//                }
+//                previousChar = c;
+//            }
+//
+//            previousLine = line;
+//
+//            for(int i = 0; i < tabCount; i++){
+//                sb.append("\t");
+//            }
+//            sb.append(line);
+//            sb.append("\n");
+//        }
+//
+//        PrintWriter formatedPw = new PrintWriter(file);
+//        formatedPw.write(sb.toString());
+//        formatedPw.flush();
+//        formatedPw.close();
+//    }
+
+        /**
+         * writes to the print writer and creates a new line
+         */
+//    private static void writeLine(PrintWriter pw, String text){
+//        pw.write(text + "\n");
+//    }
     }
 
     private static void updateNodes(BPGraph graph){

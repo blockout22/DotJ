@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class Node_PrintConsole extends BPNode{
 
-    private BPPin execPin, valuePin, output;
+    public BPPin execPin, valuePin, output;
 
     public Node_PrintConsole (BPGraph graph){
         super(graph);
@@ -44,11 +44,15 @@ public class Node_PrintConsole extends BPNode{
             strOutput = pin.getNode().printSource(pw);
         }
 
-//        if(output.connectedTo != -1){
-//            ImBlueprint.h
-//        }
-
         pw.write("System.out.println(" + strOutput + ");\n");
+        //check for continued flow after setting write
+        if(output.connectedTo != -1){
+//            ImBlueprint.h
+            BPPin pin = getGraph().findPinById(output.connectedTo);
+            NodeCompiler.nextNode(getGraph(), pin.getNode(), pw);
+//            NodeCompiler.handleNode(getGraph(), pin.getNode(), pw);
+        }
+
 
         return "";
     }

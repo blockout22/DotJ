@@ -1,6 +1,7 @@
 package dotj;
 
 import dotj.UI.ImGui.*;
+import dotj.UI.ImGui.nodes.NodeData;
 import dotj.UI.ImGui.nodes.Node_Function;
 import dotj.UI.ImGui.nodes.Node_IntToString;
 import dotj.UI.ImGui.nodes.Node_PrintConsole;
@@ -110,9 +111,28 @@ public class JApp extends App {
         nodeEditorGraph = new Graph();
         blueprintGraph = new BPGraph();
 
-        new Node_Function(blueprintGraph);
-        new Node_PrintConsole(blueprintGraph);
-        new Node_IntToString(blueprintGraph);
+        Node_Function func = new Node_Function(blueprintGraph);
+        Node_PrintConsole node1 = new Node_PrintConsole(blueprintGraph);
+        Node_PrintConsole node2 = new Node_PrintConsole(blueprintGraph);
+        Node_PrintConsole node3 = new Node_PrintConsole(blueprintGraph);
+
+        //connect func to node1
+        func.flowPin.connectedTo = node1.execPin.getID();
+        node1.execPin.connectedTo = func.flowPin.getID();
+        NodeData<ImString> data1 = node1.valuePin.getData();
+        data1.value.set("Hello 1");
+
+        //connect node1 to node2
+        node1.output.connectedTo = node2.execPin.getID();
+        node2.execPin.connectedTo = node1.output.getID();
+        NodeData<ImString> data2 = node2.valuePin.getData();
+        data2.value.set("Hello 2");
+
+        //connect node2 to node3
+        node2.output.connectedTo = node3.execPin.getID();
+        node3.execPin.connectedTo = node2.output.getID();
+        NodeData<ImString> data3 = node3.valuePin.getData();
+        data3.value.set("Hello 3");
 
 //        addRandomNode(blueprintGraph);
 //        addRandomNode(blueprintGraph);
