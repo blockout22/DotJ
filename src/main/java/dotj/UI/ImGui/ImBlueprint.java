@@ -3,11 +3,11 @@ package dotj.UI.ImGui;
 import dotj.UI.ImGui.nodes.*;
 import dotj.Utilities;
 import dotj.input.GLFWKey;
+import imgui.ImVec2;
 import imgui.extension.imnodes.ImNodesContext;
 import imgui.extension.imnodes.flag.ImNodesMiniMapLocation;
 import imgui.extension.imnodes.flag.ImNodesPinShape;
 import imgui.extension.texteditor.TextEditor;
-import imgui.extension.texteditor.TextEditorLanguageDefinition;
 import imgui.flag.ImGuiCond;
 import imgui.flag.ImGuiMouseButton;
 import imgui.internal.ImRect;
@@ -100,9 +100,6 @@ public class ImBlueprint {
 
                                 //TODO temporary code, this is just to test the node ... When it's implemented
                                 if (g.getName().startsWith("function")) {
-                                    if (button("Execute")) {
-                                        executeFlow(graph, g);
-                                    }
                                 }
 
 //                    curNodeSize = getItemRectSizeX();
@@ -151,6 +148,7 @@ public class ImBlueprint {
                     endTabItem();
                 }
 
+
                 if(beginTabItem("Output")){
                     EDITOR.render("Output");
                     EDITOR.setReadOnly(true);
@@ -196,8 +194,6 @@ public class ImBlueprint {
                 BPPin pin1 = graph.findPinById(LINK_A.get());
                 if (pin1.connectedTo != -1) {
                     BPPin pin2 = graph.findPinById(pin1.connectedTo);
-                    System.out.println("Dropped: " + pin1.connectedTo + " : " + pin2.connectedTo);
-
                     pin1.connectedTo = -1;
                     pin2.connectedTo = -1;
                 }
@@ -244,6 +240,7 @@ public class ImBlueprint {
             //Opens Graph Right click menu
             if(isPopupOpen("context_menu")) {
                 if (beginPopup("context_menu")) {
+
 
                     //Add <name> Should only be a variable type and be in another list, this menu should only add functions such as adding 2 numbers together
                     if (menuItem("Add Flow")) {
