@@ -14,7 +14,7 @@ public class Node_Add extends BPNode {
 
     public Node_Add(BPGraph graph) {
         super(graph);
-        graph.addNode("TestNode" + new Random().nextFloat(), this);
+        graph.addNode("TestNode", this);
 
         in1Pin = addInputPin(BPPin.DataType.Int, this);
         in1Pin.setName("Input 1");

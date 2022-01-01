@@ -43,12 +43,14 @@ public class BPGraph {
         queuedForRemoval.clear();
     }
 
-    public boolean addNode(String name, BPNode node){
-        if(!validateName(name)){
+    public boolean addUniqueNode(String name, BPNode node) {
+        if (!validateName(name)) {
             return false;
         }
+        return addNode(name, node);
+    }
 
-
+    public boolean addNode(String name, BPNode node){
         node.setID(nextNodeID++);
         node.setName(name);
         nodes.put(node.getID(), node);

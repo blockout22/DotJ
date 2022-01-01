@@ -14,7 +14,7 @@ public class Node_CallFunction extends BPNode {
 
     public Node_CallFunction(BPGraph graph) {
         super(graph);
-        graph.addNode("Call Function", this);
+        graph.addUniqueNode("Call Function", this);
 
         flowIn = addInputPin(BPPin.DataType.Flow, this);
         input = addInputPin(BPPin.DataType.String, this);
