@@ -19,6 +19,6 @@ LWJGL3 Rendering Engine
 
 ## Visual Coding
 
-![img] (Images/VisualCode_image.png)
+![img](Images/VisualCode_image.png)
 
-![img] (Images/VisualCode_output.png)
+![img](Images/VisualCode_output.png)
