@@ -70,7 +70,7 @@ public abstract class BPNode {
     }
 
     /**
-     * should return Variable name
+     * if custom variable is created this should return Variable name
      */
     public abstract String printSource(PrintWriter pw);
 

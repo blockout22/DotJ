@@ -15,7 +15,7 @@ public class Node_PrintConsole extends BPNode{
 
     public Node_PrintConsole (BPGraph graph){
         super(graph);
-        graph.addNode("Print" + new Random().nextFloat(), this);
+        graph.addNode("Print", this);
 
         execPin = addInputPin(BPPin.DataType.Flow, this);
         valuePin = addInputPin(BPPin.DataType.String, this);

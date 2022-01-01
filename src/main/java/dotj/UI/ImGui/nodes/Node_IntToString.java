@@ -15,7 +15,7 @@ public class Node_IntToString extends BPNode {
 
     public Node_IntToString(BPGraph graph) {
         super(graph);
-        graph.addNode("Int To String " + new Random().nextInt(1000), this);
+        graph.addNode("Int To String ", this);
 
         input = addInputPin(BPPin.DataType.Int, this);
         output = addOutputPin(BPPin.DataType.String, this);
